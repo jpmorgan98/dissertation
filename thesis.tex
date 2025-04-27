@@ -1,0 +1,118 @@
+% !BIB TS-program = biber
+\documentclass[onehalf,11pt]{beavtex/beavtex}
+
+\input{thesis-header.tex}
+
+% things to check or replace
+% replace your name here.
+\newcommand{\TheAuthors}{Joanna Piper Morgan}
+\title{On algorithms and software engineering schemes for radiation transport on heterogeneous compute architectures}
+\degree{Doctor of Philosophy}
+\major{Mechanical Engineering}
+
+\submitdate{June 13, 2025}
+\commencementyear{2025}
+
+\author{\TheAuthors{}}
+\doctype{Dissertation}
+\department{Mechanical, Industrial, and Manufacturing Engineering}
+\depttype{School}
+\depthead{Head}
+
+\advisor{Kyle E.~Niemeyer}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% figure location
+\graphicspath{{./figures/}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\abstract
+{
+(ABSTRACT GOES HERE)
+}
+
+
+\acknowledgements{
+\textit{I would first like to thank my comittee\\
+Then I would like to thank my funders, support staff, coauthors, and mentors\\
+Then I would like to thank my teachers\\
+Then I would like to thank my labmates and colleagues\\
+Then I would like to thank my friends\\
+Then I would like to thank my family\\
+\\
+\\
+Let it be known that this dissertation was made by a transgender woman.
+I pray I will live upto the dignity that title---as well as my trans cousins, brothers, and sisters---deserve.
+}
+}
+
+
+% to my brothers sisters and cousnis enough to be transgender\\ may we
+% 
+
+\dedication{To those like me who came before\\even if they could never be like me}
+
+% REPLACE OR REMOVE THIS PREFACE QUOTE
+\preface{
+    \epigraph{
+        The child in each of us\\
+        Knows paradise.\\
+        Paradise is home\\
+        Home as it was\\
+        Or home as it should have been.
+    }
+    {Octavia Butler}
+}
+
+\begin{document}
+
+\maketitle
+
+\mainmatter
+
+% By including `''%!TEX root = thesis.tex` in the top of each included file,
+% most LaTeX editors will automatically compile the main package when you are working
+% within a file.
+
+\include{introduction}
+\include{litreview}
+\include{methods}
+\include{manuscript1/man1_main}
+\include{manuscript2/man2_main}
+\include{results}
+\include{conclusions}
+
+\newpage
+
+
+\printbibliography[]
+
+\chapter*{Unconventional Acknowledgment}
+I am a rather unconventional person and as such I make an unconventional acknowledgment.
+I wasn't really sure if I was going to put this in here but it feels important.
+This might be the only work of mine that ever is kept and as such, as this is the one thing that will be marked with my name till the end of archival systems it was important for me to put this on the record.
+
+To the bureaucrats who cried crocodile tears when I requested basic human dignity.\\
+To those who made a wounded and lonely child feel more isolated and confused.\\
+To those who said, ``I can't tell my daughters that this is something that is ok".\\
+To those who have accosted me on the street with slurs and epithets.\\
+To those with political power who seek to exterminate me and my people\\
+To those who have assaulted, trafficked, beat, and raped me.
+
+I could've never known my own strength without your cruelty.
+In a way, you have given me knowledge of my power which many go their who lives without knowing.
+That I can scratch out a life, protect those I love, and survive.
+
+I wish you no ill will.
+As much as I can---I forgive you.
+I pray that our ever-loving lord shows you mercy and that you find peace before your time on this Earth is over.
+I trust that in His good time and grace---we will all heal.
+
+%% INCLUDE IF YOU NEED AN APPENDIX
+
+% \newpage
+%\appendix
+%\input{appendixA.tex}
+
+\end{document}

@@ -1,0 +1,21 @@
+
+\begin{figure}
+\begin{lstlisting}[language=Python]
+from numba import cuda
+
+@for_cpu
+def add(array, value, idx):
+    array[idx] += value
+
+@for_gpu
+def add(array, value, idx):
+    cuda.atomic_add(array, value, idx)
+
+def tally_collision_event(mcdc, part):
+    id = loc2index(part)
+    add(mcdc.col_tally, part.v, id)
+\end{lstlisting}
+\caption{Example of GPU and CPU specific API calls as defined in MC/DC and their use in a collision tally function.}
+\label{fig:forcpuvgpu}
+
+\end{figure}

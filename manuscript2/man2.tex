@@ -1,0 +1,72 @@
+
+% \begin{abstract}
+%     To find deterministic solutions to the transient discrete-ordinates neutron-transport equation, source iterations (SI) are typically used to lag the scattering (and fission) source terms from subsequent iterations.
+%     For Cartesian geometries in one dimension, SI is parallel over the number of angles but not spatial cells; this is a disadvantage for many-core compute architectures like graphics processing units.
+%     One-cell inversion (OCI) is a class of alternative iterative methods that allow space-parallel radiation transport on heterogeneous compute architectures.
+%     For OCI, previous studies have shown that, in steady-state computations, spectral radius tends to unity when cells are optically thin regardless of the scattering ratio.
+%     In this work, we analyze how the convergence rate of an OCI scheme behaves when used for time-dependent neutron transport computations.
+%     We derive a second-order space-time discretization method from the simple corner balance and multiple balance time discretization schemes and show via Fourier analysis that it is unconditionally stable through time.
+%     Then, we derive and numerically solve the Fourier systems for both OCI and SI splittings of our discretization, showing that small mean-free times improve the spectral radius of OCI more than SI, and that spectral radius for OCI tends to zero as mean free time gets smaller.
+%     We extend both solvers to be energy dependent (using the multigroup assumption) and implement on an AMD MI250X using vendor-supplied batched LAPACK solvers.
+%     Smaller time steps improve the relative performance of OCI over SI, and, even when OCI requires more iterations to converge a problem, those iterations can be done much faster on a GPU.
+%     This leads to OCI performing better overall than SI on GPUs.
+% \end{abstract}
+
+\input{manuscript2/intro}
+
+\input{manuscript2/methods}
+
+\input{manuscript2/results}
+
+\section{Discussion}
+
+% transient patterns
+The 1D convergence trends we present here agree with
+previously published 2D steady-state Fourier results for OCI schemes %show similar convergence patterns in parameter space to 1D results presented here 
+(i.e., $\rho\rightarrow1$ as $\delta\rightarrow0$) \cite{rosa_cellwise_2013, man1994parallel}.
+This leads us to expect that the relationship between mean free time and spectral radius will persist in higher spatial dimensions, 
+but exactly how much dynamic impacts to OCI decrease $\rho$ in 2D transport has yet to be shown.
+
+% preconditioned FPS v OCI in 3D
+Parallel sweeping algorithms may not be well suited to GPUs where non-uniform work distributions come with significant overhead. 
+Available results for full parallel sweeps on GPUs show that even optimized applications underperform relative to the theoretical hardware resources available \cite{kunen_kripke_2015, wolfe2022roofline, baker_computational_2017}.
+% Slide 51 of \cite{wolfe2022roofline} shows a roofline plot with the kripkey sweep 
+On the other hand, space-parallel OCI uses the same parallel scheme in 2D and 3D as it does in 1D, with arithmetically intense operations that align well with the GPU parallelism paradigm.
+So, we hypothesize that OCI can better take advantage of the compute resources available on GPUs in higher dimensions than full-parallel-sweep SI on GPUs, but this requires further study.
+
+OCI algorithms may also be well suited for modeling anisotropic scattering distributions because all angles are computed at once in every cell.
+On unstructured meshes, OCI algorithms avoid one challenge for sweep-based methods: when groups of cells have cyclic dependencies (i.e., when an incident transport angle is parallel to a cell boundary).
+
+% OCI's need for a perfomant preconditioner
+Regardless of how well an implementation of any OCI scheme performs, the inability to converge problems in the thin limit regardless of scattering ratio will continue to lead to lackluster performance in some problems.
+In this work, we compared unpreconditioned SI to unpreconditioned OCI using fixed-point iterations.
+When in production, SI typically uses a well-accepted set of acceleration schemes/preconditioners (most popularly diffusion synthetic acceleration) accompanied by Krylov subspace methods.
+Likewise, some acceleration/preconditioning or Krylov methods may exist that can help OCI more-rapidly converge in the thin limit, while not significantly degrading the space-parallel performance of OCI.
+
+Acceleration schemes for OCI have previously been explored, including transport synthetic acceleration \cite{tsa2009rosa} and using hybrid schemes with OCI and traditional SI \cite{hoagland_hybrid_2021}.
+Both resynchronize cells by sweeping to improve convergence; however, the resulting algorithms are no longer space-parallel and involve a potentially more-expensive sweep operation.
+
+
+\section{Conclusions and Future Work}
+
+We derived the multiple balance and simple corner balance time-space discretization schemes and demonstrated, with Fourier analysis, that our time iteration method is unconditionally stable.
+We also derived eigensystems for one-cell inversion and source iteration, showing that one-cell inversion iterations converge faster as mean free time shrinks.
+Furthermore, OCI's convergence rate improves faster than SI's with decreasing mean free time.
+%Phrased another way: For one cell inversion time step is inversely proportional to convergence rate.
+We confirmed this with both Fourier and empirical analysis of implemented one-cell inversion and source iteration solvers.
+Although we only explored block Jacobi OCI, we also expect this behavior to improve convergence of time-dependent block Gauss--Seidel OCI.
+
+When more iterations are required to converge problems of interest---particularly in highly scattering and optically thin problems---OCI can run individual iterations significantly faster than SI when using batched direct solvers on GPUs from vendor-supplied libraries.
+For OCI the number of on-device performant compute kernels is limited to data-parallel matrix-building operations, with all other compute kernels being called from optimized libraries. 
+While optimization could improve both the OCI and SI algorithms, we analyzed performance to ensure there was little computational overhead from data movement and user-defined kernels.
+
+%Work is underway to implement the dynamic block Jacobi OCI algorithm in 2D on GPUs.
+Moving forward, we are exploring synthetic acceleration techniques to preserve the OCI space-parallel performance on GPUs while ameliorating issues in the thin limit.
+Space-parallel OCI schemes offer promise as a high-performing class of iterative solvers for time-dependent radiation transport on modern heterogeneous compute architectures.
+
+\section*{Acknowledgments}
+
+The authors thank Dmitriy Anistratov of North Carolina State University for useful conversations about Fourier analysis results, James Warsa of Los Alamos National Laboratory for useful conversations about previous work and Damon McDougall of Advanced Micro Devices for support using ROCm compilers and profilers. 
+The authors also thank the high performance computing staff at Lawrence Livermore National Laboratory for support using the Tioga machine.
+
+This work was supported by the Center for Exascale Monte Carlo Neutron Transport (CEMeNT), a PSAAP-III project funded by the Department of Energy, grant number: DE-NA003967.
