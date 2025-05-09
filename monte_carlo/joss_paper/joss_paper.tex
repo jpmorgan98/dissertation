@@ -1,0 +1,84 @@
+\newpage
+\renewcommand{\TheTitle}{Monte Carlo / Dynamic Code (MC/DC): An accelerated Python package for fully transient neutron transport and rapid methods development}
+\renewcommand{\TheAuthors}{Joanna Piper Morgan,
+Ilham Variansyah,
+Samuel L. Pasmann,
+Kayla B. Clements,
+Braxton Cuneo,
+Alexander Mote,
+Charles Goodman,
+Caleb Shaw,
+Jordan Northrop,
+Rohan Pankaj,
+Ethan Lame,
+Benjamin Whewell,
+Ryan G. McClarren,
+Todd S. Palmer,
+Lizhong Chen ,
+Dmitriy Y. Anistratov,
+C. T. Kelley,
+Camille J. Palmer,
+Kyle E. Niemeyer}
+
+\renewcommand{\TheAddress}{
+\textit{Journal of Open Source Software (JOSS)} \\
+Vol. 9(96), 6415, 2024. \\
+\doi{10.21105/joss.06415}
+}
+
+\PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
+
+\chapter{\TheTitle}
+\label{chapter:joss_paper}
+
+\epigraphhead[10]{\singlespacing
+    \epigraph{
+        The point is there ain't no point.
+    }
+    {Cormac McCarthy}
+}
+
+\section{Summary}
+
+Predicting how neutrons move through space and time, and change speed and direction of travel, are important considerations when modeling inertial confinement fusion systems, pulsed neutron sources, and nuclear criticality safety experiments, among other systems.
+This can be modeled with a Monte Carlo simulation, where particles with statistical importance are created and transported to produce a particle history \cite{lewis_computational_1984}.
+A particle's path and the specific set of events that occur within its history are governed by pseudo-random numbers, known probabilities (e.g., from material data), and known geometries.
+Information about how particles move and/or interact with the system is tallied to construct a histogram solution of parameters of interest with an associated statistical error from the Monte Carlo process. 
+Simulating dynamic systems that vary in time requires novel numerical methods to compute a solution performantly.
+We designed Monte Carlo / Dynamic Code (MC/DC) to explore such novel numerical methods on modern high-performance computing systems.
+We avoid the need for a compiled or domain-specific language by using the Numba compiler for Python to accelerate and abstract our compute kernels to near compiled code speeds.
+We have implemented novel algorithms using this scheme and, in some verification tests, have approached the performance of industry-standard codes at the scale of tens of thousands of processors.
+
+\section{Statement of need}
+
+MC/DC is a performant software platform for rapidly developing and applying novel, dynamic, neutron-transport algorithms on modern high-performance computing systems.
+It uses the Numba compiler for Python to compile compute kernels to a desired hardware target, including support for graphics processing units (GPUs) \cite{lam_numba_2015}.
+MC/DC uses mpi4py for distributed-memory parallelism \cite{dalcin_mpi4py_2021} and has run at the scale of tens of thousands of processors \cite{variansyah_mc23_mcdc}.
+These acceleration and abstraction techniques allow MC/DC developers to remain in a pure Python development environment without needing to support compiled or domain-specific languages.
+This has allowed MC/DC to grow from its initialization less than two years ago into a codebase that supports full performant neutron transport and investigation of novel transport algorithms, with development mostly from relative novices.
+
+Many traditionally developed neutron-transport codes are export-controlled (e.g., MCNP \cite{MCNP_RisingArmstrongEtAl}, Shift \cite{pandya_implementation_2016}, and MCATK \cite{mcatk}) and some are known to be difficult to install, use, and develop in.
+MC/DC is open-source, and thus, similar to other open-source Monte Carlo neutron-transport codes (e.g., OpenMC \cite{romano_openmc_2015}), it promotes knowledge sharing, collaboration, and inclusive, community-driven development.
+What makes MC/DC unique is that its code base is exclusively written in Python, making it a good method exploration tool and an excellent entry point for students.
+Furthermore, MC/DC is wrapped as a Python package that can be conveniently installed via the pip distribution, and its development is assisted by a suite of unit, regression, verification, and performance tests, which are mostly run using continuous integration via GitHub Actions.
+This all together makes MC/DC ideal for use in an academic environment for both research and education.
+
+MC/DC has support for continuous and multi-group energy neutron transport physics with constructive solid geometry modeling.
+It can solve k-eigenvalue problems (used to determine neutron population growth rates in reactors) as well as fully dynamic simulations.
+It also supports some simple domain decomposition, with more complex algorithms currently being implemented.
+In an initial code-to-code performance comparison, MC/DC was found to run about 2.5 times slower than the Shift Monte Carlo code for a simple problem and showed similar scaling on some systems \cite{variansyah_mc23_mcdc}.
+
+MC/DC-enabled explorations into dynamic neutron transport algorithms have been successful, including quasi-Monte Carlo techniques \cite{mcdc:qmc}, hybrid iterative techniques for k-eigenvalue simulations \cite{mcdc:qmcabs}, population control techniques \cite{mcdc:variansyah_nse22_pct, mcdc:variansyah_physor22_pct}, continuous geometry movement techniques that model transient elements \cite{variansyah_2023_highfidelity} (e.g., control rods or pulsed neutron experiments) more accurately than step functions typically used by other codes, initial condition sampling technique for typical reactor transients \cite{variansyah_mc23_ic}, hash-based random number generation \cite{rngseed}, uncertainty and global sensitivity analysis \cite{mcdc:clements_mc23, mcdc:clements_variance_2024}, residual Monte Carlo methods, and machine learning techniques for dynamic node scheduling, among others.
+
+\section{Future Work}
+
+The main MC/DC branch currently only supports CPU architectures enabled by Numba (\texttt{x86-64}, \texttt{arm64}, and \texttt{ppc64}) but we are rapidly extending support to GPUs.
+We currently have operability on Nvidia GPUs (supported via Numba), and work is ongoing to enable compilation for AMD GPUs.
+On GPUs, MC/DC will use the harmonize asynchronous GPU scheduler to increase performance \cite{brax2023}.
+harmonize works by batching jobs during execution such that similar operations get executed simultaneously, reducing the divergence between parallel threads running on the GPU.
+
+We will continue to explore novel methods for dynamic neutron transport and will keep pushing to make MC/DC not only a proven platform for rapidly exploring neutron-transport methods, but also a fully-fledged simulation code for academic and industrial use.
+
+\section*{Acknowledgments}
+
+This work was supported by the Center for Exascale Monte-Carlo Neutron Transport (CEMeNT) a PSAAP-III project funded by the Department of Energy, grant number: DE-NA003967.

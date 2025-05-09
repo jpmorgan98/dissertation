@@ -1,14 +1,24 @@
 % this file contains the LaTeX preamble and loads all necessary packages
 % you shouldn't need to edit this
 
+% setting main text font
+\usepackage[T1]{fontenc}
+\usepackage{baskervald} % -- fav so far
+\usepackage[baskerville,vvarbb]{newtxmath}
+
+% Other nice fonts!
+%\usepackage[lf]{Baskervaldx} % -- really liked
+%\usepackage{accanthis} % -- very 1920s like
+%\usepackage{Alegreya} % -- liked but mabe a bit much
+%\usepackage{CormorantGaramond} % a little to thin
+
 % better printing of numbers
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{textcomp}
 
-\usepackage{lmodern}
+
 
 % used to provide "lorem ipsum" placeholder text
 \usepackage{blindtext}
@@ -19,9 +29,9 @@
 
 %\usepackage{subfiles}
 
-\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+%\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 \usepackage{xspace}
-\microtypecontext{spacing=nonfrench}
+%\microtypecontext{spacing=nonfrench}
 
 \usepackage{latexsym, amsmath, amssymb, amsfonts}
 \usepackage{graphicx, color, xcolor, wrapfig, subcaption}
@@ -49,7 +59,20 @@
             articletitle=true,
 ]{biblatex}
 
-\addbibresource{refs.bib}
+\addbibresource{./refs/unified_refs.bib}
+\addbibresource{./refs/my_refs.bib}
+
+
+%\usepackage[T1]{fontenc}
+%\usepackage{qcr}
+
+%\renewcommand{\rmdefault}{ugm}
+
+%\usepackage[T1]{fontenc}
+%\usepackage{tgbonum}
+
+%\usepackage[osf]{garamondx}
+
 
 \setcounter{biburlnumpenalty}{1000}  % allow breaks at numbers
 \setcounter{biburlucpenalty}{1000}   % allow breaks at uppercase letters
@@ -64,18 +87,13 @@
   \clearlist{language}%
 }
 
-\newcommand{\pathprefix}{.}
 
-\usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{booktabs, multicol, multirow}
-
 \usepackage{listings}
-
 \usepackage{nicefrac}
 \usepackage{bm}
-
-\usepackage[version=4]{mhchem}
+\usepackage{siunitx}
 
 
 
@@ -97,7 +115,7 @@
 %\usepackage{titlesec}
 \usepackage{tgheros}
 % "qhv" - TeX Gyre Heros, "b" - bold
-%\titleformat{\section}[hang]{\usefont{T1}{qhv}{b}{n}\selectfont}{}{0em}{\hspace{-0.4pt}\Large \thesection%\hspace{0.6em}}
+%\titleformat{\section}[hang]{\usefont{T1}{qhv}{b}{n}\selectfont}{}{0em}{\hspace{-0.4pt}\Large \thesection\hspace{0.6em}}
 
 \usepackage{sectsty}
 \sectionfont{\usefont{T1}{qhv}{b}{n}\selectfont\Large}
@@ -110,42 +128,26 @@
              {\usefont{T1}{qhv}{b}{n}\selectfont\huge}
 \renewcommand{\cftloftitlefont} % LoF title
              {\usefont{T1}{qhv}{b}{n}\selectfont\huge}
-
 \renewcommand{\cftpartfont} % part titles
              {\usefont{T1}{qhv}{b}{n}\selectfont}
 \renewcommand{\cftchapfont} % chapter titles
              {\usefont{T1}{qhv}{b}{n}\selectfont}
 \renewcommand{\cftsecfont} % section titles
-             {\usefont{T1}{ugm}{m}{n}\selectfont}
+             {\usefont{T1}{qhv}{b}{n}\selectfont}
 \renewcommand{\cftsubsecfont} % subsection titles
-             {\usefont{T1}{ugm}{m}{n}\selectfont} 
+             {\usefont{T1}{qhv}{n}{n}\selectfont} 
 \renewcommand{\cftchappagefont} % chapter page numbers
-             {\usefont{T1}{ugm}{b}{n}\selectfont}
+             {\usefont{T1}{qhv}{n}{n}\selectfont}
 \renewcommand{\cftsecpagefont} % section page numbers
              {\cftsecfont} 
 \renewcommand{\cftsubsecpagefont} % subsection page numbers
              {\cftsubsecfont}
              
-\renewcommand{\appendixpagename}{\usefont{T1}{qhv}{b}{n}\selectfont\huge Appendices}
+\newcommand{\appendixpagename}{\usefont{T1}{qhv}{b}{n}\selectfont\huge Appendices}
 
 
 
 
-
-\usepackage[binary-units]{siunitx}
-\sisetup{group-separator={,},
-	detect-all,
-	binary-units,
-	list-units = single,
-	range-units = single,
-	range-phrase = --,
-	per-mode = symbol-or-fraction,
-	separate-uncertainty = true,
-	multi-part-units = single,
-	list-final-separator = {, and }
-%    scientific-notation = fixed
-}
-\DeclareSIUnit\atm{atm}
 
 \newcommand{ \ddt } [1] { \frac{ \partial #1 }{ \partial t } }
 \newcommand{ \ddx } [1] { \frac{ \partial }{ \partial #1 } }
@@ -212,6 +214,15 @@
 }
 
 
+\newcommand{\AppendixPaperHeader}[3]{
+    \vfill
+    #2
+    \vfill\noindent
+    #3
+    \vfill
+}
+
+
 \pdfinfo{/Author (Joanna Piper Morgan)
            /Title (Algorithms and software engineering schemes for radiation transport on heterogeneous compute architectures)
-           /Keywords (radiation transport, phd, dissertation, monte carlo, source iteration, one cell inversion, gpu, von neumann analysis, Fourier analysis, numerical stability, richerdson iteration, DSA, diffusion synthetic acceleration, preconditioning, HPC, time dependent, surface tracking, delta tracking, woodcock tracking, neutron transport, stochastic solvers)}
+           /Keywords (radiation transport, phd, dissertation, monte carlo, source iteration, one cell inversion, GPU, Von Neumann analysis, Fourier analysis, numerical stability, Richardson iteration, DSA, diffusion synthetic acceleration, preconditioning, HPC, time dependent, surface tracking, delta tracking, woodcock tracking, neutron transport, stochastic solvers)}

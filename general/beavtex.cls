@@ -510,45 +510,54 @@
   \pagenumbering{roman}
   
   % Mandatory pages
-  \flyleaf           % A. Flyleaf
+  %\flyleaf           % A. Flyleaf
   \abspage           % B. Abstract
   \copyrightpage     % C. Copyright page
   \titlepage         % D. Title page
   \approvalpage      % E. Approval page
-
+  
   % Optional pages
   \ackpage           % F. Acknowledgments
   \contripage        % G. Contribution of authors
-
+  
   % Listings
   \tableofcontents        % H.
+  \newpage
   \listoffigures          % I.
-  % \listoftables           % J
-
-	% % Algorithm listing
-	% \ifthenelse{\isundefined{\listofalgorithms}}{}{
-  % \expandafter\newcommand\csname ps@loaa\endcsname{
-  % \renewcommand{\@oddhead}{%
-  % \parbox{\textwidth}{%
-  % \centering {\heading LIST OF ALGORITHMS} \\ 
-  % \uline{Algorithm}\hfill\uline{Page}}}
-  % \renewcommand{\@oddfoot}{}
-  % \renewcommand{\@evenfoot}{}}
-  % \expandafter\newcommand\csname ps@loab\endcsname{%
-  % \renewcommand{\@oddhead}{%
-  % \parbox{\textwidth}{%
-  % \centering {\heading LIST OF ALGORITHMS\ (Continued)} \\ 
-  % \uline{Algorithm}\hfill\uline{Page}}}
-  % \renewcommand{\@evenhead}{\@oddhead}
-  % \renewcommand{\@oddfoot}{}
-  % \renewcommand{\@evenfoot}{}}
-	% \renewcommand{\listalgorithmname}{\pagestyle{loab}\thispagestyle{loaa}\vspace{-1.28in}}
-  % \listofalgorithms
-  % }
+  \newpage
+  \listoftables           % J
+  \newpage
+  \listofalgorithms
+  \newpage
 
   \listofappendices       % K.
-  % \listofappendixfigures  % L.
-  % \listofappendixtables   % M.
+  \newpage
+  \listofappendixfigures  % L.
+  \newpage
+  \listofappendixtables   % M.
+  \newpage
+  
+	% % Algorithm listing
+   %\ifthenelse{\isundefined{\listofalgorithms}}{}{
+   %\expandafter\newcommand\csname ps@loaa\endcsname{
+   %\renewcommand{\@oddhead}{%
+   %    \parbox{\textwidth}{%
+   %    \centering {\heading LIST OF ALGORITHMS} \\ 
+   %    \uline{Algorithm}\hfill\uline{Page}}}
+   %\renewcommand{\@oddfoot}{}
+   %\expandafter\newcommand\csname ps@loab\endcsname{%
+   %\renewcommand{\@oddhead}{%
+   %\parbox{\textwidth}{%
+   %\centering {\heading LIST OF ALGORITHMS\ (Continued)} \\ 
+   %\uline{Algorithm}\hfill\uline{Page}}}
+   %\renewcommand{\@evenhead}{\@oddhead}
+   %\renewcommand{\@oddfoot}{}
+   %\renewcommand{\@evenfoot}{}}
+	  %\renewcommand{\listalgorithmname}{\pagestyle{loab}\thispagestyle{loaa}\vspace{-1.28in}}
+   
+   %}}
+
+  
 
   % Optional pages
   \dedpage           % O. Dedication

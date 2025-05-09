@@ -1,12 +1,13 @@
 % !BIB TS-program = biber
-\documentclass[onehalf,11pt]{beavtex/beavtex}
+\documentclass[11pt,onehalf]{general/beavtex}
+%\documentclass[12pt,twoside]{book}
 
 \input{thesis-header.tex}
 
 % things to check or replace
 % replace your name here.
 \newcommand{\TheAuthors}{Joanna Piper Morgan}
-\title{On algorithms and software engineering schemes for radiation transport on heterogeneous compute architectures}
+\title{On Algorithms and Software Engineering Schemes for Radiation Transport on Heterogeneous Compute Architectures}
 \degree{Doctor of Philosophy}
 \major{Mechanical Engineering}
 
@@ -22,48 +23,27 @@
 \advisor{Kyle E.~Niemeyer}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% figure location
-\graphicspath{{./figures/}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \abstract
 {
-(ABSTRACT GOES HERE)
+Predicting the movement of neutrons through space and time is important when modeling inertial confinement fusion, pulsed neutron sources, and nuclear criticality safety experiments, among other systems. Practical solutions to the transport equation are typically found via Monte Carlo or deterministic methods, or clever combinations of the two. Both these families of
+methods prove computationally challenging, particularly for highly time-dependent systems, as the quantities of interest are functions of seven independent variables: space, velocity, and time. Modern high-performance computers (HPC) with heterogeneous architectures (CPUs and GPUs) are enabling high-fidelity modeling of these systems. To exploit new architectures efficiently, software portability schemes are required. In this talk I will discuss both novel numerical methods and software engineering design for deterministic (SN) and Monte Carlo transport on modern HPCs. First, I will introduce and analyze an alternative space-parallel (non-sweeping) iteration algorithm for 1D time-dependent transport on GPUs, making comparisons to a more traditional iteration algorithm. I will also present a method for converging these iterations in fewer cycles for highly scattering problems. I found that the space-parallel algorithm operates better on modern GPUs and allows use of vendor supplied libraries instead of manually writing GPU functions. I show that as time step size is decreased the space-parallel algorithm will converge in fewer iterations, and that a second moment method can be used to converge the space-parallel algorithm in the scattering limit. Second, I show how a Python and Numba enabled software engineering scheme allows for rapid numerical methods development and deployment at scale in a new open-source Monte Carlo transport application called, MC/DC. I will present performance data from GPUs and CPUs for a full transient reactor accident simulation. I will also discuss the rapid development of several hybrid Woodcock-delta tracking methods to demonstrate the benefits of the software engineering scheme and novel methods.
 }
 
 
 \acknowledgements{
-\textit{I would first like to thank my comittee\\
-Then I would like to thank my funders, support staff, coauthors, and mentors\\
-Then I would like to thank my teachers\\
-Then I would like to thank my labmates and colleagues\\
-Then I would like to thank my friends\\
-Then I would like to thank my family\\
-\\
-\\
-Let it be known that this dissertation was made by a transgender woman.
-I pray I will live upto the dignity that title---as well as my trans cousins, brothers, and sisters---deserve.
-}
+This is an acknowledgment!
 }
 
 
-% to my brothers sisters and cousnis enough to be transgender\\ may we
-% 
-
-\dedication{To those like me who came before\\even if they could never be like me}
-
-% REPLACE OR REMOVE THIS PREFACE QUOTE
-\preface{
-    \epigraph{
-        The child in each of us\\
-        Knows paradise.\\
-        Paradise is home\\
-        Home as it was\\
-        Or home as it should have been.
-    }
-    {Octavia Butler}
+\contributors{
+This si a section on contributions!
 }
+
+\dedication{For Rutabaga}
+
+
+%\preface{
+%}
 
 \begin{document}
 
@@ -71,48 +51,44 @@ I pray I will live upto the dignity that title---as well as my trans cousins, br
 
 \mainmatter
 
-% By including `''%!TEX root = thesis.tex` in the top of each included file,
-% most LaTeX editors will automatically compile the main package when you are working
-% within a file.
+% Font for everything after pretext pages
+%\fontfamily{cmr}\selectfont
+% cmr --- native
+% ppl -- plaintino -- liked
+% pbk -- bookman -- did not liked
+% bch -- charter -- not a fan
+% qpl -- tgpagella-- ok
+% qbk -- tgbonum -- nope
+% qtl -- tgtermes -- not egergious
+% qcs -- tgschola -- bolder then above, no
+% ptm -- mathptmx -- again not egergious
+% qtm -- tgtermes -- hmmm
+% lmr -- lmodern -- probs my 2nd fav so far <- what the template uses!
+% lmdh -- lmodern -- oh god thats terrible
+% put -- utopia / fourier -- too cambria math
 
-\include{introduction}
-\include{litreview}
-\include{methods}
-\include{manuscript1/man1_main}
-\include{manuscript2/man2_main}
-\include{results}
-\include{conclusions}
+
+\newcommand{\TheTitle}{BLANK}
+\renewcommand{\TheAuthors}{BLANK}
+\newcommand{\TheAddress}{BLANK}
+
+%%%
+
+
+\include{general/introduction}
+\include{deterministic/deterministic}
+\include{monte_carlo/monte_carlo}
 
 \newpage
 
 
 \printbibliography[]
 
-\chapter*{Unconventional Acknowledgment}
-I am a rather unconventional person and as such I make an unconventional acknowledgment.
-I wasn't really sure if I was going to put this in here but it feels important.
-This might be the only work of mine that ever is kept and as such, as this is the one thing that will be marked with my name till the end of archival systems it was important for me to put this on the record.
-
-To the bureaucrats who cried crocodile tears when I requested basic human dignity.\\
-To those who made a wounded and lonely child feel more isolated and confused.\\
-To those who said, ``I can't tell my daughters that this is something that is ok".\\
-To those who have accosted me on the street with slurs and epithets.\\
-To those with political power who seek to exterminate me and my people\\
-To those who have assaulted, trafficked, beat, and raped me.
-
-I could've never known my own strength without your cruelty.
-In a way, you have given me knowledge of my power which many go their who lives without knowing.
-That I can scratch out a life, protect those I love, and survive.
-
-I wish you no ill will.
-As much as I can---I forgive you.
-I pray that our ever-loving lord shows you mercy and that you find peace before your time on this Earth is over.
-I trust that in His good time and grace---we will all heal.
-
-%% INCLUDE IF YOU NEED AN APPENDIX
 
 % \newpage
-%\appendix
-%\input{appendixA.tex}
+\appendix
+\input{appendix/spec_rads_app}
+\newpage
+\input{appendix/mcatk_app}
 
 \end{document}

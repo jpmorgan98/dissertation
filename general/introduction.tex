@@ -1,0 +1,47 @@
+%!TEX root = thesis.tex
+
+\chapter{Introduction}
+\label{part:intro}
+
+\epigraphhead[10]{\singlespacing
+\epigraph{
+    We loiter in the winter \\
+    while it is already spring.
+	}{Henry David Thoreau}
+}
+
+\section{Motivation}
+
+\section{Neutron transport}
+
+Transport equations are, at their most fundamental, equations of continuity.
+Transport equations are ubiquitous in nature, describing a number of physical systems including fluid dynamics, chemical reactions, electromagnetism, energy, and heat transfer.
+My research contained herein focuses on neutron radiation transport specifically, but could easily be applied to other neutral particles, most relevantly photons \cite{radheattrans2003, chandrasekhar1960radiative}.
+In fact many of the methods of solution described in this document started as approximations for radiative heat transfer or photon transport.
+%justifying my ME degree
+Assuming no neutrons are being produced by fission, the neutron transport equation (NTE) takes the form of an intergro-partial differential Boltzmann-type equation with seven independent variables \cite{duderstadt_hamilton}.
+As with any other continuity equation it is written as a set of sources (on the right) and sinks (on the left):
+\begin{multline}
+    \label{eq:fullNTE}
+    \frac{1}{v(E)}\frac{\partial \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t)}{\partial t} + \boldsymbol{\hat{\Omega}} \cdot \nabla \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) + \Sigma(r, E, t) \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) = \\
+    \int_{4\pi}\int_{0}^{\infty}\Sigma_s(\boldsymbol{r}, E'\rightarrow E, \boldsymbol{\hat{\Omega}'} \rightarrow \boldsymbol{\hat{\Omega}}, t)
+    \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) dE' d\boldsymbol{\hat{\Omega}'} +
+    s(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) \;,
+\end{multline}
+where $\psi$ is the angular flux, $v$ is the velocity of the particles, $\Sigma$ is the macroscopic total material cross section, $\Sigma_s$ is the macroscopic scattering cross section, $\boldsymbol{r}$ is the location of the particle in three-dimensional space, $\boldsymbol{\hat{\Omega}}$ is the direction of travel in three-dimensional space, $s$ is the isotropic material source of new particles being produced, $t$ is the time, and $E$ is the energy of the particles for $\boldsymbol{r} \in V$, $\boldsymbol{\hat{\Omega}} \in 4\pi$, $0<E<\infty$, and $0<t$ \cite{duderstadt_hamilton}. We also prescribe the initial condition
+\begin{equation}
+    \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},0) = \psi_{initial}(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}})
+\end{equation}
+and the boundary condition
+\begin{equation}
+    \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) = \psi_{bound}(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) \text{ for } \boldsymbol{r} \in \partial V \text{ and } \boldsymbol{\hat{\Omega}} \cdot \boldsymbol{n} < 0 \;.
+\end{equation}
+A number of additional implicit assumptions are needed for the validity of this equation and my research including: particle--particle interactions are rare and can be neglected, neutrons are points in space with no volume, collision events occur instantaneously, and nuclear properties are known \cite{lewis_computational_1984}.
+This equation is commonly solved using both deterministic and Monte Carlo solution methods as analytic solutions are sparse.
+
+
+\section{Document Layout}
+
+
+
+\section{Research Questions}
