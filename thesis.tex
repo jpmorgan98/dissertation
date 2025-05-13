@@ -4,14 +4,34 @@
 
 \input{thesis-header.tex}
 
+%%%%% JPM PACAKGES AN COMMANDS
+
+% for tabels and code
+\usepackage{multirow} % multiple rows in tables
+\usepackage{longtable} % long tables
+\usepackage{minted} % code snipits
+\usepackage{algorithm2e} % in-text psudo code
+
+% setting main text font
+\usepackage[T1]{fontenc}
+\usepackage{baskervald} % -- fav so far
+\usepackage[baskerville,vvarbb]{newtxmath}
+
+
+% some useful commands
+\newcommand{ \nd }{$^{\text{nd}}$ }
+\newcommand{ \ths }{$^{\text{th}}$}
+
+
+
 % things to check or replace
 % replace your name here.
 \newcommand{\TheAuthors}{Joanna Piper Morgan}
-\title{On Algorithms and Software Engineering Schemes for Radiation Transport on Heterogeneous Compute Architectures}
+\title{Algorithms and Software Engineering Schemes for Radiation Transport on Heterogeneous Compute Architectures}
 \degree{Doctor of Philosophy}
 \major{Mechanical Engineering}
 
-\submitdate{June 13, 2025}
+\submitdate{June 9$^{th}$, 2025}
 \commencementyear{2025}
 
 \author{\TheAuthors{}}
@@ -31,15 +51,89 @@ methods prove computationally challenging, particularly for highly time-dependen
 
 
 \acknowledgements{
-This is an acknowledgment!
+% 
+It's hard for me to express in any meaningful way, the gratitude I have in my heart for those who have supported me through this journey.
+The last five years have been the hardest in my life, but at every step of the way there have been mentors, teachers, colleagues, friends, and family who have provided invaluable harbor from the tempest.
+As Newton said if I have done anything, it is only because I have stood on the shoulder's of giants.
+You are my giants.
+
+I must first start by thanking my advisor, Dr.~Kyle Niemeyer.
+In the last five years I have felt pushed and challenged nut never alone in the wilds of research.
+
+This dissertation would not have been possible without the constant support of Dr.~Todd Palmer who has helped me---and my dyslexia---through the world of radiation transport.
+When I talk to Dr. Palmer I feel the excitement of discovery and have nothing but faith in the coming dawn of humanity.
+He demands excellence and never impunes the effort when I inevitable fall short in frazzled dispare.
+He is a leader in the field who has repeatedly been on the cutting edge of 
+Beyond all the academic and professional accolades I could shower upon him the highest praise I think I can offer, is that he is kind and he is caring and he has made me feel that I belong in this field and in this world.
+I hope I can continue to call you my mentor and friend for many years to come.
+
+At this point I'd like to thank Dr.~Ilham Variansyah.
+This is not the first dissertation he has been acknowledged in and will assuredly not be the last
+I am in awe of his work ethic which is only rivaled by his huge heart.
+He is truly an Olympian of the field wh
+
+Dr.~braxton cuneo
+
+I would like to thank all members of my committee including Dr.~Surbrah Apte, Dr.~Madhicken Monke, Dr.~Joshua Gess, and Dr.~Mike Bailey.
+All of you have supported me with not only your time and guidance through this multi-year long process but with welcoming kindness in the department and feild.
+
+I would like to thank my amazing colleagues in the Center for Exascale Monte Carlo Neutron Transport: Alex Mote, Dr.~Aaron Reynolds, Jordan Northrop, Caleb Shaw, Melek Derman, Ethan Lam\'e, and Vincent Novillino.
+I have learned so much from each of you and I have had the absolute pleasure to work with on some of the most challenging and interesting problems of our day.
+I am in awe of what we have been able to accomplish in our short time together.
+Dr.~Kayla Clements and Dr.~Sam Passman deserve specific mention as we have commiserated through the at-times Sisyphean process of grad school.
+I would also like to thank my colleagues in the Niemeyer Research Group: Malik Jordan, Dr.~Antony Walker, Diba Behnoudfar, Dr.~Jayani Jayasuriya and Jacob Adams. As well as the broader OSU community: Michelle Gee, Jessy Urban, Pula Coto, Lindsey Randell, Rachael Macafee, Marshall, Mike Branco-Katcher, Sophie Windenbenner, Massimo Larsen, Sophie Brodish, Eric Hudec, and many many others.
+For all of you it has been a pleasure and honor to share \textit{our} victories and commiserate \textit{our} losses \textit{together}.
+Grad-school is a trial of attrition but you all have made the grinding a little more bearable.
+
+I would like to thank my co-authors and colleagues in the national labs and the radiation transport community writ-large including: Dr.~Alex Long, Dr.~Kendra Long, Dr.~Travis Tehran, Dr.~Tim Burke, Dr.~Steven Hamilton, Dr.~Camille Palmer, Dr.~Dimity Anistrotov, Dr.~C.~T.~Kelley, and Dr.~Ryan McCleran.
+I hope I am lucky enough continue this difficult, fascinating, and valuable work with such a talented, tough, kind-hearted, and pleasant group of researchers.
+
+I would like to thank my funders in the Dept. of Energy and the National Nuclear Security Administration and fort the last time will get to say,
+\textit{This work was supported by the Center for Exascale Monte-Carlo Neutron Transport (CEMeNT) a PSAAP-III project funded by the Department of Energy, grant number: DE-NA003967.}
+I have gone to Oregon public schools my entire academic life: k thru like 22\nd grade now.
+In fact I still get in-state tuition at OSU so I would like to thank the tax payer who entirely funded this work and almost the entirety of my education.
+
+% Preivous teachers
+
+% More casual friends
+
+% Trans people 
+
+% Patti
+
+
+The highest honor of my life does not go to any academic or professional achievement or indeed anything I had a say in.
+That first, unrivaled honor is that I get to be a transgender woman.
+This is not a political statement.
+It is a statement of the quality of my soul that demands to be free upon the Earth.
+While my work described herein has nothing to do with this fact; it is steeped in it, guided by it, and inseparable from it.
+If this statement, precludes me from public service, or public life, or life itself let the chips fall where they may.
+In measured weight and penny pound my life is not worth living if I surrender on this ordinate my God has called me to.
+This world can be in-excusably and absurdly cruel to my people; but nothing steals my soul and empowers me to be the joyful, kind, and loving woman I am, more than the warm embrace and love of my transgender brothers, sisters, and cousins. I am in awe of you. Thank you.
+
+To all those who I have the privileged of fighting with good humor, kindness, love, and grace for meaning in this world:
+we are not now that strength which in old days
+Moved earth and heaven, that which we are, we are,
+One equal temper of heroic hearts,
+Made weak by time and fate, but strong in will
+To \textit{strive}, to \textit{seek}, to \textit{find}, and \textit{never} to yield. 
+
+\vspace{2em}
+
+\textit{Thank you}
+
+%
+%
+%
+
 }
 
 
 \contributors{
-This si a section on contributions!
+The d
 }
 
-\dedication{For Rutabaga}
+\dedication{To my grandfather Evan, my dog Rutabaga, \\and all the people who make life worth living.}
 
 
 %\preface{
@@ -90,5 +184,7 @@ This si a section on contributions!
 \input{appendix/spec_rads_app}
 \newpage
 \input{appendix/mcatk_app}
+\newpage
+\input{appendix/trt_paper}
 
 \end{document}

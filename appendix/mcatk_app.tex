@@ -7,7 +7,7 @@
   
 \renewcommand{\TheAddress}{
     \textit{Proceedings of International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (M\&C 2023)} \\
-    2023. \\
+    Vol 19 2023. \\
     \doi{10.48550/arXiv.2306.07847}
 }
 
@@ -39,16 +39,16 @@ In this work, we introduce a hybrid-delta tracking algorithm to eliminate the ma
 
 Woodcock, or delta, tracking \cite{woodcock_techniques_1965} is a variance-reduction technique that computes the majorant cross-section for the whole problem space, then uses this to determine a distance to collision for all particles.
 Coupled with rejection sampling to sort for phantom collisions, and a collision estimator to compute scalar flux, delta tracking often improves performance over analogue Monte Carlo in problems that warrant it.
-Many production Monte Carlo Neutron transport codes like Serpent \cite{Serpent2013} use this method.
+Many production Monte Carlo Neutron transport codes like Serpent \cite{leppanen_development_2013} use this method.
 
 We implement a hybrid surface-delta tracking algorithm to reduce the number of cross-section lookups while still using MCATK's surface tracking on a structured mesh to find scalar flux. First we start by computing the microscopic majorant cross-section over the whole problem space, like in traditional delta tracking:
 \begin{equation}
-    \label{eq:majorant}
+    \label{eq:majorant_mcatk}
     \sigma_{M}(E) = \max\left(\sigma_{T,k}(E), ..., \sigma_{T,K}(E)\right) \,\text{,}
 \end{equation}
 where $E$ is energy, $\sigma_{M}$ is the microscopic majorant cross-section, and $\sigma_{T,k}$ is the microscopic total cross-section of the $k^{\text{th}}$ material. In this work, we use one majorant over the whole problem regardless of location, but regional microscopic majorants could still be used in future work. Now to sample a distance we calculate the distance to a collision
 \begin{equation}
-    \label{eq:sample}
+    \label{eq:sample_mcatk}
     D = \frac{-\ln{\xi}}{N_i \sigma_{M}(E)} \, \text{,} 
 \end{equation}
 where $\xi$ is a random number between zero and one and $N_i$ is the number density in cell $i$.
@@ -57,7 +57,7 @@ This is equivalent to assuming all atoms in the cell are of the type with the la
 
 If the potential collision occurs within the cell, we move the particle to the sampled distance and do rejection sampling, since we are now potentially forcing collisions that did not occur. We sort out these phantom collisions by allowing particles to continue to a new sampled distance if
 \begin{equation}
-    \label{eq:reject}
+    \label{eq:reject_mcatk}
     \xi < \frac{ \Sigma_{T,i}(E) } { N_i \sigma_M(E) } \, \text{,}
 \end{equation}
 where $\xi$ is a new random number between zero and one and $\Sigma_{T,i}(E)$ is the macroscopic total cross-section of the cell. 

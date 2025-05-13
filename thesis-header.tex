@@ -1,24 +1,14 @@
 % this file contains the LaTeX preamble and loads all necessary packages
 % you shouldn't need to edit this
 
-% setting main text font
-\usepackage[T1]{fontenc}
-\usepackage{baskervald} % -- fav so far
-\usepackage[baskerville,vvarbb]{newtxmath}
-
-% Other nice fonts!
-%\usepackage[lf]{Baskervaldx} % -- really liked
-%\usepackage{accanthis} % -- very 1920s like
-%\usepackage{Alegreya} % -- liked but mabe a bit much
-%\usepackage{CormorantGaramond} % a little to thin
-
 % better printing of numbers
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{textcomp}
 
-
+\usepackage{lmodern}
 
 % used to provide "lorem ipsum" placeholder text
 \usepackage{blindtext}
@@ -29,14 +19,12 @@
 
 %\usepackage{subfiles}
 
-%\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 \usepackage{xspace}
-%\microtypecontext{spacing=nonfrench}
+\microtypecontext{spacing=nonfrench}
 
 \usepackage{latexsym, amsmath, amssymb, amsfonts}
 \usepackage{graphicx, color, xcolor, wrapfig, subcaption}
-
-\usepackage{algorithm2e}
 
 \usepackage[hyphens]{url}
 \usepackage[breaklinks=true, linkcolor=blue, citecolor=blue, colorlinks=true]{hyperref}
@@ -62,18 +50,6 @@
 \addbibresource{./refs/unified_refs.bib}
 \addbibresource{./refs/my_refs.bib}
 
-
-%\usepackage[T1]{fontenc}
-%\usepackage{qcr}
-
-%\renewcommand{\rmdefault}{ugm}
-
-%\usepackage[T1]{fontenc}
-%\usepackage{tgbonum}
-
-%\usepackage[osf]{garamondx}
-
-
 \setcounter{biburlnumpenalty}{1000}  % allow breaks at numbers
 \setcounter{biburlucpenalty}{1000}   % allow breaks at uppercase letters
 \setcounter{biburllcpenalty}{1000}   % allow breaks at lowercase letters
@@ -87,67 +63,18 @@
   \clearlist{language}%
 }
 
+\newcommand{\pathprefix}{.}
 
+%\usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{booktabs, multicol, multirow}
+
 \usepackage{listings}
+
 \usepackage{nicefrac}
 \usepackage{bm}
+
 \usepackage{siunitx}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% for ToC, ToF, ToT formatting
-\usepackage{tocloft}
-
-% formatting for list of figures
-\renewcommand\cftfigpresnum{\bfseries}
-\renewcommand\cftfigaftersnum{\normalfont}
-\setlength{\cftfigindent}{0pt} % remove indent
-
-% formatting for list of tables
-\renewcommand\cfttabpresnum{\bfseries}
-\renewcommand\cfttabaftersnum{\normalfont}
-\setlength{\cfttabindent}{0pt} % remove indent
-
-% change section and chapter fonts
-%\usepackage{titlesec}
-\usepackage{tgheros}
-% "qhv" - TeX Gyre Heros, "b" - bold
-%\titleformat{\section}[hang]{\usefont{T1}{qhv}{b}{n}\selectfont}{}{0em}{\hspace{-0.4pt}\Large \thesection\hspace{0.6em}}
-
-\usepackage{sectsty}
-\sectionfont{\usefont{T1}{qhv}{b}{n}\selectfont\Large}
-\chapterfont{\usefont{T1}{qhv}{b}{n}\selectfont\huge}
-\partfont{\usefont{T1}{qhv}{b}{n}\selectfont\huge}
-
-\renewcommand{\cfttoctitlefont} % ToC title
-             {\usefont{T1}{qhv}{b}{n}\selectfont\huge}
-\renewcommand{\cftlottitlefont} % LoT title
-             {\usefont{T1}{qhv}{b}{n}\selectfont\huge}
-\renewcommand{\cftloftitlefont} % LoF title
-             {\usefont{T1}{qhv}{b}{n}\selectfont\huge}
-\renewcommand{\cftpartfont} % part titles
-             {\usefont{T1}{qhv}{b}{n}\selectfont}
-\renewcommand{\cftchapfont} % chapter titles
-             {\usefont{T1}{qhv}{b}{n}\selectfont}
-\renewcommand{\cftsecfont} % section titles
-             {\usefont{T1}{qhv}{b}{n}\selectfont}
-\renewcommand{\cftsubsecfont} % subsection titles
-             {\usefont{T1}{qhv}{n}{n}\selectfont} 
-\renewcommand{\cftchappagefont} % chapter page numbers
-             {\usefont{T1}{qhv}{n}{n}\selectfont}
-\renewcommand{\cftsecpagefont} % section page numbers
-             {\cftsecfont} 
-\renewcommand{\cftsubsecpagefont} % subsection page numbers
-             {\cftsubsecfont}
-             
-\newcommand{\appendixpagename}{\usefont{T1}{qhv}{b}{n}\selectfont\huge Appendices}
-
-
-
-
 
 \newcommand{ \ddt } [1] { \frac{ \partial #1 }{ \partial t } }
 \newcommand{ \ddx } [1] { \frac{ \partial }{ \partial #1 } }
@@ -212,17 +139,3 @@
     #3
     \vfill
 }
-
-
-\newcommand{\AppendixPaperHeader}[3]{
-    \vfill
-    #2
-    \vfill\noindent
-    #3
-    \vfill
-}
-
-
-\pdfinfo{/Author (Joanna Piper Morgan)
-           /Title (Algorithms and software engineering schemes for radiation transport on heterogeneous compute architectures)
-           /Keywords (radiation transport, phd, dissertation, monte carlo, source iteration, one cell inversion, GPU, Von Neumann analysis, Fourier analysis, numerical stability, Richardson iteration, DSA, diffusion synthetic acceleration, preconditioning, HPC, time dependent, surface tracking, delta tracking, woodcock tracking, neutron transport, stochastic solvers)}

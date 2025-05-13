@@ -732,7 +732,7 @@
   \expandafter\newcommand\csname ps@#1b\endcsname{%
     \renewcommand{\@oddhead}{%
       \parbox{\textwidth}{%
-        \centering {\heading #2\ (Continued)} \\ 
+        \centering {\heading #2\ (\textit{Continued})} \\ 
         \uline{#3}\hfill\uline{Page}
       }
     }
@@ -752,7 +752,8 @@
 
 \definelisting{toc}{TABLE OF CONTENTS}{}{tableofcontents}
 \definelisting{lof}{LIST OF FIGURES}{Figure}{listoffigures}
-% \definelisting{lot}{LIST OF TABLES}{Table}{listoftables}
+\definelisting{lot}{LIST OF TABLES}{Table}{listoftables}
+\definelisting{loa}{LIST OF ALGORITHMS}{Algorithm}{listofalgorithms}
 \definelisting{loap}{LIST OF APPENDICES}{}{listofappendices}
 \definelisting{loaf}{LIST OF APPENDIX FIGURES}{Figure}{listofappendixfigures}
 \definelisting{loat}{LIST OF APPENDIX TABLES}{Table}{listofappendixtables}

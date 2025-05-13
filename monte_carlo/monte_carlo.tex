@@ -2,9 +2,109 @@
 
 \part{Monte Carlo Methods}
 
-\chapter{Background}
+\chapter{Introduction to Monte Carlo Methods}
+
+
+\section {Monte Carlo methods}
+
+%Predicting how neutrons move through space and time is important when modeling inertial confinement fusion systems, pulsed neutron sources, and nuclear criticality safety experiments, among other systems.
+
+While deterministic schemes produce an exact solution to an inexact problem, Monte Carlo methods provide an inexact solution---with an associated error---to an exact problem.
+Monte Carlo methods can treat the independent variables of the NTE (space, angle, time, energy) as continuous, thus eliminating the discretization errors seen with deterministic methods.
+The behavior of neutrons can be modeled with a Monte Carlo simulation, where pseudo-particles with statistical importance are created and transported to produce a particle history \cite{lewis_computational_1984}.
+A particle's path and the specific set of events that occur within its history are governed by pseudo-random numbers, known probabilities (e.g., from material data), and known geometries.
+Data about how particles move and/or interact with the system are tallied to solve for parameters of interest with an associated statistical error from the Monte Carlo process. 
+The analog Monte Carlo method is slow to converge (with a convergence rate of $\mathcal{O}(1/\sqrt{n})$ where $n$ is the number of simulated particles).
+New Monte Carlo schemes could converge the solution faster in wall-clock time with fewer simulated particles and may be needed to effectively simulate some systems.
+
+%history with interesting citations
+%Monte Carlo methods where orignal propased by Stanislaw Ulam in 1946 after work on the Manhattan project.
+%It's orginal use in fact was the tracking neutrons thru phase space using handheld computers called Fermiacs.
+%The challenge problem I seek to investate also dates back this time.
+%Since then from a report in 1995 over 60\% of computational time on US Government super computing systems was concerend with converging the Monte Carlo method
+
+% deception of the section
+My work with Monte Carlo schemes---as with my deterministic work---is broadly divided into two categories
+\begin{enumerate}
+    \item How to use software engineering libraries to implement work more efficiently (RQ 1); and
+    \item Novel methods to converge the solution faster on modern hardware (RQ 5).
+\end{enumerate}
+The first section digs into the first goal, examining performance portability schemes in high-level languages and the work that is currently deployed in Monte Carlo/Dynamic Code (MC/DC) as part of my work with the Center for Exascale Monte Carlo Neutron Transport (CEMeNT).
+The second contains work initially done in a production code at Los Alamos National Laboratory and a proposed extension of the scheme the scheme in an implementation in MC/DC.
+
+\subsection{Portability frameworks for Monte Carlo methods}
+
+In this section I introduce initial investigations into high-level performance portability frameworks.
+Developing software to simulate physical problems that demand HPC is difficult.
+Modern HPCs commonly use both CPUs and GPUs from various vendors.
+Years can be spent porting a code from CPUs to run on GPUs, then again when moving from one GPU vendor to the next \cite{pozulp_progress_2023}.
+Portability issues compound when designing software for rapidly developing numerical methods where algorithms need to be both implemented and tested at scale.
+Finding a software engineering approach that balances the need for portability, rapid development, open collaboration, and performance can be challenging especially when numerical schemes do not rely on operations commonly implemented in libraries   (i.e., linear algebra as in LAPACK or Intel MKL). 
+
+Common HPC software engineering requirements are often met using a Python-as-glue-based approach, where peripheral functionality (e.g., MPI calls, I/O) is implemented using Python packages but compiled functions are called through Python's C-interface where performance is needed.
+Python-as-glue does not necessarily assist in the production of the compiled compute kernels themselves---what the Python is gluing together---but can go a long way in simplifying the overhead of peripheral requirements of HPC software.
+With this technique, environment management and packaging uses \texttt{pip}, \texttt{conda}, or \texttt{spack}, input/output with \texttt{h5py}, MPI calls with \texttt{mpi4py}, 
+and automated testing with \texttt{pytest}, which can all ease initial development and continued support for these imperative operations. 
+
+Many tools have been developed to extend the Python-as-glue scheme to allow producing single-source compute kernels for both CPUs and GPUs.
+% a DSL, pyfr
+One tactic is to use a domain-specific language to avoid needing a low-level language (e.g., FORTRAN, C).
+A domain-specific language is designed to alleviate development difficulties for a group of subject-area experts and can abstract hardware targets if defined with that goal.
+%It can even abstract hardware targets if it is defined with that goal.
+PyFR, for example, is an open-source computational fluid dynamics solver that implements a domain-specific language plus Python structure to run on CPUs and Nvidia, Intel, and AMD GPUs~\cite{pyfrPetascale}. 
+%The overhead of this Python glue is less than 1\% in PyFR.
+Witherden et al.~\cite{pyfrPetascale} discussed how this scheme allows PyFR developers to rapidly deploy numerical methods at deployment HPC scales and have demonstrated performance at the petascale.
+
+Other projects have addressed the need to write user-defined compute kernels entirely in Python script.
+Numba is a compiler that lowers a small subset of Python code with NumPy arrays and functions into LLVM, then just in time (JIT) compiles to a specific hardware target \cite{lam_numba_2015}. 
+Numba also compiles global and device functions for Nvidia GPUs from compute kernels defined in Python.
+API calls are made through Numba on both the Python side (e.g., allocate and move data to and from the GPU) and within compiled device functions (e.g., to execute atomic operations).
+When compiling to GPUs, Numba supports an even smaller subset of Python, losing most of the operability with NumPy functions.
+If functions are defined using only that smallest subset, Numba can compile the same functions to CPUs or GPUs, or execute those functions purely in Python.
+Numba data allocations on the GPU can be consumed and ingested by functions from CuPy if linear-algebra operations are required in conjunction with user-defined compute kernels.
+When targeting use of a Python portability scheme to HPC for neutron transport I compared the same transient Monte Carlo neutron transport algorithm in various implementations using PyKokkos \cite{AlAwarETAL21PyKokkos}, PyCUDA/PyOpenCL \cite{kloeckner_pycuda_2012}, and Numba \cite{morgan2022}.
+After these initial investigations a Numba+mpi4py software engineering scheme was deemed the most viable for implementation in MC/DC.
+
+%Numba has been shown to be slower then other high level portability frameworks for unoptimized matrix multiplication \cite{Godoy_2023}.
+%Monte Carlo neutronic workflows are so memory bound that it's doubtful even significant changes to FLOP performance of a 
+
+
+%
+%I found that all three methods produced similar runtimes for our workflows on CPUs and GPUs for a simple transient Monte Carlo neutron transport simulation \cite{morgan2022}.
+%Ultimately, we decided to use a Numba + mpi4py development scheme to build out a Monte Carlo neutron transport code for rapid numerical methods development, portable to various HPC architectures \cite{variansyah_mc23_mcdc,morgan_monte_2024,transport_cement_mcdc_2024} (RQ 1).
+
+\subsection{Delta tracking}
+
+This section describes a variance reduction technique that propose to implement in MC/DC.
+Woodcock, or delta, tracking \cite{woodcock_techniques_1965} is a variance-reduction technique that computes the majorant cross-section for the whole problem space, then uses it to determine a distance to collision for all particles.
+Coupled with rejection sampling to sort for phantom collisions, and a collision estimator to compute scalar flux, delta tracking often improves performance over analogue Monte Carlo in problems that warrant it (problems with a long mean free path).
+Many production Monte Carlo Neutron transport codes like Serpent \cite{leppanen_development_2013, leppanen_use_2017, leppanen_2010_burnup} and others \cite{delta2017rowland} use this method.
+In traditional delta tracking first the macroscopic majorant cross section is computed for the entire problem space
+\begin{equation}
+    \label{eq:majorant}
+    \Sigma_{M}(E) = \max\left(\Sigma_{b}(E), ..., \Sigma_{B}(E)\right) \,\text{,}
+\end{equation}
+where $E$ is energy, $\Sigma_{M}$ is the microscopic majorant cross-section, and $\Sigma_{b}$ is the total microscopic cross-section of the $=b^{\text{th}}$ material.
+Now to sample a the distance to a collision
+\begin{equation}
+    \label{eq:sample}
+    D = \frac{-\ln{\xi}}{\Sigma_{M}(E)} \, \text{,} 
+\end{equation}
+where $\xi\in[0,1]$.
+If the potential collision occurs, we move the particle to the sampled distance and do rejection sampling, since we are now potentially forcing collisions that did not occur.
+We sort out these phantom collisions by allowing particles to continue to a new sampled distance if
+\begin{equation}
+    \label{eq:reject}
+    \xi < \frac{ \Sigma_{j}(E) } { \Sigma_M(E) } \, \text{,}
+\end{equation}
+where $\xi\in[0,1]$ is a new random number and $\Sigma_{j}(E)$ is the total macroscopic cross-section of the material ($j^{th}$) where the particle currently resides.
+Standard delta tracking is required to use a collision estimator which is less efficient then the normal track length estimator used in surface tracking~\cite{mc2018}.
+My goal is to find a way to use the track-length estimator while doing delta tracking which may improve the performance of a Monte Carlo code (RQ 5).
+
 
 \input{monte_carlo/joss_paper/joss_paper}
 
 
 \input{monte_carlo/cise_paper/cise_paper}
+
+\input{monte_carlo/delta_tracking/delta_tracking_paper}

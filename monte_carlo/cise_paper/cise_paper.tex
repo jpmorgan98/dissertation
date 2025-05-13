@@ -133,7 +133,7 @@ Figure~\ref{fig:jitfunctions} shows an example compute kernel that updates the p
 It also shows the declaration of an \texttt{numpy.ndarray} data structure used in MC/DC.
 
 \begin{figure}
-\begin{lstlisting}[language=Python]
+\begin{minted}[mathescape, linenos]{python}
 import numpy
 from numba import jit
 
@@ -149,7 +149,7 @@ def move_particle(P: part, distance):
     P['y'] += P['uy'] * distance
     P['z'] += P['uz'] * distance
     P['t'] += distance / P['v']
-\end{lstlisting}
+\end{minted}
 \caption{Example of a decorated function and MC/DC's data structures based on \texttt{numpy.ndarray}.}
 \label{fig:jitfunctions}
 \end{figure}

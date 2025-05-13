@@ -1,0 +1,61 @@
+\begin{minted}[mathescape, linenos]{python}
+import scipy
+import numpy
+
+# unify the energy grids from all nuclides
+majorant_energy_grid = np.array([])
+for n in range(N_nuclide):
+    nuclide = mcdc["nuclides"][n]
+    majorant_energy_grid = np.append(majorant_energy_grid, nuclide["E_xs"])
+
+# sort energy grid and eliminate duplicate points
+majorant_energy_grid = np.unique(majorant_energy_grid)
+majorant_xsec = np.zeros_like(majorant_energy_grid)
+
+for m in range(N_material):
+
+    material = mcdc["materials"][m]
+
+    material_energy_grid = np.array([])
+
+    # copmute a unified energy grid across all nuclides of a given material
+    for n in range(material["N_nuclide"]):
+        nuclide = mcdc["nuclides"][n]
+        material_energy_grid = np.append(
+            material_energy_grid, nuclide["E_xs"]
+        )
+    material_energy_grid = np.unique(material_energy_grid)
+    MacroXS = np.zeros_like(material_energy_grid)
+
+    # compute the macroscopic total cross section of a material on its unified
+    # energy grid
+    for n in range(material["N_nuclide"]):
+        ID_nuclide = material["nuclide_IDs"][n]
+        nuclide = mcdc["nuclides"][ID_nuclide]
+
+        # Get nuclide density
+        N = material["nuclide_densities"][n]
+
+        # putting the microscopic cross-sections on the unifed
+        # material energy grid
+        total_micro_xsec_unified = scipy.interpolate.interp1d(
+            nuclide["E_xs"], nuclide["ce_total"], bounds_error=False
+        )
+        total_micro_xsec_unified = total_micro_xsec_unified(
+            material_energy_grid
+        )
+
+        # Accumulate
+        MacroXS += N * total_micro_xsec_unified
+
+    # puting the total macroscopic cross sections on on the majorant energy grid
+    total_xsec_unified = scipy.interpolate.interp1d(
+        material_energy_grid, MacroXS, bounds_error=False
+    )
+    total_xsec_unified = total_xsec_unified(majorant_energy_grid)
+
+    # compares old majorant xsec and the currently evaluated unified xsec 
+    # and picks the larger xsecs
+    majorant_xsec = np.max((majorant_xsec, total_xsec_unified), axis=0)
+
+\end{minted}

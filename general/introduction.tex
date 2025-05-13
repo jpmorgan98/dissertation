@@ -12,20 +12,71 @@
 
 \section{Motivation}
 
-\section{Neutron transport}
 
-Transport equations are, at their most fundamental, equations of continuity.
+\section{An Introduction for a General Audience}
+
+Before jumping into equations and math and schemes and algorithms imagine the warmth of the sun on your face.
+Feel the golden rays that have danced across the faces of every person you have ever loved, hated, lost, cursed, and indeed every person who has ever lived.
+You may ask did resplendent power of gods come to interact with your lovely face?
+Before we answer that question we must make some simplifications form the physical truth, tell ourselves connivent lies so we can comprehend an \textit{approximation} of the truth.
+Take on faith that there are infinitesimally small packets of energy called photons which for our purpose behave much like a billiard ball would.
+Take on faith that these invisible billiard balls travel at a constant speed yet can still have differing energies from one another, which we call color.
+Take on faith that they move on straight line paths between events like bounding off a material or being absorbed by your beautiful face\footnote{In actuality we take nothing on faith, we can specify our simplifying assumptions and for the rest rely well-equipped, trustworthy, colleagues who have been making rigorous, evidence-based and repeatable discoveries for thousands of years.}.
+
+Now consider a single photon as at leaves the stealer atmosphere.
+It and its comrades are traveling in all directions outward, but our photon and a few of its friends are amid squarely at a pale blue dot in the distance.
+They travel on a straight line path, \textit{streaming} through the void region space, not interacting with much of anything for about 5 minuets---all the while the pale blue dot is growing in size.
+Once most of the horizon is filled with a view of Earth, some of our photons begin to interact with the air in the atmosphere we breath.
+Not very often at first in the high altitudes where the atmosphere is thin, but then growing ever more common as our photons get closer and closer to the ground.
+These ``interactions" are actually some of our photon's friends smashing into the gas molecules making up the atmosphere itself.
+Most of that gas is nitrogen which really likes to interact with blue light.
+These photons are then \textit{scattered} having a billiard ball-like reaction where only there direction is changed.
+This is why an Eastern Oregon sky (and occasionally a Willamette valley sky) appears so blue!
+That's blue light from the sun hitting the atmosphere tens of hundreds of miles away bouncing off an N$_2$ molecule and heading straight for you!
+
+Our photon however interacts with nothing and keeps on that straight line patch from the stellar atmosphere to your gorgeous face.
+As you turn towards the sun our single measly photon (and about a gigllion\footnote{in the \num{1e21} range} of it's closest friends per second) hits your face every second.
+Some of these photons are reflected off your face in such a way that they will project a rendering of it into little receptors in the eyes of those who get to behold you.
+Others are \textit{absorbed}, each one imparting a tiny bit of energy into your skin you feel as heat.
+
+Just as we described this process with words we can describe it with math using a bunch of operations which represent \textit{streaming}, \textit{absorbing}, and \textit{scattering}---or more gnerally sources and sinks of light.
+We do this because a rigorous mathematical definition has the added benefit of being more generally applicable to other problems.
+Photons moves in three dimensional space but it also has a direction of travel (imagine a little figure pointing where its going) meaning to describe a single particle of light we need at least 6 independent variables.
+If you allow things to change with respect to time then there's an additional 7\ths independent variable.
+This is often referred to as the \textit{curse of dimensionality} and is one of the things that makes solving these equations so difficult.
+Not just photons behave like this, \textit{streaming}, \textit{absorbing}, and \textit{scattering} their through the universe.
+The movement of any neutral particle that doesn't interact with electric or magnetic fields can be described with similar equations.
+
+For example another problem we are interested in simulating is how neutral particles are moving in problems undergoing nuclear fission.
+Neutrons (unlike charged particles and most of the time photons) can interact with the nucleus of an atom because they are unaffected by the negatively charged orbital electrons and the positively charged core.
+Some isotopes\footnote{specific arrangements of the subatomic core of a given atom} readily absorb neutrons into the nucleus, which may make such atoms unstable.
+When an unstable atom \textit{fissions}\footnote{breaks apart}, it releases energy along with two daughter nuclei and subatomic particles, which may be more neutrons, depending on the parent atom.
+If additional neutrons are released and encounter more material which can undergo this type of reaction, the release of subsequent neutrons can induce a \textit{chain} reaction.
+A nuclear reactor's job is to keep this chain reaction in balance, producing enough heat to boil water, spin turbine, and generate electricity but not too much heat that the system can't safely operate.
+To ensure this process produces enough heat-generating reactions \textit{safely}, we need to understand where, how, and when neutrons are moving within the core of a reactor.
+We use more or less the same equation (with some extra terms) to describe how neutrons move and interact within a nuclear reactor as we would photons hitting your face from the sun.
+
+Other times we would want to solve these equations include during cancer radio therapy when we often target  neutral particles directly at cancerous cells while trying to avoid healthy tissue as much as possible.
+Or when we want to model if the wall of a rocket nozzle will melt due to heat transfer of the exhaust gasses.
+Even the the accretion disks of supernovae, cores of super massive planets, and the core of our own sun (where our photon from earlier was born) can in part be modeled with equations that look similar to the ones I research in this dissertation.
+
+
+\section{Radiation transport}
+
+Transport equations are, at their most fundamental, equations of continuity enforcing conservation of a given quantity across locations of phase space through time.
 Transport equations are ubiquitous in nature, describing a number of physical systems including fluid dynamics, chemical reactions, electromagnetism, energy, and heat transfer.
-My research contained herein focuses on neutron radiation transport specifically, but could easily be applied to other neutral particles, most relevantly photons \cite{radheattrans2003, chandrasekhar1960radiative}.
-In fact many of the methods of solution described in this document started as approximations for radiative heat transfer or photon transport.
-%justifying my ME degree
-Assuming no neutrons are being produced by fission, the neutron transport equation (NTE) takes the form of an intergro-partial differential Boltzmann-type equation with seven independent variables \cite{duderstadt_hamilton}.
+The radiation transport describes the movement of neutral sub-atomic particles (photons, neutrons, phonons, and neutrinos) in seven independent variables (space, velocity, and time).
+Applications of the transport equation include nuclear reactor physics \cite{duderstadt_hamilton}, heat transfer \cite{radheattrans2003, chandrasekhar1960radiative}, health physics, and astrophysics.
+Studying the radiation transport equation does not seek to answer questions associated with the physical process by which events are occurring, only how known events impact the number of particles at a given point in space and time.
+
+My research contained herein focuses on neutron radiation transport, but could easily be applied to other neutral particles, most relevantly photons.
+Assuming no neutrons are being produced by fission, the neutron transport equation (NTE) takes the form of an intergro-partial differential Boltzmann-type equation \cite{duderstadt_hamilton}.
 As with any other continuity equation it is written as a set of sources (on the right) and sinks (on the left):
 \begin{multline}
     \label{eq:fullNTE}
-    \frac{1}{v(E)}\frac{\partial \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t)}{\partial t} + \boldsymbol{\hat{\Omega}} \cdot \nabla \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) + \Sigma(r, E, t) \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) = \\
+    \frac{1}{v(E)}\frac{\partial \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t)}{\partial t} + \boldsymbol{\hat{\Omega}} \cdot \nabla \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) + \Sigma(\bm{r}, E, t) \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) = \\
     \int_{4\pi}\int_{0}^{\infty}\Sigma_s(\boldsymbol{r}, E'\rightarrow E, \boldsymbol{\hat{\Omega}'} \rightarrow \boldsymbol{\hat{\Omega}}, t)
-    \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) dE' d\boldsymbol{\hat{\Omega}'} +
+    \psi(\boldsymbol{r}, E', \boldsymbol{\hat{\Omega'}},t) dE' d\boldsymbol{\hat{\Omega}'} +
     s(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) \;,
 \end{multline}
 where $\psi$ is the angular flux, $v$ is the velocity of the particles, $\Sigma$ is the macroscopic total material cross section, $\Sigma_s$ is the macroscopic scattering cross section, $\boldsymbol{r}$ is the location of the particle in three-dimensional space, $\boldsymbol{\hat{\Omega}}$ is the direction of travel in three-dimensional space, $s$ is the isotropic material source of new particles being produced, $t$ is the time, and $E$ is the energy of the particles for $\boldsymbol{r} \in V$, $\boldsymbol{\hat{\Omega}} \in 4\pi$, $0<E<\infty$, and $0<t$ \cite{duderstadt_hamilton}. We also prescribe the initial condition
@@ -36,12 +87,33 @@ and the boundary condition
 \begin{equation}
     \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) = \psi_{bound}(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) \text{ for } \boldsymbol{r} \in \partial V \text{ and } \boldsymbol{\hat{\Omega}} \cdot \boldsymbol{n} < 0 \;.
 \end{equation}
-A number of additional implicit assumptions are needed for the validity of this equation and my research including: particle--particle interactions are rare and can be neglected, neutrons are points in space with no volume, collision events occur instantaneously, and nuclear properties are known \cite{lewis_computational_1984}.
-This equation is commonly solved using both deterministic and Monte Carlo solution methods as analytic solutions are sparse.
+A number of additional implicit assumptions are needed for the validity of this equation \textit{and} my research including: particle--particle interactions are rare and can be neglected, neutrons are points in space with no volume, collision events occur instantaneously, and nuclear properties are known \cite{lewis_computational_1984, duderstadt_hamilton, adams_fast_2002}.
+
+This equation is commonly solved using deterministic or Monte Carlo \cite{lu} solution methods or clever combinations of the two \cite{monke_phd, pasmann_phd} as analytic solutions are sparse.
+
+Deterministic methods make an underlying assumption about the function we are hoping to solve on a small slice of phase space.
+The first numerical methods
 
 
-\section{Document Layout}
+The transport equation is often solved with either a Monte Carlo or a deterministic method or some kind combination between the two \cite{lewis1984computational}.
+Monte Carlo methods can be prohibitively slow to converge for high fidelity transient problems; requiring huge numbers of simulated particles to converge to a statistically significant solution \cite{lux_1998}.
+Deterministic methods are usually able to reach solution faster for the same problem modeled in similar fidelity, but can be much more sensitive implemented physics and restrictive to what type of problems a particular method can solve \cite{lewis1984computational}. 
+The high dimensionality of transport equations means that memory and computational efficient iterative methods are often used as a primary solution method \cite{adams_fast_2002}.
+As GPUs continue to become the dominant computational workhouse in science and engineering they are allowing for full time dependent solutions to the transport equation.
+Finding computationally and memory efficient rapidly convergent numerical methods for modern high performance computers is paramount.
+
+
+
+\section{Dissertation Overview}
 
 
 
 \section{Research Questions}
+
+\begin{enumerate}
+    \item Can relying on abstraction through using software libraries enable non-expert users to produce efficient-performing software for heterogeneous computing systems?
+    \item Will a space-parallel deterministic iterative solution algorithm (that lags the incident information on the bounds of a cell from a previous iteration) outperform the standard angle-parallel iterative algorithm on modern heterogeneous architectures?
+    \item For deterministic algorithms, does accounting for transient effects alter convergence rates of iterative solution algorithms?
+    \item Can information coming from a streaming-only problem be used to inform cell boundary information and increase convergence rates of a one-cell inversion iteration algorithm?
+    \item How can alternative Monte Carlo tracking schemes (namely Woodcock or delta tracking) be used be used to converge the quantities of interest faster?
+\end{enumerate}
