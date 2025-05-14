@@ -1,24 +1,12 @@
 \part{Deterministic Transport}
 
+\label{part:determ}
 
 \chapter{Introduction to Deterministic Methods}
 
-To recast the neutron radiation transport equation (Eq.~\eqref{eq:fullNTE}) into a form solvable on digital computers, continuous functions of space, time, angle, and energy must be discretized.
-An iterative scheme is also required for memory and computationally efficient calculations.
-In this section I describe the discretizations and their assumptions for the 1D, time-dependent, multi-group solver discussed within this work.
-I will also describe the two fixed-point iterative schemes that I implement and discuss gaps in previous work of deterministic iterative solvers.
-My work with deterministic schemes can be separated into two categories:
-\begin{enumerate}
-    \item How to use software engineering libraries to implement work more efficiently (RQ 1); and
-    \item Novel methods to converge the solution faster on modern hardware
-    \begin{enumerate}
-        \item A space-parallel iterative scheme on modern HPC GPUs (RQ2);
-        \item How transient behavior impacts convergence of a space-parallel iterative scheme (RQ3); and
-        \item How to accelerate the space-parallel iterative scheme to converge faster (RQ4)
-    \end{enumerate}
-\end{enumerate}
+\label{chap:determ_intro}
 
-\subsection{S$_N$ approximation in angle}
+\section{S$_N$ approximation in angle}
 
 The S$_N$ or discrete ordinance approximation turns the introgro-PDE describing radiation transport into a coupled (simultaneous) set of linear PDEs in each angular direction.
 It was first formulated by Chandrasekhar to describe radiative heat transfer in stellar media \cite{chandrasekhar1960radiative}.
@@ -52,7 +40,7 @@ The initial and boundary conditions are again prescribed angular flux distributi
 \end{equation*}
 From here additional discretization can be used to turn the continuous functions of angular flux, source, material data, and differential operators into numerical approximations.
 
-\subsection{Time-Space discretization schemes}
+\section{Time-Space discretization schemes}
 
 To enable this work in both space and time, discretization schemes are needed to treat the differential operators and continuous functions.
 As the goal of the research is for development on heterogeneous architectures communication to work ratio may become an issue.
@@ -80,7 +68,7 @@ Time dependent multiple balance (TDMB) was derived by Variansyah, Larsen, and Ma
 TDMB is developed from the "multiple-balance" approach which has also been developed as a space discretization scheme.
 When implementing a higher order method to allow for greater work-to-communicate ratios I decided to use this scheme. 
 
-\subsection{Source-iteration}
+\section{Source-iteration}
 \label{sec:intro_itterative-scheme}
 
 The transport equation requires some kind of iterative scheme to converge the linkage between scattering source and transport operators.
@@ -114,7 +102,7 @@ This diagonally expanding wavefront continues to march and is able to better par
 %We conject that this is due to the nonlinear work load a wavefront marching schemes incurred. 
 
 
-\subsection{One cell inversion-iteration}
+\section{One cell inversion-iteration}
 
 % Intro to OCI and previous work including warsaw 
 
@@ -159,7 +147,8 @@ When solving optically thick and highly scattering problems, small increases in 
 Time step and cellular optical thickness are inversely proportional to each other, meaning a smaller time step will yield a larger effective total cross section, thus theoretically improving the spectral radius.
 This behavior is not expected to happen in source iterations as SI does not directly depend on cellular optical thickness---behaving linearly in that dimension for all but the most thick problems.
 
-\subsection{Synthetic acceleration}
+\section{Preconditinoers and Synthetic acceleration}
+
 \label{sec:syn_acc}
 % acceleration schemes for SI
 In order to converge iterative schemes faster many synthetic acceleration techniques have been explored and implemented over the years \cite{adams_fast_2002}.
@@ -187,12 +176,7 @@ Krylov methods work by keeping copies of the guess for a given number of previou
 The generalized minimal residual (GMRES) method specifically, has been shown to make DSA schemes that perform relatively poorly, work well \cite{kylov2004warsa, subspace2004warsa}.
 
 
-\subsection{Summary of Section}
-
-
-
-
-\subsection{Novelty and relation to research questions}
+\section{Summary and relation to research questions}
 
 The first publication associated with this work is motivated by the hypothesized additional benefit of OCI in a time dependent code (RQ 3) coupled with the vast improvements in GPU accelerators in the past decade since Rosa et al. \cite{rosa_cellwise_2013} conducted their investigations (RQ 1 and 2).
 A rough draft of this first publication is included in Appendix \ref{app:therefore}.
@@ -200,6 +184,21 @@ I plan to submit this work before the new year.
 The next publication will be an exploration of a synthetic acceleration algorithm to converge OCI in the thin limit (RQ 4).
 %Furthermore, as previously mentioned, source iterations are often implemented in production accompanied by some kind of synthetic-acceleration scheme or other preconditioner to converge it's slowest converging mode (the diffusive limit).
 %OCI has never been implemented with a prevonditon
+
+To recast the neutron radiation transport equation (Eq.~\eqref{eq:fullNTE}) into a form solvable on digital computers, continuous functions of space, time, angle, and energy must be discretized.
+An iterative scheme is also required for memory and computationally efficient calculations.
+In this section I describe the discretizations and their assumptions for the 1D, time-dependent, multi-group solver discussed within this work.
+I will also describe the two fixed-point iterative schemes that I implement and discuss gaps in previous work of deterministic iterative solvers.
+My work with deterministic schemes can be separated into two categories:
+\begin{enumerate}
+    \item How to use software engineering libraries to implement work more efficiently (RQ 1); and
+    \item Novel methods to converge the solution faster on modern hardware
+    \begin{enumerate}
+        \item A space-parallel iterative scheme on modern HPC GPUs (RQ2);
+        \item How transient behavior impacts convergence of a space-parallel iterative scheme (RQ3); and
+        \item How to accelerate the space-parallel iterative scheme to converge faster (RQ4)
+    \end{enumerate}
+\end{enumerate}
 
 
 \input{deterministic/therefore_paper/therefore_paper}

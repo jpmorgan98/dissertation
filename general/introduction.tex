@@ -10,9 +10,6 @@
 	}{Henry David Thoreau}
 }
 
-\section{Motivation}
-
-
 \section{An Introduction for a General Audience}
 
 Before jumping into equations and math and schemes and algorithms imagine the warmth of the sun on your face.
@@ -61,16 +58,16 @@ Or when we want to model if the wall of a rocket nozzle will melt due to heat tr
 Even the the accretion disks of supernovae, cores of super massive planets, and the core of our own sun (where our photon from earlier was born) can in part be modeled with equations that look similar to the ones I research in this dissertation.
 
 
-\section{Radiation transport}
+\section{Motivation}
 
 Transport equations are, at their most fundamental, equations of continuity enforcing conservation of a given quantity across locations of phase space through time.
 Transport equations are ubiquitous in nature, describing a number of physical systems including fluid dynamics, chemical reactions, electromagnetism, energy, and heat transfer.
-The radiation transport describes the movement of neutral sub-atomic particles (photons, neutrons, phonons, and neutrinos) in seven independent variables (space, velocity, and time).
-Applications of the transport equation include nuclear reactor physics \cite{duderstadt_hamilton}, heat transfer \cite{radheattrans2003, chandrasekhar1960radiative}, health physics, and astrophysics.
+The radiation transport equations describes the movement of neutral sub-atomic particles (photons, neutrons, phonons, and neutrinos) in seven independent variables (space, velocity, and time).
+Applications of the transport equation include nuclear reactor physics \cite{duderstadt_hamilton}, heat transfer \cite{radheattrans2003}, radiation health physics, and astrophysics \cite{chandrasekhar1960radiative}.
 Studying the radiation transport equation does not seek to answer questions associated with the physical process by which events are occurring, only how known events impact the number of particles at a given point in space and time.
 
-My research contained herein focuses on neutron radiation transport, but could easily be applied to other neutral particles, most relevantly photons.
-Assuming no neutrons are being produced by fission, the neutron transport equation (NTE) takes the form of an intergro-partial differential Boltzmann-type equation \cite{duderstadt_hamilton}.
+My research contained herein focuses on \textit{neutron} radiation transport, but could easily be applied to other neutral particles, most relevantly photons.
+Assuming no neutrons are being produced by fission, the neutron transport equation (NTE) takes the form of a linear intergro-partial differential Boltzmann-type equation \cite{duderstadt_hamilton}.
 As with any other continuity equation it is written as a set of sources (on the right) and sinks (on the left):
 \begin{multline}
     \label{eq:fullNTE}
@@ -87,33 +84,91 @@ and the boundary condition
 \begin{equation}
     \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) = \psi_{bound}(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) \text{ for } \boldsymbol{r} \in \partial V \text{ and } \boldsymbol{\hat{\Omega}} \cdot \boldsymbol{n} < 0 \;.
 \end{equation}
-A number of additional implicit assumptions are needed for the validity of this equation \textit{and} my research including: particle--particle interactions are rare and can be neglected, neutrons are points in space with no volume, collision events occur instantaneously, and nuclear properties are known \cite{lewis_computational_1984, duderstadt_hamilton, adams_fast_2002}.
+A number of additional implicit assumptions are needed for the validity of this equation \textit{and} my research including: particle--particle interactions are rare and can be neglected, neutrons are points in space with no volume, collision events occur instantaneously, and nuclear properties are known \cite{lewis_computational_1984, duderstadt_hamilton}.
 
-This equation is commonly solved using deterministic or Monte Carlo \cite{lu} solution methods or clever combinations of the two \cite{monke_phd, pasmann_phd} as analytic solutions are sparse.
+The transport equation is commonly solved using a deterministic or Monte Carlo (stochastic) \cite{lux_1998} numerical solution method or clever combinations of the two \cite{monke_phd, pasmann_phd} as analytic solutions are sparse.
+Finding solutions to the transport equation with any numerical method can be incredibly computationally expensive due to the high number of independent variables, the geometric complexity of the systems of interest (e.g. nuclear reactor cores, human people), and the complex behavior of neutrons (specifically) in energy.
 
-Deterministic methods make an underlying assumption about the function we are hoping to solve on a small slice of phase space.
-The first numerical methods
+Monte Carlo methods consider a single particle at a time and set up a digital experiment model of the system of interest.
+As we cannot model the multiple moles of physical particles under going transport at any given moment in systems of interest, each simulated particle actual represents a group of physical particles by using a statistical weight.
+The path of a particle and the specific set of events that occur within its history are governed by pseudorandom numbers, known probabilities (for example, from material data), and known geometries. Data about how particles move and/or interact with the system are tallied to compute parameters of interest with an associated statistical error from the Monte Carlo process.
+Monte Carlo methods treat the curse of dimensionality by only considering individual particles at fourming a solution in parameter space only where that particle goes.
+The trade off is that they are incredibly slow to converge as compared to deterministic methods and take significant computational resources to forum a well resolved problem.
+In fact for analog Monte Carlo there is no a-prioi grantee that a Monte Carlo solution will occupy all locations of interest in phase space.
+This is especially true for time dependent problems.
+
+Deterministic methods rely on discretization or the assumption of functional shape on small pieces of phase space.
+If these small pieces could be taken to in
+Deterministic methods are difficult as computational and memory efficient algorithms require itterting on all parameters of phase space within a given time step.
+Deterministic methods are often more tailor fit to the specifics of the problems they seek to solve but the underlying component can be very similar solver to solver.
+More introduction and description of the research in this dissertation on deterministic methods is in part \ref{part:determ}
+
+In generally Monte Carlo methods provide an inexact solution (with a statistical error) to an exact problem. Deterministic methods provide an exact solution to an inexact problem (making assumptions for tractability).
 
 
-The transport equation is often solved with either a Monte Carlo or a deterministic method or some kind combination between the two \cite{lewis1984computational}.
-Monte Carlo methods can be prohibitively slow to converge for high fidelity transient problems; requiring huge numbers of simulated particles to converge to a statistically significant solution \cite{lux_1998}.
-Deterministic methods are usually able to reach solution faster for the same problem modeled in similar fidelity, but can be much more sensitive implemented physics and restrictive to what type of problems a particular method can solve \cite{lewis1984computational}. 
-The high dimensionality of transport equations means that memory and computational efficient iterative methods are often used as a primary solution method \cite{adams_fast_2002}.
-As GPUs continue to become the dominant computational workhouse in science and engineering they are allowing for full time dependent solutions to the transport equation.
-Finding computationally and memory efficient rapidly convergent numerical methods for modern high performance computers is paramount.
+Modern high-performance computers (HPC) with heterogeneous architectures (CPUs and GPUs) are enabling high-fidelity modeling of the fully time dependent radiation transport equation.
+For both deterministic and Monte Carlo solvers to exploit new compute architectures efficiently, software portability schemes are required. 
+This also goes hand in glove with new numerical methods to take advantage of new computational power for problems of interest. More on this is discussed in chapters \ref{chap:determ_intro} and \ref{chap:mc_methods_intro}.
 
+\section{Dissertation Objectives and Overview}
 
-
-\section{Dissertation Overview}
-
-
-
-\section{Research Questions}
-
+Having generally introduced the the challenges of numerically solving the neutron radiation transport equation the primary guiding research questions are presented.
 \begin{enumerate}
     \item Can relying on abstraction through using software libraries enable non-expert users to produce efficient-performing software for heterogeneous computing systems?
     \item Will a space-parallel deterministic iterative solution algorithm (that lags the incident information on the bounds of a cell from a previous iteration) outperform the standard angle-parallel iterative algorithm on modern heterogeneous architectures?
     \item For deterministic algorithms, does accounting for transient effects alter convergence rates of iterative solution algorithms?
-    \item Can information coming from a streaming-only problem be used to inform cell boundary information and increase convergence rates of a one-cell inversion iteration algorithm?
+    \item Can information coming from a low-order problem be used to inform cell boundary information and increase convergence rates of a one-cell inversion iteration algorithm?
     \item How can alternative Monte Carlo tracking schemes (namely Woodcock or delta tracking) be used be used to converge the quantities of interest faster?
 \end{enumerate}
+
+
+Part \ref{part:determ}
+
+Chapter \ref{chap:determ_intro}
+
+Chapter \ref{chap:therefore_paper}
+In this work, we analyze how the convergence rate of an OCI scheme behaves when used for time-dependent neutron transport computations.
+We derive a second-order space-time discretization method from the simple corner balance and multiple balance time discretization schemes and show via Fourier analysis that it is unconditionally stable through time.
+Then, we derive and numerically solve the Fourier systems for both OCI and SI splittings of our discretization, showing that small mean-free times improve the spectral radius of OCI more than SI, and that spectral radius for OCI tends to zero as mean free time gets smaller.
+We extend both solvers to be energy dependent (using the multi-group assumption) and implement on an AMD MI250X using vendor-supplied batched LAPACK solvers.
+Smaller time steps improve the relative performance of OCI over SI, and, even when OCI requires more iterations to converge a problem, those iterations can be done much faster on a GPU.
+This leads to OCI performing better overall than SI on GPUs.
+
+
+Chapter \ref{chap:smom_paper}
+Solving the S$_N$ radiation transport equation on modern many cored compute architectures (i.e. GPUs) is challenging.
+The most common implemented solution method, the source iteration, requires computational expensive sweeping operations that cannot parallelized in 1D.
+While in 2D and 3D sweeps can use full parallel sweeping algorithms these schemes may not perform well on a GPU.
+One cell inversion iteration is another class of solvers for the radiation transport equation.
+OCI iterations are parallel over spatial cells which has been previously shown to out perform similarly implemented versions of unpreconditioned source iterations on GPUs for some problems.
+While OCI is rapidly convergent for optically thick problems spectral radius tends to one in both the optically thin and diffusive limits.
+Finding a preconditioner for one cell inversion iterations to support converging in this regime that can be efficiently computed on many-cored architectures motivates this work.
+%We have previously shown that for time dependent problems OCI's spectral radius has an added dependence on mean free time and tends to zero as mean free time decreases.
+We derive a second moment cellular decomposition method in conjunction with a one-cell inversion iteration in an effort to produce a fully space parallel, rapidly convergent, transport iteration.
+The second moment preconditioner derived in this work does not converge to the same solution as unpreconditioned transport solutions suggesting inconsistencies.
+Numerical experiments show the second moment preconditioner is rapidly convergent in the diffusive limit but dose not aid convergence in the optically thin limit.
+
+
+
+
+Part \ref{part:mc}
+
+Chapter \ref{chap:joss_paper}
+We designed Monte Carlo / Dynamic Code (MC/DC) to explore such novel numerical methods on modern high-performance computing systems.
+We avoid the need for a compiled or domain-specific language by using the Numba compiler for Python to accelerate and abstract our compute kernels to near compiled code speeds.
+We have implemented novel algorithms using this scheme and, in some verification tests, have approached the performance of industry-standard codes at the scale of tens of thousands of processors.
+
+Chapter \ref{chap:cise_paper} Finding a software engineering approach that allows for portability, rapid development, and open collaboration for high-performance computing on GPUs and CPUs is a challenge. 
+We implement a portability scheme using the Numba compiler for Python in Monte Carlo / Dynamic Code (MC/DC), a new neutron transport application for rapidly developing Monte Carlo. 
+Using this scheme, we have built MC/DC as an application that can run as a pure Python, compiled CPU, or compiled GPU solver. 
+In GPU mode, we use Numba paired with an asynchronous GPU scheduler called Harmonize to increase GPU performance. We present performance results (including weak scaling up to 256 nodes) for a time-dependent problem on both CPUs and GPUs and compare favorably to a production C++ code.
+
+Chapter \ref{chap:delta_tracking_paper} There is no mathematical reason why the track-length estimator cannot be used in conjunction with Woodcock-delta tracking only implementation issues. 
+In this work we take advantage of that to produce a Woodcock-delta tracking algorithm which tallies fluxes to a structured rectilinear mesh using the track-length estimator.
+This development more readily enables hybrid surface-delta tracking algorithms as the track-length tally can be used everywhere for scalar flux estimation regardless of which tracking algorithm a particle is using.
+We use this when developing a novel hybrid-in-energy method where Woodcock-delta tracking is used in high energies (where mean free paths are long) and surface tracking below that (starting at the neutron resonances) as well as a previously defined hybrid-in-material method.
+We verify that delta tracking algorithms we consider can be used in conjunction with continuously moving surfaces.
+We benchmark these methods showing figures of merit on four time-dependent problems: two multi-group and two continuous-energy.
+Woodcock-delta tracking with a track-length tally showed modest improvements to figures of merit as compared to traditional delta tracking with a collision estimator and surface tracking with a track-length estimator (\num{1.5}$\times$--\num{2.5}$\times$) and significant improvements (\num{7}$\times$--\num{11}$\times$) when using the hybrid-in-energy method.
+
+Finally chapter \ref{chap:conclusion} summarizes the contributions made in these five manuscripts and dicusses pobily directions for future research
