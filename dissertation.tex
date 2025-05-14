@@ -10,17 +10,32 @@
 \usepackage{multirow} % multiple rows in tables
 \usepackage{longtable} % long tables
 \usepackage{minted} % code snipits
-\usepackage{algorithm2e} % in-text psudo code
+
+\usepackage{siunitx} % units and numbers
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
 
 % setting main text font
 \usepackage[T1]{fontenc}
 \usepackage{baskervald} % -- fav so far
 \usepackage[baskerville,vvarbb]{newtxmath}
 
+\usepackage{amsmath} %maths
+
+
 
 % some useful commands
 \newcommand{ \nd }{$^{\text{nd}}$ }
 \newcommand{ \ths }{$^{\text{th}}$}
+
+% used to put quotes at the beginning of a chapter
+\usepackage{epigraph}
+\renewcommand{\epigraphsize}{\footnotesize}
 
 
 
@@ -169,14 +184,32 @@ The d
 %%%
 
 
-\include{general/introduction}
-\include{deterministic/deterministic}
-\include{monte_carlo/monte_carlo}
+\input{1_introduction}
+
+\part{Deterministic Transport}
+\label{part:determ}
+
+\input{2_deterministic}
+\input{3_therefore_paper}
+\input{4_smom_paper}
+
+
+\part{Monte Carlo Methods}
+\label{part:mc}
+
+\input{5_monte_carlo}
+\input{6_joss_paper}
+\input{7_cise_paper}
+\input{8_delta_tracking_paper}
+
+\input{9_conclusions}
+
 
 \newpage
 
 
-\printbibliography[]
+
+\bibliography[]
 
 
 % \newpage

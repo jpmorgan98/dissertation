@@ -1,6 +1,6 @@
 \newcommand{\filename}{beavtex}
-\newcommand{\fileversion}{v1.0}
-\newcommand{\filedate}{2011/10/01}
+\newcommand{\fileversion}{v1.1}
+\newcommand{\filedate}{2013/12/05}
 
 %-------------------------------------------------------------------------------
 % BeavTeX
@@ -26,6 +26,15 @@
 %   John Metta (prev. name: Pennington) 
 %   <john.pennington@lifetime.oregonstate.edu>
 % Originally thesis.sty
+%---------------------------------------------------------------------------------
+%   Dec 2013: Edited by Rick Treinen
+%
+%   TOC made to include dots for sections, not only chapters
+%
+%   Added: \usepackage{rotating} to thesis.tex to allow the rotation of figures and charts on a page, using the {sidewaysfigure} command
+%
+%   Added: \usepackage{tablefootnote} to thesis.tex to allow footnotes in the tabular environment, using the \tablefootnote command
+%
 % -------------------------------------------------------------------------------
 
 \NeedsTeXFormat{LaTeX2e}
@@ -273,8 +282,7 @@
   \end{singlespacing}
 }
 
-
-% Footnotes: they are not affected by linespacing anyway (always single-spaced).
+% Footnotes: they are not effected by linespacing anyway (always single-spaced).
 % Multiple-line headers: as long as we use \heading, it's single-spaced.
 % Others: I am not sure yet...
 
@@ -466,7 +474,7 @@
   \thispagestyle{empty}
   \vspace*{10\baselineskip}
   \begin{center}
-  \textit{\@dedcontent}
+  \@dedcontent
   \end{center}
   \clearpage
   \fi
@@ -501,7 +509,7 @@
 % Acknowledgements, contribution, dedication, and preface.
 \definepretextpage{ack}{ACKNOWLEDGEMENTS}
 \definepretextpage{contri}{CONTRIBUTION OF AUTHORS}
-\definepretextpage{pref}{} %PREFACE
+\definepretextpage{pref}{PREFACE}
 
 % Format all of the frontmatter
 % The commands for optional pages will check if the content is defined. If not,
@@ -510,54 +518,45 @@
   \pagenumbering{roman}
   
   % Mandatory pages
-  %\flyleaf           % A. Flyleaf
+  \flyleaf           % A. Flyleaf
   \abspage           % B. Abstract
   \copyrightpage     % C. Copyright page
   \titlepage         % D. Title page
   \approvalpage      % E. Approval page
-  
+
   % Optional pages
   \ackpage           % F. Acknowledgments
   \contripage        % G. Contribution of authors
-  
+
   % Listings
   \tableofcontents        % H.
-  \newpage
   \listoffigures          % I.
-  \newpage
   \listoftables           % J
-  \newpage
+
+	% Algorithm listing
+	\ifthenelse{\isundefined{\listofalgorithms}}{}{
+  \expandafter\newcommand\csname ps@loaa\endcsname{
+  \renewcommand{\@oddhead}{%
+  \parbox{\textwidth}{%
+  \centering {\heading LIST OF ALGORITHMS} \\ 
+  \uline{Algorithm}\hfill\uline{Page}}}
+  \renewcommand{\@oddfoot}{}
+  \renewcommand{\@evenfoot}{}}
+  \expandafter\newcommand\csname ps@loab\endcsname{%
+  \renewcommand{\@oddhead}{%
+  \parbox{\textwidth}{%
+  \centering {\heading LIST OF ALGORITHMS\ (Continued)} \\ 
+  \uline{Algorithm}\hfill\uline{Page}}}
+  \renewcommand{\@evenhead}{\@oddhead}
+  \renewcommand{\@oddfoot}{}
+  \renewcommand{\@evenfoot}{}}
+	\renewcommand{\listalgorithmname}{\pagestyle{loab}\thispagestyle{loaa}\vspace{-1.28in}}
   \listofalgorithms
-  \newpage
+  }
 
   \listofappendices       % K.
-  \newpage
   \listofappendixfigures  % L.
-  \newpage
   \listofappendixtables   % M.
-  \newpage
-  
-	% % Algorithm listing
-   %\ifthenelse{\isundefined{\listofalgorithms}}{}{
-   %\expandafter\newcommand\csname ps@loaa\endcsname{
-   %\renewcommand{\@oddhead}{%
-   %    \parbox{\textwidth}{%
-   %    \centering {\heading LIST OF ALGORITHMS} \\ 
-   %    \uline{Algorithm}\hfill\uline{Page}}}
-   %\renewcommand{\@oddfoot}{}
-   %\expandafter\newcommand\csname ps@loab\endcsname{%
-   %\renewcommand{\@oddhead}{%
-   %\parbox{\textwidth}{%
-   %\centering {\heading LIST OF ALGORITHMS\ (Continued)} \\ 
-   %\uline{Algorithm}\hfill\uline{Page}}}
-   %\renewcommand{\@evenhead}{\@oddhead}
-   %\renewcommand{\@oddfoot}{}
-   %\renewcommand{\@evenfoot}{}}
-	  %\renewcommand{\listalgorithmname}{\pagestyle{loab}\thispagestyle{loaa}\vspace{-1.28in}}
-   
-   %}}
-
-  
 
   % Optional pages
   \dedpage           % O. Dedication
@@ -671,7 +670,10 @@
       \leavevmode %\large
       \advance\leftskip\@tempdima
       \hskip -\leftskip
-      #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+%     #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par  %Old version without dots in the Chapter part of the TOC
+      #1\nobreak\normalfont\leaders\hbox{$\m@th
+        \mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+        mu$}\hfill\nobreak\hb@xt@\@pnumwidth{\hss #2}\par
       \penalty\@highpenalty
     \endgroup
   \fi}
@@ -732,7 +734,7 @@
   \expandafter\newcommand\csname ps@#1b\endcsname{%
     \renewcommand{\@oddhead}{%
       \parbox{\textwidth}{%
-        \centering {\heading #2\ (\textit{Continued})} \\ 
+        \centering {\heading #2\ (Continued)} \\ 
         \uline{#3}\hfill\uline{Page}
       }
     }
@@ -753,7 +755,6 @@
 \definelisting{toc}{TABLE OF CONTENTS}{}{tableofcontents}
 \definelisting{lof}{LIST OF FIGURES}{Figure}{listoffigures}
 \definelisting{lot}{LIST OF TABLES}{Table}{listoftables}
-\definelisting{loa}{LIST OF ALGORITHMS}{Algorithm}{listofalgorithms}
 \definelisting{loap}{LIST OF APPENDICES}{}{listofappendices}
 \definelisting{loaf}{LIST OF APPENDIX FIGURES}{Figure}{listofappendixfigures}
 \definelisting{loat}{LIST OF APPENDIX TABLES}{Table}{listofappendixtables}

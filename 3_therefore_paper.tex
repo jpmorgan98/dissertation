@@ -192,21 +192,23 @@ These equations contain the first of the two simple spatial closures---the angul
 \end{subequations}
 The second closure is an \textit{upstream} prescription for the cell-edge angular flux:
 \begin{subequations}
-\begin{equation}
-  \psi_{m,k,j+1/2} =
-  \begin{cases}
-  \psi_{m,k,j,R}, & \mu_m > 0, \\
-  \psi_{m,k,j+1,L}, & \mu_m < 0 \;,
-  \end{cases}
-\end{equation}
-\begin{equation}
-  \psi_{m,k+1/2,j+1/2} =
-  \begin{cases}
-  \psi_{m,k+1/2,j,R}, & \mu_m > 0, \\
-  \psi_{m,k+1/2,j+1,L}, & \mu_m < 0 \;.
-  \end{cases}
-\end{equation}
+    \begin{equation}
+      \psi_{m,k,j+1/2} =
+      \begin{cases}
+      \psi_{m,k,j,R}, & \mu_m > 0, \\
+      \psi_{m,k,j+1,L}, & \mu_m < 0 \;,
+      \end{cases}
+    \end{equation}
+    \begin{equation}
+      \psi_{m,k+1/2,j+1/2} =
+      \begin{cases}
+      \psi_{m,k+1/2,j,R}, & \mu_m > 0, \\
+      \psi_{m,k+1/2,j+1,L}, & \mu_m < 0 \;.
+      \end{cases}
+    \end{equation}
 \end{subequations}
+
+Figure~\ref{fig:stencil} shows the stencil location for angular flux and source terms.
 Figure~\ref{fig:stencil} shows the stencil location for angular flux and source terms. 
 \begin{figure}
     \centering
@@ -579,7 +581,7 @@ and
     \end{bmatrix} \; .
 \end{equation}
 The scattering matrix is again akin to the previously described transport matrix in Eq.~\eqref{eq:scatter}.
-Finally, to numerically evaluate the spectral radius we form the system for a given set of angles and weights from Gauss--Legendre quadrature and solve with \texttt{numpy.max(numpy.abs(numpy.linalg.eig(T)))} for $\omega \in [0,2\pi]$ at discrete points.
+Finally, to numerically evaluate the spectral radius we form the system for a given set of angles and weights from Gauss--Legendre quadrature and solve with \texttt{numpy.max(numpy.abs(\\numpy.linalg.eig(T)))} for $\omega \in [0,2\pi]$ at discrete points.
 We vary the cellular optical thickness ($\delta =\Sigma \Delta x$), mean free time ($\tau = \Sigma v\Delta t$), and scattering ratio ($c=\Sigma_s/\Sigma$) to study convergence behavior in various physical regimes. 
 The analogous eigensystem for source iteration is
 \begin{equation}
@@ -689,62 +691,62 @@ The first iteration calls the full \texttt{\_gesv} algorithm, which returns the 
 Subsequent iterations just perform a back substitution (\texttt{\_getrs}).
 Profiling shows that host functions (including host$\rightarrow$device and device$\rightarrow$host communication) account for up to around $9\%$ of the runtime in the largest problems we considered.
 
-\SetKwComment{Comment}{//}{ }
-\DontPrintSemicolon
 \begin{algorithm}
-    build $\mathbf{L}_{c,j,g,m}$ for each cell, angle, and group \Comment*[r]{Eq. \ref{eq:app:si_sys}}
+\begin{algorithmic}[1]
+    \State build $\mathbf{L}_{c,j,g,m}$ for each cell, angle, and group \Comment{Eq. \ref{eq:app:si_sys}}
     
-    move $\mathbf{L}_{c,j,g,m}$ to device
+    \State move $\mathbf{L}_{c,j,g,m}$ to device
 
-    $\beta$ = $4NG$ \Comment*[r]{offset to a cell} %\Comment*[r]{offset to a cell}
+    \State $\beta$ = $4NG$ \Comment{offset to a cell} %\Comment{offset to a cell}
 
-    $l = 0$ \Comment*[r]{iteration counter}
+    \State $l = 0$ \Comment{iteration counter}
 
-    converged = false
+    \State converged = false
 
-    \While{!converged}{
+    \While{!converged}
 
-    build constant part of $\bm{d}_{j,g,m}$ in all cells, angles, and groups \Comment*[r]{Eq. \eqref{eq:app:si_rhs}}
+    \State build constant part of $\bm{d}_{j,g,m}$ in all cells, angles, and groups \Comment{Eq. \eqref{eq:app:si_rhs}}
 
-    move constant part of $\bm{d}_{j,g,m}$ to device
+    \State move constant part of $\bm{d}_{j,g,m}$ to device
         
-        \For{j = 0 to $J$ \Comment*[r]{parallel over groups and angles}}{ 
+        \For{j = 0 to $J$ } \Comment{parallel over groups and angles}
 
-            build variable part of $\bm{d}_{j,g,m}$ at cells $j$ and $J-j$  \Comment*[r]{on GPU Eq. \eqref{eq:app:si_rhs}}
+            \State build variable part of $\bm{d}_{j,g,m}$ at cells $j$ and $J-j$  \Comment{on GPU Eq. \eqref{eq:app:si_rhs}}
 
-            \If{l=0}{
-                \Comment*[r]{LHS in, L+U+D out}
-                $\Psi_j$ = \texttt{GPU\_strided\_batched\_dgesv}($\mathbf{L}_{c,j}$[$\beta^{2}j$],$\bm{d}_{j}$[$\beta j$])
-            }\Else{
-                \Comment*[r]{back substitution}
-                $\Psi_j$ = \texttt{GPU\_strided\_batched\_dgetrs}($\mathbf{L}_{c,j}$[$\beta^2j$],$\bm{d}_{j}$[$\beta j$]) 
-            }
-            }
+            \If{l=0}
+                \Comment{LHS in, L+U+D out}
+                \State $\Psi_j$ = \texttt{GPU\_strided\_batched\_dgesv}($\mathbf{L}_{c,j}$[$\beta^{2}j$],$\bm{d}_{j}$[$\beta j$])
+            \Else
+                \Comment{back substitution}
+                \State $\Psi_j$ = \texttt{GPU\_strided\_batched\_dgetrs}($\mathbf{L}_{c,j}$[$\beta^2j$],$\bm{d}_{j}$[$\beta j$]) 
+            \EndIf
+        \EndFor
 
-        move $\Psi$ to Host
+        \State move $\Psi$ to Host
 
-        $\bm{\phi}^l =\sum_{n=1}^{N} w _n\Psi^{l}_{n}$ \Comment*[r]{Eq. \eqref{eq:app:si_sf}}
+        \State $\bm{\phi}^l =\sum_{n=1}^{N} w _n\Psi^{l}_{n}$ \Comment{Eq. \eqref{eq:app:si_sf}}
 
-        $e=||\bm{\phi}^l - \bm{\phi}^{l-1}||_2$
+        \State $e=||\bm{\phi}^l - \bm{\phi}^{l-1}||_2$
 
-        $\rho_e = e^l / e^{l-1}$
+        \State $\rho_e = e^l / e^{l-1}$
 
-        \If{$e < \epsilon(1-\rho_e)$}{
+        \If{$e < \epsilon(1-\rho_e)$}
             converged = true
-        }
+        \EndIf
 
-        $e^{l-1} = e^l$ 
+        \State $e^{l-1} = e^l$ 
 
-        $l++$
+        \State $l++$
         
-        move $\Phi^l$ to Host
+        \State move $\Phi^l$ to Host
 
-        communicate group to group \Comment*[r]{Eq. \eqref{eq:app:si_update}}
+        \State communicate group to group \Comment{Eq. \eqref{eq:app:si_update}}
 
-    }
+    \EndWhile
     \vspace{1.5em}
     \caption{Source iteration algorithm implemented on GPU where $\bm\phi$ is scalar flux. Equations in Appendix~\ref{app:source_iteration}. Simplified for brevity.}
     \label{alg:si}
+\end{algorithmic}
 \end{algorithm}
 
 Algorithm \ref{alg:ocigpu} describes OCI's on-GPU convergence loop.
@@ -755,50 +757,48 @@ Luckily, OCI's algorithm is simpler to implement on GPUs because group-to-group 
 We implemented the following algorithm to do that: everything under the \texttt{while} loop is wholly contained on the GPU, requiring minimal device-to-host communication.
 
 \begin{algorithm}
-    
-    build $\bm{A}_j$ in all cells and move to device \Comment*[r]{Eq.~\eqref{eq:fullOCIlhs}}
+\begin{algorithmic}[1]
+    \State build $\bm{A}_j$ in all cells and move to device \Comment{Eq.~\eqref{eq:fullOCIlhs}}
 
-    build constant part of $\bm{b}_j$ in all cells and move to device \Comment*[r]{Eq.~\eqref{eq:fullOCIrhs}}
+    \State build constant part of $\bm{b}_j$ in all cells and move to device \Comment{Eq.~\eqref{eq:fullOCIrhs}}
 
-    $l = 0$ \Comment*[r]{iteration counter}
+    \State $l = 0$ \Comment{iteration counter}
 
-    converged = false
+    \State converged = false
 
-    \While{!converged}{
-        \Comment*[r]{incident angular fluxes from previous iteration}
-        \Comment*[r]{user-defined GPU kernel}
-        build variable part of $\bm{b}_j$ in all cells \Comment*[r]{Eq.~\eqref{eq:fullOCIrhs}}
+    \While{converged}
+        \Comment{incident angular fluxes from previous iteration}
+        
+        \State build variable part of $\bm{b}_j$ in all cells \Comment{user-defined GPU kernel, Eq.~\eqref{eq:fullOCIrhs}}
 
-        \If{l=0}{
-            \Comment*[r]{A in-out becomes the L+U+D decomp}
-            $\Psi$ = \texttt{GPU\_strided\_batched\_dgesv}($A$,$b$)
-        }\Else{
-            \Comment*[r]{back substitution}
-            $\Psi$ = \texttt{GPU\_strided\_batched\_dgetrs}($A$,$b$) 
-        }
+        \If{l=0}
+            \Comment{A in-out becomes the L+U+D decomp}
+            \State $\Psi$ = \texttt{GPU\_strided\_batched\_dgesv}($A$,$b$)
+        \Else
+            \Comment{back substitution}
+            \State $\Psi$ = \texttt{GPU\_strided\_batched\_dgetrs}($A$,$b$) 
+        \EndIf
 
-        $e=||\Psi^l - \Psi^{l-1}||_2$ \Comment*[r]{Done on GPU using rocBLAS dr2n}
+        \State $e=||\Psi^l - \Psi^{l-1}||_2$ \Comment{Done on GPU using rocBLAS dr2n}
 
-        $\rho_e = e^l / e^{l-1}$ \Comment*[r]{spectral radius estimation}
+        \State $\rho_e = e^l / e^{l-1}$ \Comment{spectral radius estimation}
 
-        \If{$e < \epsilon(1-\rho_e)$\Comment*[r]{controlling for false convergence}} { 
-            converged = true
-        }
+        \If{$e < \epsilon(1-\rho_e)$} \Comment{controlling for false convergence}
+            \State converged = true
+        \EndIf
 
-        $e^{l-1} = e^l$
+        \State $e^{l-1} = e^l$
 
-        $b^{l-1} = b^l$
+        \State $b^{l-1} = b^l$
 
-        $l++$
+        \State $l++$
             
-    }
+    \EndWhile
     
-    move $\Psi$ to host
-
-    \vspace{1.5em}
-    
+    \State move $\Psi$ to host
     \caption{One-cell inversion algorithm implemented on GPUs. Simplified for brevity.}
     \label{alg:ocigpu}
+\end{algorithmic}
 \end{algorithm}
 
 OCI's systems are represented as dense within a cell and built in a strided-batched configuration to take advantage of the block sparsity.

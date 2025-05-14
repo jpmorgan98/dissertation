@@ -102,50 +102,47 @@ The distance to nearest surface computation can become quite expensive as geomet
 Surface tracking is at the heart of many modern Monte Carlo neutron transport applications, including MCNP \cite{MCNP_RisingArmstrongEtAl}, Shift \cite{hamilton_continuous-energy_2019, pandya_implementation_2016}, MONK/MCBEND \cite{richards_monk_2015}, and OpenMC \cite{romano_openmc_2015}.
 
 
-\SetKwComment{Comment}{//}{ }
-\DontPrintSemicolon
 \begin{algorithm}
+\begin{algorithmic}[1]
+    \State $m =$ lookup material in current particle location
 
-    $m =$ lookup material in current particle location
+    \State $\Sigma_{t,m} =$ look up total macroscopic cross section of material $m$ 
 
-    $\Sigma_{t,m} =$ look up total macroscopic cross section of material $m$ 
-
-    \While{particle is alive}{
+    \While{particle is alive}
     
-        $d_{\text{collision}} = -\ln{\xi} / \Sigma_{t,m} $
+        \State $d_{\text{collision}} = -\ln{\xi} / \Sigma_{t,m} $
         
-        $d_{\text{surface}} =$ compute distance to nearest surface along particle direction of travel
+        \State $d_{\text{surface}} =$ compute distance to nearest surface along particle direction of travel
 
-        \If {$d_{\text{collision}} < d_{\text{surface}}$}{
+        \If{$d_{\text{collision}} < d_{\text{surface}}$}
 
-                $d = d_{\text{collision}}$
+                \State $d = d_{\text{collision}}$
                 
-                sample collision type
+                \State sample collision type
                 
-                carry out collision
+                \State carry out collision
                 
-            } \Else {
+            \Else 
 
-                $d = d_{\text{surface}}$
+                \State $d = d_{\text{surface}}$
         
-                move particle to surface
+                \State move particle to surface
     
-                $m =$ lookup material on the other side of the surface
+                \State $m =$ lookup material on the other side of the surface
     
-                $\Sigma_{t,m} =$ look up total macroscopic cross section of material $m$ 
+                \State $\Sigma_{t,m} =$ look up total macroscopic cross section of material $m$ 
     
-                \If {surface is a boundary}{
+                \If {surface is a boundary}
     
-                    implement boundary condition
+                    \State implement boundary condition
     
-            }
-        }
-        score track-lengths to tally bins
-    }   
-    
-    \vspace{1.5em}
+                \EndIf
+        \EndIf
+        \State score track-lengths to tally bins
+    \EndWhile
     \caption{A generic surface tracking algorithm.}
     \label{alg:surface}
+\end{algorithmic}
 \end{algorithm}
 
 
@@ -185,47 +182,32 @@ Boundary surfaces are often planar, making the computation trivial and cheap.
 %This is similar to other methods currently under development in OpenMC.
 
 \begin{algorithm}
-
-    \While{particle is alive}{
-    
-        $d_{\text{collision}} = -\ln{\xi} / \maj $
+\begin{algorithmic}[1]
+    \While{particle is alive}
+        \State $d_{\text{collision}} = -\ln{\xi} / \maj $
+        \State $d_{\text{boundary}} =$ compute distance to boundary
         
-        $d_{\text{boundary}} =$ compute distance to boundary
+        \If {$d_{\text{collision}} < d_{\text{boundary}}$}
+            \State $m =$ lookup material in current particle location
+            \State $\Sigma_{t} =$ look up total macroscopic cross section of material $m$ 
 
-        \If {$d_{\text{collision}} < d_{\text{boundary}}$}{
+            \If  {$\xi < \Sigma_{t} / \maj$}
+                \State collision is rejected
 
-            $m =$ lookup material in current particle location
-            
-            $\Sigma_{t} =$ look up total macroscopic cross section of material $m$ 
-
-            \If { $\xi < \Sigma_{t} / \maj$ }{
-
-                collision is rejected
-
-            } \Else {
-            
-                collision is accepted
-
-                tally $1/\Sigma_t$ to bin at particles current location
-
-                determine collision type 
-                
-                carry out collision
-                
-            }
-                
-        } \Else {
-        
-            move particle to boundary
-
-            implement boundary condition
-        }
-        
-    }
-    
-    \vspace{1.5em}
+            \Else 
+                \State collision is accepted
+                \State tally $1/\Sigma_t$ to bin at particles current location
+                \State determine collision type 
+                \State carry out collision
+            \EndIf
+         \Else 
+            \State move particle to boundary
+            \State implement boundary condition
+        \EndIf
+    \EndWhile
     \caption{Woodcock-delta tracking in MC/DC. Notably we are still surface tracking to boundaries.}
     \label{alg:trad}
+\end{algorithmic}
 \end{algorithm}
 
 An added complication when using the Woodcock-delta tracking method is restricting what type of tallies can be efficiently scored.
