@@ -1,16 +1,18 @@
-
-
 \chapter{Introduction to Deterministic Methods}
-
 \label{chap:determ_intro}
+
+This chapter provides more specific background and introduction to determent radiation transport methods needed before my manuscript chapters.
+I discuss the state of the art in deterministic radiation transport on GPUs and the various numerical methods needed to solve the 4 independent variable particle intergro-differential equation implemented in this work.
+I also summarize manuscript chapters \ref{chap:therefore_paper} and \ref{chap:smom_paper} including their contributions and relationship to my research questions from section \ref{sec:research_qustions}.
 
 \section{S$_N$ approximation in angle}
 
-The S$_N$ or discrete ordinance approximation turns the introgro-PDE describing radiation transport into a coupled (simultaneous) set of linear PDEs in each angular direction.
+There are two major methods of treating the integral over all angle in Eq. \ref{eq:fullNTE}.
+The method of spherical harmonics or P$_{N}$ method which takes angular moments of the transport equation then makes a closure assumption at the N\ths level.
+This work focuses on the S$_N$ or discrete ordinance approximation which turns the Eq. \ref{eq:fullNTE} into a coupled (simultaneous) set of linear partial differential equations in each angular direction using quadrature integration.
 It was first formulated by Chandrasekhar to describe radiative heat transfer in stellar media \cite{chandrasekhar1960radiative}.
 The S$_N$ approximation was soon applied to neutron transport by Carlson \cite{precise1971carlson}, Lee \cite{discrete1961lee}, and Lathrop \cite{discrete1966lathnrop}.
 The method of discrete ordinance was also adapted to general radiative heat transfer by Fiveland \cite{three1988fiveland} and Truelove \cite{discrete1987truelove}.
-%While this work is only concerned with the S$_N$ approximations another approximation using the method of moments and orthogonal spherical harmonics as basis functions can also be used to approximate the angular integral which gives rise to the P$_N$ approximations \cite{radheattrans1990}.
 
 At this point it becomes necessary to describe the other governing assumptions I use in this work including:
 slab geometry (1D-rectilinear coordinates), isotropic scattering and sources, as well as the multi-group assumption in energy distribution.
@@ -123,7 +125,7 @@ The spectral radius for SI depends linearly on the scattering ratio, and for pro
 The spectral radius of OCI decreases substantially as the optical thickness of the cells increases.
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=\textwidth]{deterministic/therefore_paper/therefore_figs/ss_specrads.pdf}
+    \includegraphics[width=\textwidth]{figures/therefore_figs/ss_specrads.pdf}
     \caption{Spectral radii ($\boldsymbol{\rho}$) of OCI (left) and SI (middle) and the ratio between the two (right), where $\boldsymbol{\Sigma}$ is the total cross section, $\boldsymbol{\Delta x}$ is the cell width, and $\boldsymbol{\Sigma_s}$ is the scattering cross section}
     \label{fig:specrad}
   \end{figure}
@@ -174,7 +176,34 @@ Krylov methods work by keeping copies of the guess for a given number of previou
 The generalized minimal residual (GMRES) method specifically, has been shown to make DSA schemes that perform relatively poorly, work well \cite{kylov2004warsa, subspace2004warsa}.
 
 
-\section{Summary and relation to research questions}
+\section{The Spectral Radius and Eigen Values}
+
+
+\section{Summary of Part and relation to research questions}
+
+
+Chapter \ref{chap:therefore_paper}
+In this work, we analyze how the convergence rate of an OCI scheme behaves when used for time-dependent neutron transport computations.
+We derive a second-order space-time discretization method from the simple corner balance and multiple balance time discretization schemes and show via Fourier analysis that it is unconditionally stable through time.
+Then, we derive and numerically solve the Fourier systems for both OCI and SI splittings of our discretization, showing that small mean-free times improve the spectral radius of OCI more than SI, and that spectral radius for OCI tends to zero as mean free time gets smaller.
+We extend both solvers to be energy dependent (using the multi-group assumption) and implement on an AMD MI250X using vendor-supplied batched LAPACK solvers.
+Smaller time steps improve the relative performance of OCI over SI, and, even when OCI requires more iterations to converge a problem, those iterations can be done much faster on a GPU.
+This leads to OCI performing better overall than SI on GPUs.
+
+
+Chapter \ref{chap:smom_paper}
+Solving the S$_N$ radiation transport equation on modern many cored compute architectures (i.e. GPUs) is challenging.
+The most common implemented solution method, the source iteration, requires computational expensive sweeping operations that cannot parallelized in 1D.
+While in 2D and 3D sweeps can use full parallel sweeping algorithms these schemes may not perform well on a GPU.
+One cell inversion iteration is another class of solvers for the radiation transport equation.
+OCI iterations are parallel over spatial cells which has been previously shown to out perform similarly implemented versions of unpreconditioned source iterations on GPUs for some problems.
+While OCI is rapidly convergent for optically thick problems spectral radius tends to one in both the optically thin and diffusive limits.
+Finding a preconditioner for one cell inversion iterations to support converging in this regime that can be efficiently computed on many-cored architectures motivates this work.
+%We have previously shown that for time dependent problems OCI's spectral radius has an added dependence on mean free time and tends to zero as mean free time decreases.
+We derive a second moment cellular decomposition method in conjunction with a one-cell inversion iteration in an effort to produce a fully space parallel, rapidly convergent, transport iteration.
+The second moment preconditioner derived in this work does not converge to the same solution as unpreconditioned transport solutions suggesting inconsistencies.
+Numerical experiments show the second moment preconditioner is rapidly convergent in the diffusive limit but dose not aid convergence in the optically thin limit.
+
 
 The first publication associated with this work is motivated by the hypothesized additional benefit of OCI in a time dependent code (RQ 3) coupled with the vast improvements in GPU accelerators in the past decade since Rosa et al. \cite{rosa_cellwise_2013} conducted their investigations (RQ 1 and 2).
 A rough draft of this first publication is included in Appendix \ref{app:therefore}.

@@ -170,7 +170,7 @@ From here the process is the same as before: tallies are accumulated, real colli
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.75\textwidth]{monte_carlo/delta_tracking/figures/macro_majorant_c5ce.pdf}
+    \includegraphics[width=0.75\textwidth]{figures/delta_figs/macro_majorant_c5ce.pdf}
     \caption{Continuous energy macroscopic majorant cross-section ($\maj$) for the continuous energy version of C5G7 PWR described in appendix \ref{app:c5ce_mat}.}
     \label{fig:majorant_c5ce}
 \end{figure}
@@ -268,7 +268,7 @@ This forms the underlying assumptions that are used in this work.
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=\textwidth]{monte_carlo/delta_tracking/figures/tally_ray.pdf}
+  \includegraphics[width=\textwidth]{figures/delta_figs/tally_ray.pdf}
   \caption{A particle tallying to multiple tally mesh bins (shown in red). Implemented as a single operation for both surface and Woodcock-delta tracking in MC/DC.}
   \label{fig:tally_ray}
 \end{figure}
@@ -297,33 +297,33 @@ Our verification problems are
 \end{itemize}
 \begin{figure}
   \centering
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/azurv1/azurv1_flux.png}
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/azurv1/azurv1_census_flux.png}
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/azurv1/azurv1_census_tally_flux.png}
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/azurv1/azurv1_sub_flux.png}
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/azurv1/azurv1_super_flux.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/azurv1/azurv1_flux.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/azurv1/azurv1_census_flux.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/azurv1/azurv1_census_tally_flux.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/azurv1/azurv1_sub_flux.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/azurv1/azurv1_super_flux.png}
   \caption{Convergence rate verification of AZURV1 \cite{ganapol_homogeneous_2001} }
   \label{fig:azurv1}
 \end{figure}
 \begin{figure}
   \centering
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/shem/inf_shem361_flux.png}
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/shem/inf_shem361_td_n.png}
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/shem/inf_shem361_td_census_n.png}
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/shem/inf_shem361_td_flux.png}
-  \includegraphics[width=0.32\linewidth]{monte_carlo/delta_tracking/figures/verification/shem/inf_shem361_td_census_flux.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/shem/inf_shem361_flux.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/shem/inf_shem361_td_n.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/shem/inf_shem361_td_census_n.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/shem/inf_shem361_td_flux.png}
+  \includegraphics[width=0.32\linewidth]{figures/delta_figs/verification/shem/inf_shem361_td_census_flux.png}
   \caption{Convergence rate of an infinite pin using the SHEM 361 group cross section library \cite{hfaiedh_2005_shem}}
   \label{fig:shem}
 \end{figure}
 \begin{figure}
   \centering
-  \includegraphics[scale=0.75]{monte_carlo/delta_tracking/figures/verification/reed/reed_flux.png}
+  \includegraphics[scale=0.75]{figures/delta_figs/verification/reed/reed_flux.png}
   \caption{Convergence rate of flux from Reed's problem \cite{reed_difference_1971}}
   \label{fig:reeds}
 \end{figure}
 \begin{figure}
     \centering
-    \includegraphics[width=0.75\linewidth]{monte_carlo/delta_tracking/figures/verification/abs_slab/slab_absorbium_flux.png}
+    \includegraphics[width=0.75\linewidth]{figures/delta_figs/verification/abs_slab/slab_absorbium_flux.png}
     \caption{Convergence rate of QOIs for a purely absorbing slab wall problem}
     \label{fig:abs_slab}
 \end{figure}
@@ -345,7 +345,7 @@ Also Serpent2's algorithm makes automatic decisions about where to surface and d
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.75\textwidth]{monte_carlo/delta_tracking/figures/macro_majorant_dragon.pdf}
+    \includegraphics[width=0.75\textwidth]{figures/delta_figs/macro_majorant_dragon.pdf}
     \caption{Continuous energy macroscopic majorant cross-section ($\maj$) for the Dragon burst problem.}
     \label{fig:majorant_dragon}
 \end{figure}
@@ -414,8 +414,8 @@ These plots where produced using Woodcock delta tracking with a collision estima
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.49\linewidth]{monte_carlo/delta_tracking/figures/verification/moving_pellet_plot.pdf}
-    \includegraphics[width=0.49\linewidth]{monte_carlo/delta_tracking/figures/verification/moving_pellet.pdf}
+    \includegraphics[width=0.49\linewidth]{figures/delta_figs/verification/moving_pellet_plot.pdf}
+    \includegraphics[width=0.49\linewidth]{figures/delta_figs/verification/moving_pellet.pdf}
     \caption{(left) Fission flux density at various points in time for the moving pellet problem, using Woodcock-delta tracking with a collision estimator (right) convergence between fluxes produced from surface and Woodcock-delta tracking both with the track-length estimator, showing $N^{-1/2}$ convergence rate.}
     \label{fig:moving_pellet}
 \end{figure}
@@ -445,8 +445,8 @@ where $\hat{\sigma}^2$ is the L$_{1}$ norm (over phase space) of the variance of
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.48\linewidth]{monte_carlo/delta_tracking/figures/dragon.png}
-    \includegraphics[width=0.48\linewidth]{monte_carlo/delta_tracking/figures/c5g7.png}
+    \includegraphics[width=0.48\linewidth]{figures/delta_figs/dragon.png}
+    \includegraphics[width=0.48\linewidth]{figures/delta_figs/c5g7.png}
     \caption{Schematics (left) Dragon burst problem \cite{kimpland2021dragon} (right) C5G7 reactor quarter (via reflecting boundaries) \cite{jia_hou_oecdnea_2017}}
     \label{fig:schems}
 \end{figure}
@@ -491,8 +491,8 @@ These results are produced from running \num{1e6} particles in \num{10} batches 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.48\linewidth]{monte_carlo/delta_tracking/figures/c5/acc.pdf}
-    \includegraphics[width=0.48\linewidth]{monte_carlo/delta_tracking/figures/c5/flux.pdf}
+    \includegraphics[width=0.48\linewidth]{figures/delta_figs/c5/acc.pdf}
+    \includegraphics[width=0.48\linewidth]{figures/delta_figs/c5/flux.pdf}
     \caption{C5G7 stuck rod accident simulation, (left) flux densities through time, (right) scalar flux on x-y plane (top view) at points in time}
     \label{fig:c5g7}
 \end{figure}
@@ -528,8 +528,8 @@ Figure \ref{fig:dragon_results} shows the overall flux density through time at l
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.48\linewidth]{monte_carlo/delta_tracking/figures/dragon/dragon_curve.pdf}
-    \includegraphics[width=0.48\linewidth]{monte_carlo/delta_tracking/figures/dragon/flux_dragon.pdf}
+    \includegraphics[width=0.48\linewidth]{figures/delta_figs/dragon/dragon_curve.pdf}
+    \includegraphics[width=0.48\linewidth]{figures/delta_figs/dragon/flux_dragon.pdf}
     \caption{Dragon burst simulation, (left) flux density through time, (right) scalar flux on y-z plane (side view) at points in time.}
     \label{fig:dragon_results}
 \end{figure}
@@ -546,7 +546,7 @@ The point of comparing delta tracking methods for this specific problem is to fi
 
 \section{Results}
 
-\input{monte_carlo/delta_tracking/figures/results_tab}
+\input{figures/delta_figs/results_tab}
 
 In this section we discuss performance results of the of the benchmarks described above with surface, traditional delta, voxelized delta tracking as well as the hybrid-in-energy and hybrid-in-material tracking algorithms.
 In this section we also verify that the various delta tracking methods converge to the same solution as surface tracking while transporting on a geometry with continuously moving surfaces.
@@ -579,7 +579,7 @@ As will the behavior of the voxelized delta method's runtime sitting between sur
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{monte_carlo/delta_tracking/figures/cle_v_tle.pdf}
+    \includegraphics[width=\textwidth]{figures/delta_figs/cle_v_tle.pdf}
     \caption{Comparison of delta tracking using the track-length estimator (top row) and collision estimator (bottom row) at three points in time. Collision estimator has a much higher variance.}
     \label{fig:koby}
 \end{figure}
@@ -666,7 +666,7 @@ We use \texttt{scipy.interpolate.interp1d()} to interpolate from one energy grid
 
 The following code shows exactly how this is done in MC/DC:
 
-\input{monte_carlo/delta_tracking/figures/majorant_alg}
+\input{figures/delta_figs/majorant_alg}
 
 This process results in a large majorant cross section that is quite unwieldy.
 Other more efficient algorithms exist to produce a just as accurate majorant with fewer points.
@@ -676,4 +676,4 @@ Delta tracking codes like Serpent avoid the need for any of this by having all n
 
 \subsection*{C5CE Material Definition}
 \label{app:c5ce_mat}
-\input{monte_carlo/delta_tracking/figures/c5ce_tab}
+\input{figures/delta_figs/c5ce_tab}

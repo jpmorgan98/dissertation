@@ -85,7 +85,7 @@ Compared to SI, OCI rapidly converges in thicker cells, even in highly scatterin
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{deterministic/therefore_paper/therefore_figs/ss_specrads.pdf}
+    \includegraphics[width=\textwidth]{figures/therefore_figs/ss_specrads.pdf}
     \caption{Spectral radii (${\rho}$) of steady-state OCI (left) and SI (right), where $c$ is the scattering ratio and ${\delta}$ is the cellular optical thickness in mean free paths from Fourier analysis in S$_8$.}
     \label{fig:ss-sepcrad}
 \end{figure}
@@ -123,7 +123,7 @@ We begin with the time-dependent, isotropic scattering slab geometry, S$_N$ tran
     \frac{1}{v} \frac{\partial \psi_{m}(x,t)}{\partial t} + \mu_m \frac{\partial \psi_{m}(x,t)}{\partial x} + \Sigma(x) \psi_{m}(x,t) 
      = \frac{1}{2} \left( \Sigma_{s}(x) \sum\limits_{n=1}^N w_n \psi_{n}(x,t) + Q(x,t) \right) \;, \\
     \qquad \qquad m=1, \ldots, N \;, \qquad t > 0 \;, \qquad x \in [0,X]
-\end{multline}
+\end{multline} 
 where $\psi$ is the angular flux, $t$ is time, $x$ is location, $v$ is speed, $\Sigma$ is the macroscopic total cross-section, $\Sigma_s$ is the macroscopic scattering cross-section, $w_m$ is angular quadrature weight, $\mu_m$ is the angular quadrature ordinate, $m$ is the quadrature index, $N$ is the quadrature order, and $Q$ is the isotropic material source.
 The initial and boundary conditions are prescribed angular flux distributions:
 \begin{equation*}
@@ -212,7 +212,7 @@ Figure~\ref{fig:stencil} shows the stencil location for angular flux and source 
 Figure~\ref{fig:stencil} shows the stencil location for angular flux and source terms. 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{deterministic/therefore_paper/therefore_figs/stencil.pdf}
+    \includegraphics[width=\textwidth]{figures/therefore_figs/stencil.pdf}
     \caption{Discretization stencil for simple corner balance, multiple balance time discretization}
     \label{fig:stencil}
 \end{figure}
@@ -473,7 +473,7 @@ None of $|\lambda_{max}|$ are above one, which means the Von Neumann stability c
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\linewidth]{deterministic/therefore_paper/therefore_figs/mb_scb.pdf}
+    \includegraphics[width=0.9\linewidth]{figures/therefore_figs/mb_scb.pdf}
     \caption{$|\lambda_{\max}|$ from numerically solved multiple balance time discretization and simple corner balance Fourier system over choices in mean free time ($\tau$) and cellular optical thickness ($\delta$) in S$_{16}$.}
     \label{fig:mb-scb}
 \end{figure}
@@ -647,7 +647,7 @@ and
 
 \begin{figure}
     \centering
-    \includegraphics[width=.9\textwidth]{deterministic/therefore_paper/therefore_figs/spy.pdf}
+    \includegraphics[width=.9\textwidth]{figures/therefore_figs/spy.pdf}
     \caption{Sparsity pattern of a two group, four angle OCI $\bm{A}_j$ system generated for each cell.}
     \label{fig:spyA}
 \end{figure}
@@ -845,7 +845,7 @@ As postulated in this work: as $\Delta t$ gets smaller, $\rho$ tends to 0---due 
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{deterministic/therefore_paper/therefore_figs/spec_rad_over_dt.pdf}
+    \includegraphics[width=\textwidth]{figures/therefore_figs/spec_rad_over_dt.pdf}
     \caption{Spectral radius of OCI (black) and SI (red) over choices of mean free path ($\delta$), time step ($\Delta t$), and scattering ratio ($c$).}
     \label{fig:specrad_fa}
 \end{figure}
@@ -867,8 +867,8 @@ More work is warranted to develop methods that can better capture the empirical 
 
 \begin{figure}
     \centering
-    \includegraphics[width=.49\textwidth]{deterministic/therefore_paper/therefore_figs/eig_plot.pdf}
-    \includegraphics[width=.49\textwidth]{deterministic/therefore_paper/therefore_figs/eig_spec_rad.pdf}
+    \includegraphics[width=.49\textwidth]{figures/therefore_figs/eig_plot.pdf}
+    \includegraphics[width=.49\textwidth]{figures/therefore_figs/eig_spec_rad.pdf}
     \caption{Eigenvalues in the complex plane of OCI (left), and spectral radius as a function of iteration from the empirical ratio of subsequent residuals and as predicted by Fourier analysis (right).}
     \label{fig:eigplot}
 \end{figure}
@@ -917,7 +917,7 @@ However, as we increase quadrature order the runtime performance of SI actually 
 
 \begin{figure}
     \centering
-    \includegraphics[width=1.0\textwidth]{deterministic/therefore_paper/therefore_figs/runtimes_10.0.pdf}
+    \includegraphics[width=1.0\textwidth]{figures/therefore_figs/runtimes_10.0.pdf}
     \caption{Wall-clock runtimes of the convergence loop (left) and 
     speedup of OCI over SI (right) at $\Delta t=$\SI{10.0}{\s} ($\tau=$ \num{2.2734}) as a function of $\delta$ and at various quadrature orders.}
     \label{fig:runtimes10.0}
@@ -925,7 +925,7 @@ However, as we increase quadrature order the runtime performance of SI actually 
 
 \begin{figure}
     \centering
-    \includegraphics[width=1.0\textwidth]{deterministic/therefore_paper/therefore_figs/runtimes_0.1.pdf}
+    \includegraphics[width=1.0\textwidth]{figures/therefore_figs/runtimes_0.1.pdf}
     \caption{Wall-clock runtimes of the convergence loop (left) and 
     speedup of OCI over SI (right) at $\Delta t=$\SI{0.1}{\s} ($\tau=$ \num{0.0227}) as a function of $\delta$ and at various quadrature orders.}
     \label{fig:runtimes0.1}

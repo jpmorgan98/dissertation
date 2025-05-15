@@ -93,7 +93,7 @@ We wrote MC/DC to enable rapidly developing these novel numerical methods for ti
 
 
 \begin{figure*}
-    \centerline{\includegraphics[width=.95\textwidth]{monte_carlo/cise_paper/cise_figs/flow.pdf}}
+    \centerline{\includegraphics[width=.95\textwidth]{figures/cise_figs/flow.pdf}}
     \caption{MC/DC's overall structure and how functions get called and interact. Green functions are entirely Python, and black functions are compiled compute kernels if they are running in Numba CPU or GPU modes.}\vspace*{-5pt}
     \label{mpi_mcdc}
 \end{figure*}
@@ -219,7 +219,7 @@ The end result of the computation is the same, but the order of execution on the
 MC/DC calls Harmonize via Python bindings.
 Harmonize has been shown to increase GPU performance by reducing thread divergence \cite{brax2023}.
 
-\input{monte_carlo/cise_paper/cise_figs/cpuvgpu_func}
+\input{figures/cise_figs/cpuvgpu_func}
 
 % description of GPU mode execution
 Moving to compile and run Numba \texttt{jit}ed functions to the GPU requires making a few alterations to the kernels themselves.
@@ -270,7 +270,7 @@ Our hope is that the investment made by the workflow developers is compounded wi
 
 \begin{figure}
     \centerline{
-    \includegraphics[width=.4 \textwidth]{monte_carlo/cise_paper/cise_figs/kobayashi_problem.png}
+    \includegraphics[width=.4 \textwidth]{figures/cise_figs/kobayashi_problem.png}
     } 
     \caption{Kobayashi problem schematic.}
     \label{koby-problem-def}
@@ -278,8 +278,8 @@ Our hope is that the investment made by the workflow developers is compounded wi
 
 \begin{figure*}[h]
     \centerline{
-    %\includegraphics[width=.3\textwidth]{monte_carlo/cise_paper/cise_figs/kobayashi_problem.png} \hspace{1cm}
-    \includegraphics[width=\textwidth]{monte_carlo/cise_paper/cise_figs/koby.pdf}
+    %\includegraphics[width=.3\textwidth]{figures/cise_figs/kobayashi_problem.png} \hspace{1cm}
+    \includegraphics[width=\textwidth]{figures/cise_figs/koby.pdf}
     } 
     \caption{Time and space averaged scalar flux solution to the Kobayashi problem run with $1\times 10^{9}$ particle histories at various points in time.}
     \label{koby-results}
@@ -320,7 +320,7 @@ MC/DC-GPU shows the best weak-scaling efficiency for this problem, decreasing on
 
 \begin{figure*}[h]
     \centerline{
-    \includegraphics[width=1.1\textwidth]{monte_carlo/cise_paper/cise_figs/comps.pdf}
+    \includegraphics[width=1.1\textwidth]{figures/cise_figs/comps.pdf}
     }
     \caption{Left: Wall-clock runtime of the Kobyashi problem over particle counts. 
     Right: Weak scaling efficiency as a function of node count for the Kobyashi problem on Dane (CPU) and Lassen (GPU).}

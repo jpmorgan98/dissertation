@@ -1,7 +1,6 @@
 
 
 
-
 \chapter{Introduction to Monte Carlo Methods}
 
 \label{chap:mc_methods_intro}
@@ -99,3 +98,25 @@ We sort out these phantom collisions by allowing particles to continue to a new 
 where $\xi\in[0,1]$ is a new random number and $\Sigma_{j}(E)$ is the total macroscopic cross-section of the material ($j^{th}$) where the particle currently resides.
 Standard delta tracking is required to use a collision estimator which is less efficient then the normal track length estimator used in surface tracking~\cite{mc2018}.
 My goal is to find a way to use the track-length estimator while doing delta tracking which may improve the performance of a Monte Carlo code (RQ 5).
+
+
+\section{Summary of Part and relation to research questions}
+
+
+Chapter \ref{chap:joss_paper}
+We designed Monte Carlo / Dynamic Code (MC/DC) to explore such novel numerical methods on modern high-performance computing systems.
+We avoid the need for a compiled or domain-specific language by using the Numba compiler for Python to accelerate and abstract our compute kernels to near compiled code speeds.
+We have implemented novel algorithms using this scheme and, in some verification tests, have approached the performance of industry-standard codes at the scale of tens of thousands of processors.
+
+Chapter \ref{chap:cise_paper} Finding a software engineering approach that allows for portability, rapid development, and open collaboration for high-performance computing on GPUs and CPUs is a challenge. 
+We implement a portability scheme using the Numba compiler for Python in Monte Carlo / Dynamic Code (MC/DC), a new neutron transport application for rapidly developing Monte Carlo. 
+Using this scheme, we have built MC/DC as an application that can run as a pure Python, compiled CPU, or compiled GPU solver. 
+In GPU mode, we use Numba paired with an asynchronous GPU scheduler called Harmonize to increase GPU performance. We present performance results (including weak scaling up to 256 nodes) for a time-dependent problem on both CPUs and GPUs and compare favorably to a production C++ code.
+
+Chapter \ref{chap:delta_tracking_paper} There is no mathematical reason why the track-length estimator cannot be used in conjunction with Woodcock-delta tracking only implementation issues. 
+In this work we take advantage of that to produce a Woodcock-delta tracking algorithm which tallies fluxes to a structured rectilinear mesh using the track-length estimator.
+This development more readily enables hybrid surface-delta tracking algorithms as the track-length tally can be used everywhere for scalar flux estimation regardless of which tracking algorithm a particle is using.
+We use this when developing a novel hybrid-in-energy method where Woodcock-delta tracking is used in high energies (where mean free paths are long) and surface tracking below that (starting at the neutron resonances) as well as a previously defined hybrid-in-material method.
+We verify that delta tracking algorithms we consider can be used in conjunction with continuously moving surfaces.
+We benchmark these methods showing figures of merit on four time-dependent problems: two multi-group and two continuous-energy.
+Woodcock-delta tracking with a track-length tally showed modest improvements to figures of merit as compared to traditional delta tracking with a collision estimator and surface tracking with a track-length estimator (\num{1.5}$\times$--\num{2.5}$\times$) and significant improvements (\num{7}$\times$--\num{11}$\times$) when using the hybrid-in-energy method.

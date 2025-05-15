@@ -1,43 +1,8 @@
 % !BIB TS-program = biber
-\documentclass[11pt,onehalf]{general/beavtex}
+\documentclass[11pt,onehalf]{beavtex}
 %\documentclass[12pt,twoside]{book}
 
 \input{thesis-header.tex}
-
-%%%%% JPM PACAKGES AN COMMANDS
-
-% for tabels and code
-\usepackage{multirow} % multiple rows in tables
-\usepackage{longtable} % long tables
-\usepackage{minted} % code snipits
-
-\usepackage{siunitx} % units and numbers
-\usepackage{bm}
-\usepackage{booktabs}
-\usepackage{graphicx}
-
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-
-
-% setting main text font
-\usepackage[T1]{fontenc}
-\usepackage{baskervald} % -- fav so far
-\usepackage[baskerville,vvarbb]{newtxmath}
-
-\usepackage{amsmath} %maths
-
-
-
-% some useful commands
-\newcommand{ \nd }{$^{\text{nd}}$ }
-\newcommand{ \ths }{$^{\text{th}}$}
-
-% used to put quotes at the beginning of a chapter
-\usepackage{epigraph}
-\renewcommand{\epigraphsize}{\footnotesize}
-
-
 
 % things to check or replace
 % replace your name here.
@@ -150,10 +115,6 @@ The d
 
 \dedication{To my grandfather Evan, my dog Rutabaga, \\and all the people who make life worth living.}
 
-
-%\preface{
-%}
-
 \begin{document}
 
 \maketitle
@@ -177,6 +138,7 @@ The d
 % put -- utopia / fourier -- too cambria math
 
 
+% setting inital commands for the manuscript header pages
 \newcommand{\TheTitle}{BLANK}
 \renewcommand{\TheAuthors}{BLANK}
 \newcommand{\TheAddress}{BLANK}
@@ -194,7 +156,7 @@ The d
 \input{4_smom_paper}
 
 
-\part{Monte Carlo Methods}
+\part{Monte Carlo Transport}
 \label{part:mc}
 
 \input{5_monte_carlo}
@@ -209,11 +171,12 @@ The d
 
 
 
-\bibliography[]
+\printbibliography[]
 
 
 % \newpage
 \appendix
+\input{appendix/pubs}
 \input{appendix/spec_rads_app}
 \newpage
 \input{appendix/mcatk_app}
