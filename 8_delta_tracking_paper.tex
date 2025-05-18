@@ -7,7 +7,7 @@
   Kyle E. Niemeyer,}
 
 \renewcommand{\TheAddress}{
-\textit{Submitted to Journal of Computational and Theoretical Transport} \\
+\textit{In preparation for submission to\\Journal of Computational and Theoretical Transport}
 
 }
 
@@ -18,13 +18,9 @@
 
 \epigraphhead[10]{\singlespacing
     \epigraph{
-        And it's knowing I'm not shackled\\
-        By forgotten words and bonds\\
-        And the ink stains that are dried upon some line\\
-        That keeps you in the back roads by the rivers of my memory\\
-        That keeps you ever gentle on my mind\\
+        This experiment is like tickling the tail of the sleeping dragon.
     }
-    {Glenn Campbell}
+    {Richard Feynman}
 }
 
 \newcommand{\maj}{\Sigma_{\text{maj}}}
@@ -50,7 +46,7 @@ Woodcock-delta tracking with a track-length tally showed modest improvements to 
 % general introduction
 Predicting the neutron distribution in space, energy and time is important when modeling inertial confinement fusion systems, pulsed neutron sources, and nuclear criticality safety experiments, among other systems.
 The behavior of neutrons can be modeled with a Monte Carlo simulation, where particles with statistical importance are created and transported to produce a particle history \cite{lewis_computational_1984}. 
-The path of a particle and the specific set of events that occur within its history are governed by pseudorandom numbers, known probabilities (for example, from material data), and known geometries. Data about how
+The path of a particle and the specific set of events that occur within its history are governed by pseudo-random numbers, known probabilities (for example, from material data), and known geometries. Data about how
 particles move and/or interact with the system are tallied to compute parameters of interest with an associated statistical error from the Monte Carlo process.
 
 There are two common methods used to sample the random walk in a Monte Carlo neutron transport algorithm: surface tracking \cite{lewis_computational_1984} and Woodcock-delta tracking \cite{woodcock_techniques_1965}.
@@ -98,7 +94,7 @@ The smaller of these two distances determines which event happens to the particl
 After or while the particle is moving, tallies can be accumulated to compute quantities of interest.
 If a collision occurs, more sampling and operations can be done (e.g., isotropically scatter a particle).
 If the particle is still alive at the end, the algorithm is repeated.
-The distance to nearest surface computation can become quite expensive as geometries grow in complexity (e.g. complex CSG geometries or CAD based surfaces).
+The distance to nearest surface computation can become quite expensive as geometries grow in complexity (e.g., complex CSG geometries or CAD based surfaces).
 Surface tracking is at the heart of many modern Monte Carlo neutron transport applications, including MCNP \cite{MCNP_RisingArmstrongEtAl}, Shift \cite{hamilton_continuous-energy_2019, pandya_implementation_2016}, MONK/MCBEND \cite{richards_monk_2015}, and OpenMC \cite{romano_openmc_2015}.
 
 
@@ -230,7 +226,7 @@ On the other hand the track-length estimator will always tally into every mesh b
 Meaning, undermost problem regimes, more information will be scored, which will result in a lower-variant tally for the same number of particles.
 
 Both of the estimators in Eqs. \ref{eq:collision} and \ref{eq:pathlength} are only for flux integrals, where response functions are one.
-Other response functions for other reaction rates (e.g. fission rate density) will require the knowledge of the macroscopic cross section of that operation in a given location.
+Other response functions for other reaction rates (e.g., fission rate density) will require the knowledge of the macroscopic cross section of that operation in a given location.
 In this work we limit ourselves to flux integrals only.
 Thus we also only enable these schemes for fixed source problems and leave k-eigenvalue calculations for future work.
 This does currently limit the more general applicability of the methods we implement, tho future work may extend these methods to allow for the computation of these perimeters.
@@ -521,7 +517,7 @@ It was conducted in 1944 during the Manhattan project to prove that criticality 
 Previous experiments, like the Chicago Pile One, used delayed neutrons to achieve criticality.
 Figure \ref{fig:schems} at left shows a schematic of the experiment where a slug of highly enriched (75\%) Uranium Hydride ($UH_{10}$) was doped through a core with additional fuel.
 As the slug moved through the core a prompt critical reaction was triggered as critical mass was achieved.
-Before the super critical burst could become a problem (i.e. a deadly uncontrollable blast), gravity would pull the slug out of the core, ending the reaction.
+Before the super critical burst could become a problem (i.e., a deadly uncontrollable blast), gravity would pull the slug out of the core, ending the reaction.
 Kimpland et. al showed that this burst criticality experiment could achieve over 9 orders of burst magnitude \cite{kimpland2021dragon}.
 Work is on going to model the problem up to 9 orders of burst magnitude in MC/DC but here we use a less reactive version (25\% enrichment) to verify delta tracking with the hybrid-in-material method described in section \ref{sec:material_exc} and additional verification for delta tracking with continuously moving surfaces.
 Figure \ref{fig:dragon_results} shows the overall flux density through time at left and a y-z plot of scalar flux at various points in time on the right.

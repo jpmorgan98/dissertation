@@ -1,7 +1,11 @@
-
-
-
 \chapter{Introduction to Monte Carlo Methods}
+
+\epigraphhead[10]{\singlespacing
+    \epigraph{
+        If you evade suffering you also evade the chance of joy. Pleasure you may get, or pleasures, but you will not be fulfilled. You will not know what it is to come home.
+    }
+    {Ursula K. Le Guin}
+}
 
 \label{chap:mc_methods_intro}
 
@@ -30,7 +34,7 @@ My work with Monte Carlo schemes---as with my deterministic work---is broadly di
 The first section digs into the first goal, examining performance portability schemes in high-level languages and the work that is currently deployed in Monte Carlo/Dynamic Code (MC/DC) as part of my work with the Center for Exascale Monte Carlo Neutron Transport (CEMeNT).
 The second contains work initially done in a production code at Los Alamos National Laboratory and a proposed extension of the scheme the scheme in an implementation in MC/DC.
 
-\subsection{Portability frameworks for Monte Carlo methods}
+\section{Portability frameworks for Monte Carlo methods}
 
 In this section I introduce initial investigations into high-level performance portability frameworks.
 Developing software to simulate physical problems that demand HPC is difficult.
@@ -71,7 +75,7 @@ After these initial investigations a Numba+mpi4py software engineering scheme wa
 %I found that all three methods produced similar runtimes for our workflows on CPUs and GPUs for a simple transient Monte Carlo neutron transport simulation \cite{morgan2022}.
 %Ultimately, we decided to use a Numba + mpi4py development scheme to build out a Monte Carlo neutron transport code for rapid numerical methods development, portable to various HPC architectures \cite{variansyah_mc23_mcdc,morgan_monte_2024,transport_cement_mcdc_2024} (RQ 1).
 
-\subsection{Delta tracking}
+\section{Delta tracking}
 
 This section describes a variance reduction technique that propose to implement in MC/DC.
 Woodcock, or delta, tracking \cite{woodcock_techniques_1965} is a variance-reduction technique that computes the majorant cross-section for the whole problem space, then uses it to determine a distance to collision for all particles.

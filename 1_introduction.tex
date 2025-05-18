@@ -4,10 +4,10 @@
 \label{chap:intro}
 
 \epigraphhead[10]{\singlespacing
-\epigraph{
-    We loiter in the winter \\
-    while it is already spring.
-	}{Henry David Thoreau}
+    \epigraph{
+        The stupidest person on God's green earth is the 2nd lieutenant in the US army cus that's the first rank you get out of officer training. The only person who might rival that; would be an engineer right out of school---don't be so fucking stupid.
+    }
+    {Evan H Morgan (my grandfather)}
 }
 
 \section{An Introduction for a General Audience}
@@ -88,13 +88,13 @@ and the boundary condition
 A number of additional implicit assumptions are needed for the validity of this equation \textit{and} my research including: particle--particle interactions are rare and can be neglected, neutrons are points in space with no volume, collision events occur instantaneously, and nuclear properties are known \cite{lewis_computational_1984, duderstadt_hamilton}.
 
 The transport equation is commonly solved using a deterministic or Monte Carlo (stochastic) \cite{lux_1998} numerical solution method or clever combinations of the two \cite{monke_phd, pasmann_phd} as analytic solutions are sparse.
-Finding solutions to the transport equation with any numerical method can be incredibly computationally expensive due to the high number of independent variables (often referred to as the \textit{curse of dimensionality}), the geometric complexity of the systems of interest (e.g. nuclear reactor cores, human people), and the complex behavior of neutrons (specifically) in energy.
+Finding solutions to the transport equation with any numerical method can be incredibly computationally expensive due to the high number of independent variables (often referred to as the \textit{curse of dimensionality}), the geometric complexity of the systems of interest (e.g., nuclear reactor cores, human people), and the complex behavior of neutrons (specifically) in energy.
 
 % determnistic methods
 Deterministic methods rely on discretization or the assumption of functional shape on small pieces of phase space to form a solution in an entire simulated problem domain---in all independent variables---in single numerical method---in one simulation.
-The different components of the transport eqation (Eq. \eqref{eq:fullNTE}) (e.g. angular scattering integral, energy up-, down-scattering, streaming through space, changing in time) require different numerical schemes to efficiently discretize each component for solution on digital computers.
+The different components of the transport eqation (Eq. \eqref{eq:fullNTE}) (e.g., angular scattering integral, energy up-, down-scattering, streaming through space, changing in time) require different numerical schemes to efficiently discretize each component for solution on digital computers.
 The full numerical method for a single deterministic transport simulation is actually a nested set of cooperating numerical methods for each of the components of the transport equation.
-Due to the \textit{curse of dimensionality} direct numerical solution (e.g. LU-decomposition) to the discritization transport system is impossible many problems due to the memory and computational burden.
+Due to the \textit{curse of dimensionality} direct numerical solution (e.g., LU-decomposition) to the discritization transport system is impossible many problems due to the memory and computational burden.
 This is especially true for time dependent problems so most deterministic transport applications use an iterative algorithm at their most fundamental level.
 How many times a given algorithm must iterate, how long each iteration takes, and where an algorithm allows for parallelism become the preeminent arbiters of wall-clock performance.
 
@@ -122,7 +122,7 @@ To rapidly prototype, develop, deploy and test new numerical methods at scale a 
 
 Broadly this dissertation contributes solutions to these problems for both deterministic and Monte Carlo solution types:
 \begin{enumerate}
-    \item Rapidly exploring new numerical methods on GPUs; and
+    \item Rapidly exploring new numerical methods on and for GPUs; and
     \item Developing software engineering schemes to implement novel methods at scale.
 \end{enumerate}
 
@@ -175,4 +175,4 @@ At the time of this writing, two manuscript chapters of this dissertation has be
 
 During the duration of my PhD I have authored fourteen manuscripts of which: on eleven I have been first author, seven have been published in peer-reviewer conference transactions or proceedings, and four have been published in field relevant journals.
 A complete list of publications is in appendix \ref{chap:listopusb}.
-Two of my additional published manuscripts are attached in the appendices, describe relevant preceding and tangential work.
+Two of my additional published manuscripts are attached in the appendices, describing relevant preceding and tangential work.

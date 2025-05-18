@@ -1,14 +1,21 @@
 \chapter{Introduction to Deterministic Methods}
 \label{chap:determ_intro}
 
+\epigraphhead[10]{\singlespacing
+    \epigraph{
+        I love America more than any other country in the world and, exactly for this reason, I insist on the right to criticize her perpetually.
+    }
+    {James Baldwin}
+}
+
 This chapter provides more specific background and introduction to determent radiation transport methods needed before my manuscript chapters.
 I discuss the state of the art in deterministic radiation transport on GPUs and the various numerical methods needed to solve the 4 independent variable particle intergro-differential equation implemented in this work.
 I also summarize manuscript chapters \ref{chap:therefore_paper} and \ref{chap:smom_paper} including their contributions and relationship to my research questions from section \ref{sec:research_qustions}.
 
 \section{S$_N$ approximation in angle}
 
-There are two major methods of treating the integral over all angle in Eq. \ref{eq:fullNTE}.
-The method of spherical harmonics or P$_{N}$ method which takes angular moments of the transport equation then makes a closure assumption at the N\ths level.
+There are two major methods of treating the double integral over all angle in Eq. \ref{eq:fullNTE}.
+The method of spherical harmonics or P$_{N}$ method which takes angular moments of the transport equation then makes a closure assumption at the N\ths  order.
 This work focuses on the S$_N$ or discrete ordinance approximation which turns the Eq. \ref{eq:fullNTE} into a coupled (simultaneous) set of linear partial differential equations in each angular direction using quadrature integration.
 It was first formulated by Chandrasekhar to describe radiative heat transfer in stellar media \cite{chandrasekhar1960radiative}.
 The S$_N$ approximation was soon applied to neutron transport by Carlson \cite{precise1971carlson}, Lee \cite{discrete1961lee}, and Lathrop \cite{discrete1966lathnrop}.
@@ -16,18 +23,18 @@ The method of discrete ordinance was also adapted to general radiative heat tran
 
 At this point it becomes necessary to describe the other governing assumptions I use in this work including:
 slab geometry (1D-rectilinear coordinates), isotropic scattering and sources, as well as the multi-group assumption in energy distribution.
-The methods I propose in this work are not restricted by these assumptions---and future work may explore the methods described here in anisotropic distributions in angle and/or solutions on unstructured meshes---but are made here for simplicity.
+The methods I develop in this work are not restricted by these assumptions---and future work may explore the methods described here in anisotropic distributions in angle and/or solutions on unstructured meshes---but are made here for simplicity.
 In fact, I make specific decisions in this work with the underlying discretization schemes to allow for eventual extension to these regimes.
 
-When applied to Eq.~\eqref{eq:fullNTE} the resulting initialization point for my work is described by
+When applied to Eq.~\eqref{eq:fullNTE} the resulting initialization point is described by
 \begin{multline}
     \label{sn_nte_int}
     \frac{1}{v_g} \frac{\partial \psi_{m,g}(x,t)}{\partial t} + \mu_m \frac{\partial \psi_{m,g}(x,t)}{\partial x} + \Sigma_g(x) \psi_{m,g}(x,t)  \\
      = \frac{1}{2} \left( \sum\limits_{g' = 0}^G \Sigma_{s, g'\to g}(x) \sum\limits_{n=1}^N w_n \psi_{n, g'}(x,t) + Q_g(x,t) \right) \;, \\
     \qquad g=1 \ldots G \;, \qquad m=1 \ldots N \;, \qquad t > 0 \;, \qquad x \in [0,X] \;,
 \end{multline}
-where $\psi$ is the angular flux, $t$ is time, $x$ is location in 1D space, $g$ refers to the group, $v$ is velocity, $w_m$ is angular quadrature weight, $\mu_m$ is the angular quadrature ordinate ($\cos(\hat{\Omega}_\theta)$), $m$ is the quadrature index, and $Q$ is the isotropic material source.
-In this work I will exclusively use Gauss-Legendre quadrature, but if extended to higher dimensions other quadratures sets would be required to evaluate the double integral over both angular directions (e.g. level-symmetric). 
+where $\psi$ is the angular flux, $x$ and $t$ are independent continuous variables for 1D space and time respectively, $g$ is the group index, $v$ is velocity, $w$ is an angular quadrature weight, $\mu$ is the angular quadrature ordinate ($\cos(\hat{\Omega}_\theta)$), $m$ is the quadrature index, and $Q$ is the isotropic material source.
+In this work I will exclusively use Gauss-Legendre quadrature, but if extended to higher dimensions other quadratures sets would be required to evaluate the double integral over both angular directions (e.g., level-symmetric). 
 The initial and boundary conditions are again prescribed angular flux distributions:
 \begin{equation*}
     \psi_{m,g}(x,0) = \psi_{m,0}(x), \qquad m=1 \ldots N \;,
@@ -43,34 +50,73 @@ From here additional discretization can be used to turn the continuous functions
 \section{Time-Space discretization schemes}
 
 To enable this work in both space and time, discretization schemes are needed to treat the differential operators and continuous functions.
-As the goal of the research is for development on heterogeneous architectures communication to work ratio may become an issue.
+As the goal of the research is for development on heterogeneous architectures, communication to work ratio may become an issue.
 Numerical algorithms that require lots of communication back and forth between the host (CPU) and device (GPU) will limit the maximum allowable performance for most GPU accelerators.
 To abate this issue higher (second) order discretization schemes can be used to add to the compute work required in every iteration, thus improving the communication to work ratio.
 
 Various classes of spatial discretizations can be used in radiation transport.
-Finite difference, finite element, and finite volume methods are all often employed with the most common scheme being Diamond-Differencing $\mathcal{O}(2)$.
+Finite difference, finite element, and finite volume methods are all often employed with the most common in radiation transport being Diamond-Differencing $\mathcal{O}(2)$.
 Diamond-Difference is popular as it is the only second order space discretization that uses a single interior (cell-averaged) degree of freedom; however it only works on orthogonal grids.
 %Intended future investigation of the scheme in this research are into non-uniform meshes.
 To allow future work to more readily extend the algorithms described here to unstructured grids I make specific decisions about a discritization scheme---in other words, not Diamond-Differencing.
-Therefore, I used a finite volume scheme specifically designed for use on unstructured grids called corner-balance, which was originally developed by Adams~\cite{adams_subcell_1997}.
-It is a finite volume method and enforces conservation within subcell volumes in a spatial cell.
+Instead I use a finite volume scheme specifically designed for use on unstructured grids called corner-balance, which was originally developed by Adams~\cite{adams_subcell_1997}.
+It is a finite volume method thus it enforces conservation within subcell volumes in a spatial cell.
 Simple corner balance was determined to be sufficient as it is higher $\mathcal{O}(2)$ order.
 %Simple corner blance is not acrurate in the thin-limit however a slight alteration to it 
-Simple corner balance is equivalent to the lumped-linear discontinuous finite element method.
-This spatial discritization is similar to what has previously been implemented in both iterative schemes I introduce in section \ref{sec:syn_acc}.
+Simple corner balance is equivalent to the lumped-linear discontinuous finite element method in 1D.
+This spatial discritization is similar to what has previously been implemented in both iterative algorithms explored in this work \ref{sec:syn_acc}.
 
-Solving the transport equation with deterministic methods typically involves iterative schemes to converge the scattering source and transport operators (this is discussed more in section \ref{sec:intro_itterative-scheme}).
-Thus implicit time marching schemes are often used to time step as they have desirable stability properties.
+%Solving the transport equation with deterministic methods typically involves iterative schemes to converge the scattering source and transport operators (this is discussed more in section \ref{sec:intro_itterative-scheme}).
+To treat the continuous operators in time, implicit time marching schemes are often used to time step as they have desirable stability properties.
 Specifically, implicit (backward) Euler $\mathcal{O}(1)$ or Crank-Nicolson $\mathcal{O}(2)$ are the most often employed.
 %These schemes are advantageous as they often act like a wrapper around a steady state deterministic transport solver with few changes needed to implement.
 While Crank-Nicolson is second order accurate it is not robust and can produce negative solutions and spurious osculations.
-Time dependent multiple balance (TDMB) was derived by Variansyah, Larsen, and Martin~\cite{variansyah_robust_2021, ilham_phd} to be a robust higher (second) order time discretization scheme.
-TDMB is developed from the "multiple-balance" approach which has also been developed as a space discretization scheme.
-When implementing a higher order method to allow for greater work-to-communicate ratios I decided to use this scheme. 
+Time dependent version of the multiple balance approach was derived by Variansyah, Larsen, and Martin~\cite{variansyah_robust_2021, ilham_phd} to be a robust, higher (second) order time discretization scheme.
+The multiple-balance balance methods was originally developed as a space discretization scheme.
 
-\section{Source-iteration}
+The full space-time-energy-angle discritization scheme is derived in chapter \ref{chap:therefore_paper} and is explicitly shown in Equations \eqref{eq:scatter_mg} and \eqref{eq:fullOCI_mg}.
+
+\section{Iterative Methods}
+
+The linear system of equations formed by the space-energy-time-angle discritization scheme described in the previous sections can be posed as
+\begin{equation}
+\label{eq:introaxb}
+    \bm{A}x=b \; ,
+\end{equation}
+which may be solved directly (e.g., LU decomposition with pivoting) or iteratively (e.g. Jacobi or Gauss--Seidel iterations).
+The dimensions of these problems is \emph{huge} and sparse, going by the number of:
+\begin{itemize}
+    \item angles in quadrature: \num{10}--\num{100};
+    \item energy groups: \num{1}--\num{100};
+    \item sub-cell discretizations: 4; and
+    \item spatial cells: which can be hundreds upto millions for 1D problems.
+\end{itemize}
+This is the impact of the \emph{curse of dimensionality} and is only further compounded when moving to higher spatial dimensions. 
+So direct simulations are often prohibitively memory and computationally expensive.
+Most often these systems are solved with some kind of iterative scheme.
+
+To solve the discritization system iteratively, a fixed point (or Richardson) iteration is often used.
+They are broad class of iterative methods where \emph{old} information (from the immediately previous iteration) is used to forum a new right hand side which in turn is resolved for a new guess
+Thus the direct formulation in Eq. \eqref{eq:introaxb} becomes
+\begin{equation}
+    \bm{A}x^{l+1} = b x^{l}
+\end{equation}
+where $l$ is the iteration counter.
+The iteration will continue until the quantity of interest stops changing between iterations when we say the scheme has \emph{converged}.
+
+The process of separating components of the dependent variable to either side of an equation, letting one lag, and solving for an update is called \emph{operator splitting}.
+The specifics of a given operator splitting will determine the organization of the linear systems in $A$ and $b$ which in turn will determine how they can be efficiently solved within each iteration and what tools can be used to implement those solvers.
+The operator splitting will also impact how many iterations it will take to reach convergence.
+
+For high fidelity problems these systems are still massive and require their solution to be computed in parallel to 
+
+
+
+
+\subsection{Source-iteration}
 \label{sec:intro_itterative-scheme}
 
+Due to the curse of dimentionality the linear system
 The transport equation requires some kind of iterative scheme to converge the linkage between scattering source and transport operators.
 The source iteration (SI) method is commonly used to do this, often accompanied by preconditioners or synthetic accelerators, where the contribution to the solution from the scattering source (summation in the RHS of Eq.~\eqref{sn_nte_int}) is allowed to lag, while the angular flux is solved in every ordinate via transport sweeps through the spatial domain \cite{adams_subcell_1997}.
 SI sweeps in Cartesian geometries are readily parallelized over the number of angles, as the source term is known from the previous iteration, allowing the angular flux in each ordinate to be computed independently. 
@@ -78,7 +124,7 @@ While any parallelization is a boon to performance, a scheme that is embarrassin
 In a single spatial dimension SI is \textit{annoying serial} in space and cannot be parallelized.
 
 In higher spatial dimensions, many S$_N$ production codes that implement SI use some kind of wavefront marching parallel algorithm also known as a Kockh-Baker-Alcouff scheme \cite{baker_kba_2017, colomer_parallel_2013} also called "full parallel sweeps" in literature.
-In this scheme a sweep begins in a spatial location where all cell dependencies are known from boundary information (e.g. a corner).
+In this scheme a sweep begins in a spatial location where all cell dependencies are known from boundary information (e.g., a corner).
 From there on a hypothetical 2D grid, the two nearest neighbor cells are computed independently, potentially in parallel; the next step would be 4 cells.
 This diagonally expanding wavefront continues to march and is able to better parallelize as many cells spatially as possible eventually saturating the number of work threads if the problem is large enough.
 %On CPUs this has been shown to be performant but this changing amount of work is not optimal on GPUs where.
@@ -102,7 +148,7 @@ This diagonally expanding wavefront continues to march and is able to better par
 %We conject that this is due to the nonlinear work load a wavefront marching schemes incurred. 
 
 
-\section{One cell inversion-iteration}
+\subsection{One cell inversion-iteration}
 
 % Intro to OCI and previous work including warsaw 
 
@@ -147,7 +193,7 @@ When solving optically thick and highly scattering problems, small increases in 
 Time step and cellular optical thickness are inversely proportional to each other, meaning a smaller time step will yield a larger effective total cross section, thus theoretically improving the spectral radius.
 This behavior is not expected to happen in source iterations as SI does not directly depend on cellular optical thickness---behaving linearly in that dimension for all but the most thick problems.
 
-\section{Preconditinoers and Synthetic acceleration}
+\subsection{Preconditinoers and Synthetic acceleration}
 
 \label{sec:syn_acc}
 % acceleration schemes for SI
@@ -176,7 +222,7 @@ Krylov methods work by keeping copies of the guess for a given number of previou
 The generalized minimal residual (GMRES) method specifically, has been shown to make DSA schemes that perform relatively poorly, work well \cite{kylov2004warsa, subspace2004warsa}.
 
 
-\section{The Spectral Radius and Eigen Values}
+\subsection{The Spectral Radius and Eigen Values}
 
 
 \section{Summary of Part and relation to research questions}
@@ -190,9 +236,13 @@ We extend both solvers to be energy dependent (using the multi-group assumption)
 Smaller time steps improve the relative performance of OCI over SI, and, even when OCI requires more iterations to converge a problem, those iterations can be done much faster on a GPU.
 This leads to OCI performing better overall than SI on GPUs.
 
+In this work I limit to a single spatial dimension.
+This because the problems we are tying to solve (balancing parallelism, time dependence, convergence rate, and searching preconditioners) is dreadfully difficult.
+While the problems I solve are not
+
 
 Chapter \ref{chap:smom_paper}
-Solving the S$_N$ radiation transport equation on modern many cored compute architectures (i.e. GPUs) is challenging.
+Solving the S$_N$ radiation transport equation on modern many cored compute architectures (i.e., GPUs) is challenging.
 The most common implemented solution method, the source iteration, requires computational expensive sweeping operations that cannot parallelized in 1D.
 While in 2D and 3D sweeps can use full parallel sweeping algorithms these schemes may not perform well on a GPU.
 One cell inversion iteration is another class of solvers for the radiation transport equation.

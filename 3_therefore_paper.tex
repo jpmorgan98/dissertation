@@ -17,10 +17,10 @@
 \label{chap:therefore_paper}
 
 \epigraphhead[10]{\singlespacing
-    \epigraph{
-        The stupidest person on God's green earth is the 2nd lieutenant in the US army. The only person who might rival that; would be an engineer right out of school---dont be so fucking stupid
-    }
-    {Evan H Morgan (my grandfather)}
+\epigraph{
+    We loiter in the winter 
+    while it is already spring.
+	}{Henry David Thoreau}
 }
 
 
@@ -466,7 +466,7 @@ The analysis is similar for $\mu<0$ only with
     \end{bmatrix} \;.
 \end{equation}
 
-This system can be numerically solved after making discrete selections of $\mu \in [-1, 1]$ and $\omega \in (0,2\pi]$ at a point in the perameter space ($\Delta x$, $\Delta t$, $v$, $\Sigma$) with \texttt{numpy.max(numpy.abs(numpy.linalg.\\eig(K)))}~\cite{harris2020array}.
+This system can be numerically solved after making discrete selections of $\mu \in [-1, 1]$ and $\omega \in (0,2\pi]$ at a point in the perameter space ($\Delta x$, $\Delta t$, $v$, $\Sigma$) with \texttt{numpy.max(\\numpy.abs(numpy.linalg.eig(K)))}~\cite{harris2020array}.
 
 Figure \ref{fig:mb-scb} shows the absolute value of the maximum eigenvalues of $\bm{K}$ at various points in mean free time ($\tau=\Sigma v\Delta t$) and cellular optical thickness ($\delta=\Sigma\Delta x$) at 75 discrete points $\omega \in (0,2\pi]$ in S$_{16}$.
 None of $|\lambda_{max}|$ are above one, which means the Von Neumann stability criterion in Eq. \eqref{eq:unconstab} is satisfied and the combination of the multiple balance time discretization and the simple corner balance scheme is unconditionally stable for this infinite homogeneous medium problem with no scattering.
@@ -611,6 +611,7 @@ Elements of the $\mathbf{S_{g' \rightarrow g}}$ matrix are now defined by
 \end{equation}
 where $g' \rightarrow g$ indicates transfer from group $g'$ to group $g$ and $w$ are the quadrature weights. 
 \begin{subequations}
+\label{eq:fullOCI_mg}
 The full system of linear equations in all groups and angles in cell $j$ becomes
 \begin{equation}
     \bm{A}_j \bm{\Psi}_j = \bm{b}_j \; ,
