@@ -8,6 +8,7 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{amsmath} %maths
+\usepackage{csquotes} % quotation blocks
 
 %
 % for tabels and code
@@ -32,7 +33,7 @@
 
 % some useful commands
 \newcommand{ \nd }{$^{\text{nd}}$ }
-\newcommand{ \ths }{$^{\text{th}}$}
+\newcommand{ \ths }{$^{\text{th}}$ }
 
 % used to put quotes at the beginning of a chapter
 \usepackage{epigraph}
@@ -70,9 +71,10 @@
 \setcounter{biburllcpenalty}{1000}   % allow breaks at lowercase letters
 
 \addbibresource{refs/unified_refs.bib}
-\addbibresource{refs/my_refs.bib}
+%\addbibresource{refs/my_refs.bib}
 \addbibresource{refs/diss.bib}
 
+\newcommand{\maj}{\Sigma_{\text{maj}}}
 %
 % Command for manuscript notifications as required by OSU
 %

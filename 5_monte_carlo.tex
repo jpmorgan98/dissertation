@@ -1,4 +1,4 @@
-\chapter{Introduction to Monte Carlo Methods}
+\chapter{Monte Carlo Methods}
 
 \epigraphhead[10]{\singlespacing
     \epigraph{
@@ -9,30 +9,145 @@
 
 \label{chap:mc_methods_intro}
 
-%Predicting how neutrons move through space and time is important when modeling inertial confinement fusion systems, pulsed neutron sources, and nuclear criticality safety experiments, among other systems.
 
-While deterministic schemes produce an exact solution to an inexact problem, Monte Carlo methods provide an inexact solution---with an associated error---to an exact problem.
-Monte Carlo methods can treat the independent variables of the NTE (space, angle, time, energy) as continuous, thus eliminating the discretization errors seen with deterministic methods.
-The behavior of neutrons can be modeled with a Monte Carlo simulation, where pseudo-particles with statistical importance are created and transported to produce a particle history \cite{lewis_computational_1984}.
-A particle's path and the specific set of events that occur within its history are governed by pseudo-random numbers, known probabilities (e.g., from material data), and known geometries.
-Data about how particles move and/or interact with the system are tallied to solve for parameters of interest with an associated statistical error from the Monte Carlo process. 
-The analog Monte Carlo method is slow to converge (with a convergence rate of $\mathcal{O}(1/\sqrt{n})$ where $n$ is the number of simulated particles).
-New Monte Carlo schemes could converge the solution faster in wall-clock time with fewer simulated particles and may be needed to effectively simulate some systems.
+This chapter provides specific background and introduction to Monte Carlo neutron radiation transport methods.
+I describe algorithms of the method itself as well as how it has previously been implemented on GPUs in productions codes.
+I further motivate and introduce the concepts of portability frameworks and describe the basics of the software engineering design implemented in MC/DC.
 
-%history with interesting citations
-%Monte Carlo methods where orignal propased by Stanislaw Ulam in 1946 after work on the Manhattan project.
-%It's orginal use in fact was the tracking neutrons thru phase space using handheld computers called Fermiacs.
-%The challenge problem I seek to investate also dates back this time.
-%Since then from a report in 1995 over 60\% of computational time on US Government super computing systems was concerend with converging the Monte Carlo method
+The birth of the modern Monte Carlo method has the traditional flair of mid-century atomic science.
+The original idea for the  Stanisław Ulam was from playing solitaire.
+Earlier that year, Ulam along with John von Neumann\footnote{
+This is the second time contributions from John von Neumann have been used in basic background of this dissertation, further noting that it's in both parts.
+} had been observing the production and testing of the first general programmable computer: the ENIAC Aberdeen proving grounds in Maryland\footnote{
+Subrahmanyan Chandrasekhar who derived the method of discrete ordinance (discussed in chapter \ref{chap:determ_intro}) was also at the Aberdeen proving ground working on hydrodynamic calculations for ballistic projectiles at the same time as von Neumann and Ulam. I do not know if they ever met however the first published application of discrete ordinance to neutron transport was not until 1953 by Bregt Carlson \cite{carlson_1955_sn, carlson_1958_sn}.
+}.
+The idea popped into his head: what if I could play hundreds of games of solitaire simultaneously to determine the best outcome and use a digital computer like ENIAC to do it.
+From there von Neumann and Ulam formalized the ideas of what would become known as Markov chain Monte Carlo in their famous March 1947 letter to Robert Richtmeyer\footnote{
+Robert Richtmeyer of the Lax–Richtmyer equivalence theorem \cite{Lax_1956_stability}.
+}
+Nicolas Metropolis was shortly brought on board and suggested the codename ``Monte Carlo" for the method of method statistical sampling.
+The legend continuous that Ulam appreciated this connection to the European casinos as his paternal uncle, Michał Ulam, was notorious gambler who frequented the city-state of Monte Carlo (aka Monaco).
 
-% deception of the section
-My work with Monte Carlo schemes---as with my deterministic work---is broadly divided into two categories
-\begin{enumerate}
-    \item How to use software engineering libraries to implement work more efficiently (RQ 1); and
-    \item Novel methods to converge the solution faster on modern hardware (RQ 5).
-\end{enumerate}
-The first section digs into the first goal, examining performance portability schemes in high-level languages and the work that is currently deployed in Monte Carlo/Dynamic Code (MC/DC) as part of my work with the Center for Exascale Monte Carlo Neutron Transport (CEMeNT).
-The second contains work initially done in a production code at Los Alamos National Laboratory and a proposed extension of the scheme the scheme in an implementation in MC/DC.
+While ENIAC was being moved from where it was built at the University of Pennsylvania in Philadelphia to the Aberdeen Proving Grounds (a process which took two years) Enrico Fermi developed a tool to aid in the analog computation of Monte Carlo solutions
+Monte Carlo trolleys or \textit{Fermiacs} would physically trace a neutron's random walk on a paper where a phase space was actually drawn out \cite{metropolis_1987_history}.
+From there tallies could manually accumulated and quantities of interest determined.
+When ENIAC was finally turned on again Monte Carlo was the first stress test and performed calculations for the super or Hydrogen bomb.
+ENIAC was optimized to be able to store 64 lines of code which could be stored in function tables. This lead to the creation of programming languages by Klára Dán von Neumann\footnote{Not only was Klára Dán von Neumann the wife of John von Neumann, not only is she the mother of modern programming, but she was also a Hungarian national champion in figure skating.} among others.
+The first unclassified publication on the Monte Carlo method was in 1949 \cite{metropolis_1949_monteCarlo}.
+
+Like most profound numerical schemes the method statistical sampling was probably discovered by multiple people across history--indeed reports claim that Enrico Fermi was using the method for Neutrons as early as 1939.
+But was not until 1947 that confluence of the need as well as the existence of the computational ability dovetailed to create the Monte Carlo method of today.
+The Monte Carlo method was born alongside the computer and seemingly major components of the computer were forged by the need for Monte Carlo calculations.
+
+Monte Carlo methods have expended as a wholly significant subfield of numerical analysis next to the more classily derived deterministic methods---or as Metropolis called them ``the method of differential equations" \cite{anderson_1986_maniac}.
+Monte Carlo have been applied to countless types physics.
+Monte Carlo neutronics specifically has stayed at the bleeding edge of both the development of the numerical method, as well as computers with which to compute solutions.
+This dissertation humbly attempts to make a contribution to this rich and developing field.
+
+
+\section{Monte Carlo Algorithms}
+
+To conduct a direct simulation Monte Carlo numerical experiment two basic algorithmic components are needed.
+The first is some way of sampling discontinuous\footnote{Discontinuities are due to differing materials.} cumulative probability distribution functions in an unbiased way (surface (\ref{c5:surface_tracking}) and delta (\ref{c5:delta_tracking}) tracking algorithms).
+The second is a method of estimating quantities of interest from events that are happening as they undergo the Monte Carlo process (track length collision estimators (\ref{c5:estimators}).
+
+\subsection{Surface Tracking}
+\label{c5:surface_tracking}
+
+Surface tracking is often used track the movement of neutrons within a system. 
+For a particle in material $m$, a distance to collision is sample from a cumulative probability distribution function by
+\begin{equation}
+    d_{\text{collision}} = \frac{-\ln(\xi)}{\Sigma_{t,m}} \; ,
+\end{equation}
+where $\Sigma_{t,m}$ [\SI{}{\per\centi\meter}] is the macroscopic total cross section of the $m$-th material and $\xi$ is a pseudo-random number between zero and one.
+
+This sampling of the cumulative probability distribution function will only hold true while the material is homogeneous.
+So if the distance to collision is beyond a material interface in a system with multiple materials, the particle must be stopped at that interface surface and a new distance to collision must be calculated with with the new material's $\Sigma_{t,m}$.
+This approach is an unbiased way of dealing with the sampling of distance to collision in a heterogeneous medium.
+In a standard surface tracking algorithm this involves computing both a distance to collision ($d_{\text{collision}}$) and a distance to the nearest surface along the particle's direction of travel ($d_{\text{surface}}$).
+The smaller of these two distances determines which event happens to the particle - a collision or a surface-crossing.
+After or while the particle is moving, tallies can be accumulated to compute quantities of interest.
+If a collision occurs, more sampling and operations can be done (e.g., isotropically scatter a particle).
+If the particle is still alive at the end, the algorithm is repeated.
+The distance to nearest surface computation can become quite expensive as geometries grow in complexity (e.g., complex CSG geometries or CAD based surfaces).
+Surface tracking is at the heart of many modern Monte Carlo neutron transport applications, including MCNP \cite{MCNP_RisingArmstrongEtAl}, Shift \cite{hamilton_continuous-energy_2019, pandya_implementation_2016}, MONK/MCBEND \cite{richards_monk_2015}, and OpenMC \cite{romano_openmc_2015}.
+
+\subsection{Delta tracking}
+\label{c5:delta_tracking}
+
+Delta tracking is the next most common tracking approach and is shown in algorithm \ref{alg:trad}.
+It starts by pre-processing a \textit{majorant} macroscopic cross-section
+\begin{equation}
+    \maj(E) = \max\left({\Sigma_{t,1}(E), \Sigma_{t,2}(E) \dots \Sigma_{t,m}(E) \dots \Sigma_{t,M}(E)}\right)
+\end{equation}
+such that it is the largest cross section at any given point in any material in the problem.
+The algorithm to compute the majorant cross-section for nuclides on a non-unified energy grid currently implemented in MC/DC is in appendix \ref{app:majorant}.
+Figure \ref{fig:majorant_c5ce} shows a macroscopic majorant cross section for a typical pressurized water reactor.
+When delta tracking the distance to collision is always sampled with the majorant,
+\begin{equation}
+    d_{\text{collision}} = \frac{-\ln{\xi}}{\maj} \; ,
+\end{equation}
+ignoring surface crossing events.
+However, this sampling forces extra collisions that do not physically exist; using the majorant generates the smallest distance to collision.
+Delta tracking algorithms use a rejection sampling to determine if the sampled collision event was \textit{real} or a \textit{virtual} (\textit{phantom}) collision.
+At the particle's current location, the true material region is be identified to compute $\Sigma_{t,m}$.
+If 
+\begin{equation}
+    \xi > \frac{\Sigma_{t,m}}{\maj} \; ,
+\end{equation}
+where $\xi$ is a new random number, the collision did not physically occur, is rejected, and the particle can be left alive on it's current direction of travel and energy.
+From here the process is the same as before: tallies are accumulated, real collision physics are carried out when appropriate, and the algorithm continues as long as the particle is still alive.
+
+An added complication when using the Woodcock-delta tracking method is restricting what type of tallies can be efficiently scored.
+There are many so called estimators that can be used to indicate quantities of interest (often scalar flux) by tallying events that occur within a given region of phase space.
+The two common estimators are the collision estimator and the the track (or path) length estimator.
+
+Delta tracking algorithms are implemented in many production Monte Carlo neutron transport applications including Serpent \cite{leppanen_2010_burnup, leppanen_use_2017, leppanen_development_2013, leppanen_2015_serpent}, MONK/MCBEND \cite{richards_monk_2015}, IMPC \cite{fang_development_2022}, and GUARDYAN \cite{molnar_gpu_based_2019}.
+Notably, the MONK Monte Carlo neutron transport code is the direct successor to the GEM code where Woodcock et. al first implemented Woodcock-delta tracking \cite{woodcock_techniques_1965}.
+There are other weighted Woodcock-delta tracking algorithms, in this work we explore variants of non-weighted version \cite{molnar_variance_2018, morgan_weighted-delta-tracking_2015}.
+
+\subsection{Estimators}
+\label{c5:estimators}
+
+Two common estimators of evaluating quantities of interest are the collision estimator and the the track (or path) length estimator.
+Often tallies are scored to bins on a structured mesh grid overlying the surfaces and material regions that a Monte Carlo simulations uses to conduct actual transport operations.
+The track-length estimator is,
+\begin{equation}
+    \hat{\phi}_n = \sum_{i=1}^{I}p_i \; ,
+\end{equation}
+where $\hat{\phi}_n$ is the integrated scalar flux over given mesh cell $p$ is the track-length of particle $i$ passing through mesh cell $n$.
+The collision estimator is,
+\begin{equation}
+    \hat{\phi}_n = \sum_{i=i}^{I} \frac{1}{\Sigma_{t,n}} \;.
+\end{equation}
+The collision estimator will often produce a more variant solution as compared to other estimators for tallies where $\Sigma_{t,m}$ is small (optically thin, less dense materials) and will never tally anything into a void region.
+On the other hand the track-length estimator will always tally into every mesh bin as particles moves.
+Meaning, undermost problem regimes, more information will be scored, which will result in a lower-variant tally for the same number of particles.
+Tallies from the same particle can be combined to get an even better estimate of the quantities of interest however then covariance must be considered.
+
+
+\section{Monte Carlo on GPUs}
+
+Regardless of tracking method how to implement Monte Carlo neutron transport on heterogeneous high performance computing architectures (GPUs) is under active research and development.
+We examine software engineering approaches in three Monte Carlo neutron transport codes in depth: Shift, Mercury, and OpenMC.
+
+Shift is a Monte Carlo neutron transport package available as part of the SCALE library from Oak Ridge National Laboratory \cite{pandya_implementation_2016}.
+Shift allows for multi-group and continuous-energy transport on Nvidia and AMD GPUs.
+On GPUs Shift uses both event-based transport algorithms written in C with C-make macros alternating language divergences from one vendor to the other with Nvidia compiling with NVCC and AMD with HIP compilers \cite{mcsummit}.
+The Shift development team has reported that, for multi-group GPU algorithms, all GPUs on a given node allow for between 7 and 80 times speedup compared to all CPUs of those same nodes for a set of C5G7-type problems \cite{hamilton_multigroup_2018}.
+
+Similarly, GPU support for the Mercury Monte Carlo neutron transport solver from Lawrence Livermore National Laboratory is enabled by an event-based algorithm written in C-CUDA \cite{pozulp_progress_2023, pozulp_sna_2024}.
+For a Godiva in water continuous-energy benchmark problem, Mercury has shown up to a 7.7 times speedup on a whole node of the Sierra class systems as compared to a whole node of Intel Xeon dual-socket type CPUs \cite{pozulp_progress_2023}.
+The Mercury development team has announced initial development efforts porting to AMD MI300A APUs \cite{pozulp_sna_2024}.
+Other GPU codes have been developed as standalone C-CUDA projects directly targeting GPUs, including PRAGMA \cite{choi_optimization_2021}, GUARDYAN \cite{molnar_gpu_based_2019}, and a CUDA-based port of OpenMC \cite{ridley2021}.
+
+%% OpenMC
+OpenMC from Argonne National Laboratory differs from these approaches.
+OpenMC uses the OpenMP target-offloading model to compile and execute on Nvidia, AMD, and Intel GPUs for event-based transport algorithms.
+OpenMC is currently the only Monte Carlo neutron transport code enabled to run on Intel's PVC GPUs.
+Furthermore, the OpenMC team has demonstrated node scaling on Nvidia, AMD, and Intel GPUs.
+The OpenMC development team reports that, for the continuous-energy exaSMR test problem, they achieve a 70 times speed up on Intel GPUs as compared to a dual-socket Intel Xeon CPU node \cite{tramm2024performanceportablemontecarlo}.
+
 
 \section{Portability frameworks for Monte Carlo methods}
 
@@ -41,7 +156,7 @@ Developing software to simulate physical problems that demand HPC is difficult.
 Modern HPCs commonly use both CPUs and GPUs from various vendors.
 Years can be spent porting a code from CPUs to run on GPUs, then again when moving from one GPU vendor to the next \cite{pozulp_progress_2023}.
 Portability issues compound when designing software for rapidly developing numerical methods where algorithms need to be both implemented and tested at scale.
-Finding a software engineering approach that balances the need for portability, rapid development, open collaboration, and performance can be challenging especially when numerical schemes do not rely on operations commonly implemented in libraries   (i.e., linear algebra as in LAPACK or Intel MKL). 
+Finding a software engineering approach that balances the need for portability, rapid development, open collaboration, and performance can be challenging especially when numerical schemes do not rely on operations commonly implemented in libraries  (i.e., linear algebra as in LAPACK or Intel MKL). 
 
 Common HPC software engineering requirements are often met using a Python-as-glue-based approach, where peripheral functionality (e.g., MPI calls, I/O) is implemented using Python packages but compiled functions are called through Python's C-interface where performance is needed.
 Python-as-glue does not necessarily assist in the production of the compiled compute kernels themselves---what the Python is gluing together---but can go a long way in simplifying the overhead of peripheral requirements of HPC software.
@@ -67,60 +182,26 @@ Numba data allocations on the GPU can be consumed and ingested by functions from
 When targeting use of a Python portability scheme to HPC for neutron transport I compared the same transient Monte Carlo neutron transport algorithm in various implementations using PyKokkos \cite{AlAwarETAL21PyKokkos}, PyCUDA/PyOpenCL \cite{kloeckner_pycuda_2012}, and Numba \cite{morgan2022}.
 After these initial investigations a Numba+mpi4py software engineering scheme was deemed the most viable for implementation in MC/DC.
 
-%Numba has been shown to be slower then other high level portability frameworks for unoptimized matrix multiplication \cite{Godoy_2023}.
-%Monte Carlo neutronic workflows are so memory bound that it's doubtful even significant changes to FLOP performance of a 
-
-
-%
-%I found that all three methods produced similar runtimes for our workflows on CPUs and GPUs for a simple transient Monte Carlo neutron transport simulation \cite{morgan2022}.
-%Ultimately, we decided to use a Numba + mpi4py development scheme to build out a Monte Carlo neutron transport code for rapid numerical methods development, portable to various HPC architectures \cite{variansyah_mc23_mcdc,morgan_monte_2024,transport_cement_mcdc_2024} (RQ 1).
-
-\section{Delta tracking}
-
-This section describes a variance reduction technique that propose to implement in MC/DC.
-Woodcock, or delta, tracking \cite{woodcock_techniques_1965} is a variance-reduction technique that computes the majorant cross-section for the whole problem space, then uses it to determine a distance to collision for all particles.
-Coupled with rejection sampling to sort for phantom collisions, and a collision estimator to compute scalar flux, delta tracking often improves performance over analogue Monte Carlo in problems that warrant it (problems with a long mean free path).
-Many production Monte Carlo Neutron transport codes like Serpent \cite{leppanen_development_2013, leppanen_use_2017, leppanen_2010_burnup} and others \cite{delta2017rowland} use this method.
-In traditional delta tracking first the macroscopic majorant cross section is computed for the entire problem space
-\begin{equation}
-    \label{eq:majorant}
-    \Sigma_{M}(E) = \max\left(\Sigma_{b}(E), ..., \Sigma_{B}(E)\right) \,\text{,}
-\end{equation}
-where $E$ is energy, $\Sigma_{M}$ is the microscopic majorant cross-section, and $\Sigma_{b}$ is the total microscopic cross-section of the $=b^{\text{th}}$ material.
-Now to sample a the distance to a collision
-\begin{equation}
-    \label{eq:sample}
-    D = \frac{-\ln{\xi}}{\Sigma_{M}(E)} \, \text{,} 
-\end{equation}
-where $\xi\in[0,1]$.
-If the potential collision occurs, we move the particle to the sampled distance and do rejection sampling, since we are now potentially forcing collisions that did not occur.
-We sort out these phantom collisions by allowing particles to continue to a new sampled distance if
-\begin{equation}
-    \label{eq:reject}
-    \xi < \frac{ \Sigma_{j}(E) } { \Sigma_M(E) } \, \text{,}
-\end{equation}
-where $\xi\in[0,1]$ is a new random number and $\Sigma_{j}(E)$ is the total macroscopic cross-section of the material ($j^{th}$) where the particle currently resides.
-Standard delta tracking is required to use a collision estimator which is less efficient then the normal track length estimator used in surface tracking~\cite{mc2018}.
-My goal is to find a way to use the track-length estimator while doing delta tracking which may improve the performance of a Monte Carlo code (RQ 5).
-
 
 \section{Summary of Part and relation to research questions}
 
 
-Chapter \ref{chap:joss_paper}
-We designed Monte Carlo / Dynamic Code (MC/DC) to explore such novel numerical methods on modern high-performance computing systems.
-We avoid the need for a compiled or domain-specific language by using the Numba compiler for Python to accelerate and abstract our compute kernels to near compiled code speeds.
-We have implemented novel algorithms using this scheme and, in some verification tests, have approached the performance of industry-standard codes at the scale of tens of thousands of processors.
+Chapter \ref{chap:joss_paper} briefly descries the software engineering layout in MC/DC. MC/DC avoids the need for a compiled or domain-specific language by using the Numba compiler for Python to accelerate and abstract our compute kernels to near compiled code speeds.
+Chapter \ref{chap:joss_paper} implemented novel algorithms in MC/DC.
+This chapter provides more data on emph{RQ1}.
 
-Chapter \ref{chap:cise_paper} Finding a software engineering approach that allows for portability, rapid development, and open collaboration for high-performance computing on GPUs and CPUs is a challenge. 
-We implement a portability scheme using the Numba compiler for Python in Monte Carlo / Dynamic Code (MC/DC), a new neutron transport application for rapidly developing Monte Carlo. 
-Using this scheme, we have built MC/DC as an application that can run as a pure Python, compiled CPU, or compiled GPU solver. 
-In GPU mode, we use Numba paired with an asynchronous GPU scheduler called Harmonize to increase GPU performance. We present performance results (including weak scaling up to 256 nodes) for a time-dependent problem on both CPUs and GPUs and compare favorably to a production C++ code.
+Chapter \ref{chap:cise_paper} explains MC/DC's software engineering approach in greater depth and discusses how it allows for portability, rapid development, and open collaboration for high-performance computing on GPUs and CPUs. 
+It discusses a portability scheme using the Numba compiler for Python in Monte Carlo / Dynamic Code (MC/DC), a new neutron transport application for rapidly developing Monte Carlo. 
+Using this scheme, MC/DC can run as a pure Python, compiled CPU, or compiled GPU solver. 
+Chapter \ref{chap:cise_paper} presents performance results (including weak scaling up to 256 nodes) for a time-dependent problem on both CPUs and GPUs comparing favorably to a production C++ code.
+This work is supplemented by appendix \ref{chapter:mcdc_prof} which provides greater depth on the bespoke just-in-time compilation structure MC/DC uses to compile to GPUs.
+This chapter further evaluates \emph{RQ1}.
 
-Chapter \ref{chap:delta_tracking_paper} There is no mathematical reason why the track-length estimator cannot be used in conjunction with Woodcock-delta tracking only implementation issues. 
+Chapter \ref{chap:delta_tracking_paper} leads with the theory that there is no mathematical reason why a track-length estimator cannot be used in conjunction with Woodcock-delta tracking only implementation issues. 
 In this work we take advantage of that to produce a Woodcock-delta tracking algorithm which tallies fluxes to a structured rectilinear mesh using the track-length estimator.
-This development more readily enables hybrid surface-delta tracking algorithms as the track-length tally can be used everywhere for scalar flux estimation regardless of which tracking algorithm a particle is using.
-We use this when developing a novel hybrid-in-energy method where Woodcock-delta tracking is used in high energies (where mean free paths are long) and surface tracking below that (starting at the neutron resonances) as well as a previously defined hybrid-in-material method.
-We verify that delta tracking algorithms we consider can be used in conjunction with continuously moving surfaces.
-We benchmark these methods showing figures of merit on four time-dependent problems: two multi-group and two continuous-energy.
+This development readily enables hybrid surface-delta tracking algorithms as the track-length tally can be used everywhere for scalar flux estimation regardless of which tracking algorithm a particle is using.
+Furthermore chapter \ref{chap:delta_tracking_paper} discusses a novel hybrid-in-energy method where Woodcock-delta tracking is used in high energies (where mean free paths are long) and surface tracking below that (starting at the neutron resonances) as well as a previously defined hybrid-in-material method.
+This chapter also verifies that delta tracking algorithms we consider can be used in conjunction with continuously moving surfaces.
+The solution and performance of 4 time-dependent benchmark problems demonstrates the comparative performance of the new and traditional methods implemented in this work.
 Woodcock-delta tracking with a track-length tally showed modest improvements to figures of merit as compared to traditional delta tracking with a collision estimator and surface tracking with a track-length estimator (\num{1.5}$\times$--\num{2.5}$\times$) and significant improvements (\num{7}$\times$--\num{11}$\times$) when using the hybrid-in-energy method.
+This work is supplemented by appendix \ref{chapter:mcatk_paper} and further provides evidence for \emph{RQ1} while also indicating conclusions for \emph{RQ5}.
