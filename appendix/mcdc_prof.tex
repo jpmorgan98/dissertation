@@ -1,20 +1,29 @@
 \renewcommand{\TheTitle}{Enabling GPU Portability into the Numba-JITed Monte Carlo Particle Transport Code MC/DC}
 
-\renewcommand{\TheAuthors}{Joanna Piper Morgan,
+\renewcommand{\TheAuthors}{%
+  Joanna Piper Morgan,
   Braxton Cuneo,
   Ilham Variansyah, 
   and Kyle E.~Niemeyer}
   
-\renewcommand{\TheAddress}{
+\renewcommand{\TheAddress}{%
     \textit{Proceedings of International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (M\&C 2025)} \\
-    2025. \\
-    \doi{10.48550/arXiv.2501.05440}
+    Vol 19, 2025. \\
+    \doi{10.13182/MC25-47142}
 }
 
 \chapter{\TheTitle}
 \label{chapter:mcdc_prof}
 
-\PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
+\vspace{1em}
+\TheAuthors
+\\
+\vspace{1em}
+\TheAddress
+\vspace{1em}
+
+
+%\PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
 
 \section*{Abstract}%
 The Center for Exascale Monte Carlo Neutron Transport is developing Monte Carlo / Dynamic Code (MC/DC) as a portable Monte Carlo neutron transport package for rapid numerical methods exploration on CPU- and GPU-based high-performance computers.

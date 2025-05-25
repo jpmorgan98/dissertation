@@ -4,11 +4,11 @@
   Ilham Variansyah,
   Kayla B. Clements,
   Todd S. Palmer,
-  Kyle E. Niemeyer,}
+  Kyle E. Niemeyer}
 
-\renewcommand{\TheAddress}{
-\textit{In preparation for submission to\\Journal of Computational and Theoretical Transport}
-
+\renewcommand{\TheAddress}{%
+In preparation for submission to\\
+\textit{Journal of Computational and Theoretical Transport}
 }
 
 \PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
@@ -18,9 +18,9 @@
 
 \epigraphhead[10]{\singlespacing
     \epigraph{
-        This experiment is like tickling the tail of the sleeping dragon.
+        I would have really liked just doing laundry and taxes with you.
     }
-    {Richard Feynman}
+    {Waymond Wang---Everything Everywhere All at Once}
 }
 
 %%% Write text for abstract
@@ -285,8 +285,8 @@ We compare the error from integral quantities of interest to a reference solutio
 The convergence rate should be the standard Monte Carlo convergence rate of $N^{-1/2}$.
 Our verification problems are
 \begin{itemize}
-    \item AZURV1 time dependent benchmark both super and sub critical (figure \ref{fig:azurv1}) \cite{ganapol_homogeneous_2001};
-    \item A time dependent infinite pin cell using the 371 group SHEM cross sections (figure \ref{fig:shem}) \cite{hfaiedh_2005_shem}; and 
+    \item AZURV1 time-dependent benchmark both super and sub critical (figure \ref{fig:azurv1}) \cite{ganapol_homogeneous_2001};
+    \item A time-dependent infinite pin cell using the 371 group SHEM cross sections (figure \ref{fig:shem}) \cite{hfaiedh_2005_shem}; and 
     \item Reed's Problem (figure \ref{fig:reeds}) \cite{reed_difference_1971};
     \item A purely absorbing slab (figure \ref{fig:abs_slab}).
 \end{itemize}
@@ -373,10 +373,10 @@ Therefore it would be ideal to delta track above \SI{50}{\kilo\electronvolt} (as
 \subsection{Implementation in MC/DC}
 \label{sec:implementation}
 
-Monte Carlo Dynamic Code is purpose built to implement and test time dependent Monte Carlo novel numerical methods at scale \cite{morgan_2025_monte}.
+Monte Carlo Dynamic Code is purpose built to implement and test time-dependent Monte Carlo novel numerical methods at scale \cite{morgan_2025_monte}.
 It uses a novel for the field development structure where Python scripted compute kernels are compiled via the Numba compiler to run on CPUs and with the Harmonize GPU runtime manager to run on GPUs.
 
-MC/DC allowed us to rapidly experiment with these methods at scale on both CPUs and GPUs on time dependent problems of interest.
+MC/DC allowed us to rapidly experiment with these methods at scale on both CPUs and GPUs on time-dependent problems of interest.
 Delta tracking methods can be easy to implement in a code that already conducts surface tracking. 
 Generally to implement delta tracking in a code that already implements surface tracking add are:
 \begin{enumerate}
@@ -418,7 +418,7 @@ These plots where produced using Woodcock delta tracking with a collision estima
 To further verify Woodcock delta tracking with continuous movement physics we regressively compare the flux solutions provided from traditional surface tracking and delta tracking with voxelized tallies at various particle counts.
 We compute 
 \begin{equation}
-    \epsilon_N = |\phi_N^{\text{surface}} - \phi_N^{\text{delta}} |_2
+    \epsilon_N = ||\phi_N^{\text{surface}} - \phi_N^{\text{delta}} ||_2
 \end{equation}
 at every choice of $N$ particles.
 We then compare the error of flux over particles to ensure the expected Monte Carlo convergence rate ($N^{-0.5}$).
@@ -447,7 +447,7 @@ where $\hat{\sigma}^2$ is the L$_{1}$ norm (over phase space) of the variance of
 \end{figure}
 
 % the problems we run themselves
-We use four fully time dependent fixed source benchmark problems to compare the voxlized tally scheme and hybrid methods proposed in this work to surface tracking on CPU and GPU machines.
+We use four fully time-dependent fixed source benchmark problems to compare the voxlized tally scheme and hybrid methods proposed in this work to surface tracking on CPU and GPU machines.
 Two are multi-group, two are continuous energy.
 Table \ref{table:benchmark_problems} summarizes the size (in both mesh and particle count) of each benchmark problem.
 Some problems may not be suited for delta tracking methods but are used anyway here to show both correctness under physical problem dynamics (i.e., moving surface) and demonstrate algorithmic improvement in under highly exaggerated problem parameters.
@@ -462,19 +462,19 @@ Some problems may not be suited for delta tracking methods but are used anyway h
     C5CE & \num{544e3} & \num{1e5} & Cont. E (7 materials) \\
     \bottomrule
   \end{tabular}
-  \caption{Time dependent benchmark problems.} 
+  \caption{time-dependent benchmark problems.} 
   \label{table:benchmark_problems} 
 \end{table}
 
 % koby intro
-The first benchmark we consider is the time dependent version of the Kobyashi problem \cite{Kobayashi2001} introduced by \cite{morgan_2025_monte}.
+The first benchmark we consider is the time-dependent version of the Kobyashi problem \cite{Kobayashi2001} introduced by \cite{morgan_2025_monte}.
 We run this problem with 10 batches with \num{1e9} particles per batch (\num{1e10} particles total) with traditional surface tracking, traditional delta tracking with a collision estimator, and a delta tracking using the voxelized tally method.
 This problem contains two materials, a dense region (characterizing a solid), and a low density region modeled by air (characterizing a void) in a single energy group.
 There are a 120k structured tally mesh cells in the $x$-$y$ plane and in time.
 
 % acident intro
 Figure \ref{fig:schems} at right shows the geometry for the next two simulations we consider based on the C5G7 benchmark problem \cite{jia_hou_oecdnea_2017}.
-We model a 4 phase accident where-in a pressurized light water reactor reactor is powering up by removing control rods.
+We model a four-phase accident where-in a pressurized light water reactor reactor is powering up by removing control rods.
 Figure \ref{fig:c5g7} at left shows the normalized flux density as a function of time (produced from reactor point kinetics) and the four phases shaded as gray, green, red, and blue.
 Phase one (shaded gray) starts with the reactor operating at steady state.
 In phase two (shaded green) the control rods are removed from the reactor to power up to a new steady state.
@@ -498,7 +498,7 @@ The movement of the control rods into and out of the reactor is controlled with 
 To verify that the delta tracking methods we explore converge to the correct solutions while in transport with continuously moving surfaces we compare delta tracking solutions to solutions provided by surface tracking (which has already been verified and validated).
 Performance data is collected by running \num{1e6} particles in \num{10} batches (total of \num{1e7} particles).
 
-Next we define a continuous energy version of the C5G7 geometry we call C5CE undergoing the same 4-phase accident.
+Next we define a continuous energy version of the C5G7 geometry we call C5CE undergoing the same four-phase accident.
 Table \ref{tab:c5ce} in appendix \ref{app:c5ce_mat} shows material compositions for the C5CE problem.
 Using this benchmark we evaluate both the voxelized tally method as well as the hybrid-in-energy method described in section \ref{sec:cutoff}.
 Figure \ref{fig:majorant_c5ce} at right plots the macroscopic total and majorant cross sections over energy for the materials in C5CE.
@@ -511,7 +511,7 @@ We model this problem with \num{447} mesh tally bins in 2D $x$-$y$ geometry (int
 We run \num{1e5} particles in a single batch.
 
 % dragon intro
-The next problem we consider is a full time dependent simulation of the historical Dragon-burst experiments \cite{kimpland2021dragon}.
+The next problem we consider is a full time-dependent simulation of the historical Dragon-burst experiments \cite{kimpland2021dragon}.
 It was conducted in 1944 during the Manhattan project to prove that criticality could be achieved with prompt neutrons only.
 Previous experiments, like the Chicago Pile One, used delayed neutrons to achieve criticality.
 Figure \ref{fig:schems} at left shows a schematic of the experiment where a slug of highly enriched (75\%) Uranium Hydride ($UH_{10}$) was doped through a core with additional fuel.
@@ -602,12 +602,12 @@ However, It further demonstrates that delta tracking methods can be used with th
 \label{disucssions}
 
 We have implemented, Woodcock-delta tracking in MC/DC on CPUs and GPUs including using a voxelized track-length tally to efficiently score integral track-length tallies while under going delta tracking.
-We verify the solution produced by this method against various steady state and time dependent anaclitic benchmark problems available in MC/DC's verification suite.
+We verify the solution produced by this method against various steady state and time-dependent anaclitic benchmark problems available in MC/DC's verification suite.
 We also verify the Woodcock-delta tracking algorithm with the continuously moving surfaces in MC/DC using the fuel pellet problem.
-We have shown figures of merit improve modestly in large scale multi-group and continuous energy time dependent benchmark problems when using this tracking and tallying technique on CPUs and GPUs.
+We have shown figures of merit improve modestly in large scale multi-group and continuous energy time-dependent benchmark problems when using this tracking and tallying technique on CPUs and GPUs.
 
 We have also demonstrated a novel hybrid surface-delta tracking scheme called hybrid-in-energy where surface and delta are used in low and high energies, respectively.
-For a continuous energy version of the C5G7 benchmark geometry undergoing a 4-phase accident we show an order of magnitude increase in figure of merit on both a CPU and GPU node.
+For a continuous energy version of the C5G7 benchmark geometry undergoing a four-phase accident we show an order of magnitude increase in figure of merit on both a CPU and GPU node.
 We have also confirmed previously defined surface-hybrid delta tracking methods can produce better results in problems significant void regions \cite{leppanen_2010_burnup}.
 
 A combination of a numerical method getting a lower variance with fewer particles and an efficient implementation of that numerical method.

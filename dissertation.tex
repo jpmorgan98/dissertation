@@ -7,7 +7,7 @@
 % things to check or replace
 % replace your name here.
 \newcommand{\TheAuthors}{Joanna Piper Morgan}
-\title{Algorithms and Software Engineering Schemes for Time Dependent Radiation Transport on Heterogeneous Compute Architectures}
+\title{Algorithms and Software Engineering Schemes for Time-Dependent Radiation Transport on Heterogeneous Compute Architectures}
 \degree{Doctor of Philosophy}
 \major{Mechanical Engineering}
 
@@ -25,8 +25,20 @@
 
 \abstract
 {
-Predicting the movement of neutrons through space and time is important when modeling inertial confinement fusion, pulsed neutron sources, and nuclear criticality safety experiments, among other systems. Practical solutions to the transport equation are typically found via Monte Carlo or deterministic methods, or clever combinations of the two. Both these families of
-methods prove computationally challenging, particularly for highly time-dependent systems, as the quantities of interest are functions of seven independent variables: space, velocity, and time. Modern high-performance computers (HPC) with heterogeneous architectures (CPUs and GPUs) are enabling high-fidelity modeling of these systems. To exploit new architectures efficiently, software portability schemes are required. In this talk I will discuss both novel numerical methods and software engineering design for deterministic (SN) and Monte Carlo transport on modern HPCs. First, I will introduce and analyze an alternative space-parallel (non-sweeping) iteration algorithm for 1D time-dependent transport on GPUs, making comparisons to a more traditional iteration algorithm. I will also present a method for converging these iterations in fewer cycles for highly scattering problems. I found that the space-parallel algorithm operates better on modern GPUs and allows use of vendor supplied libraries instead of manually writing GPU functions. I show that as time step size is decreased the space-parallel algorithm will converge in fewer iterations, and that a second moment method can be used to converge the space-parallel algorithm in the scattering limit. Second, I show how a Python and Numba enabled software engineering scheme allows for rapid numerical methods development and deployment at scale in a new open-source Monte Carlo transport application called, MC/DC. I will present performance data from GPUs and CPUs for a full transient reactor accident simulation. I will also discuss the rapid development of several hybrid Woodcock-delta tracking methods to demonstrate the benefits of the software engineering scheme and novel methods.
+Predicting the movement of neutrons through space and time is important when modeling inertial confinement fusion, pulsed neutron sources, and nuclear criticality safety experiments, among other systems.
+Practical solutions to the transport equation are typically found via Monte Carlo or deterministic methods, or clever combinations of the two.
+Both these families of methods prove computationally challenging, particularly for highly time-dependent systems, as the quantities of interest are functions of seven independent variables: time in space, and velocity.
+Modern high-performance computing (HPCs) systems with heterogeneous architectures (CPUs and GPUs) are enabling high-fidelity modeling of these systems.
+However, to exploit new architectures efficiently, software portability schemes and numerical methods are required.
+In this dissertation I discuss both novel numerical methods and software engineering design for deterministic (S$_N$) and Monte Carlo transport on modern HPCs.
+First, I introduce and analyze an alternative space-parallel (non-sweeping) iteration algorithm for 1D multi-group time-dependent transport on GPUs, making comparisons to a more traditional iteration algorithm.
+I also present a method for converging the space-parallel algorithms iterations in fewer cycles for highly scattering problems in the diffusive limit.
+The space-parallel algorithm operates better on modern GPUs and allows use of vendor supplied libraries instead of manually writing GPU functions.
+As time step size is decreased the space-parallel algorithm converges in fewer iterations, that a second moment method can be used to converge the space-parallel algorithm in the scattering limit.
+Second, I develop a Python and Numba software engineering scheme that allows for developing numerical methods rapidly and deploying at scale in a new open-source Monte Carlo transport application called MC/DC.
+MC/DC performs similarly as traditionally compiled code on up to 256 nodes of GPU and CPU based HPCs far a time-dependent problem.
+I also develop several novel hybrid Woodcock-delta surface tracking methods in MC/DC including a hybrid-in-energy scheme and a method of using the track-length estimator while Woodcock-delta tracking.
+I compare various novel methods against traditional algorithms on CPUs and GPUs with four time-dependent problems, including a continuous energy four-phase reactor accident problem with continuously moving control rods.
 }
 
 
@@ -35,42 +47,41 @@ methods prove computationally challenging, particularly for highly time-dependen
 It's hard for me to express in any meaningful way, the gratitude I have in my heart for those who have supported me through this journey.
 The last five years have been the hardest in my life, but at every step of the way there have been mentors, teachers, colleagues, friends, and family who have provided invaluable harbor from the tempest.
 As Newton said if I have done anything, it is only because I have stood on the shoulder's of giants.
-You are my giants.
+You, all of you, are my giants.
 
 I must first start by thanking my advisor, Dr.~Kyle Niemeyer.
 In the last five years I have felt pushed and challenged but never alone in the wilds of research.
-Dr.~Niemeyer has been a constant supporter and continually pushes me to make sure that my work is 
-He also has provided 
+Dr.~Niemeyer has been a constant supporter and continually pushes me to make sure that my work has the broadest perspectives as to have the most utility
+He also has been my bureaucratic warrior always knowing what levers to pull to make sure the trains run ontime.
 
 This dissertation would not have been possible without the constant support of Dr.~Todd Palmer who has helped me---and my dyslexia---through the world of radiation transport.
 When I talk to Dr. Palmer I feel the excitement of discovery and have nothing but faith in the coming dawn of humanity.
-He demands excellence and never impunes the effort when I inevitably fall short in frazzled dispare.
-He is a leader in the field who has repeatedly been on the cutting edge of 
+He demands excellence and impunes me when I inevitably fall short in frazzled dispare.
 Beyond all the academic and professional accolades I could shower upon him the highest praise I think I can offer, is that he is kind and he is caring and he has made me feel that I belong in this field and in this world.
-I hope I can continue to call you my mentor and friend for many years to come.
 
-At this point I'd like to thank Dr.~Ilham Variansyah.
-This is not the first dissertation he has been acknowledged in and will assuredly not be the last
-I am in awe of his work ethic which is only rivaled by his huge heart.
-He is truly an Olympian of the field who has an incredibly bright future ahead of him.
-
-I would like to thank all members of my committee including Dr.~Surbrah Apte, Dr.~Madhicken Monke, Dr.~Joshua Gess, and Dr.~Mike Bailey.
+I'd like to thank Dr.~Ilham Variansyah.
+This is not the first dissertation he has been acknowledged in and will assuredly not be the last.
+I am in awe of his work ethic which is only rivaled by his huge heart and impish grin.
+I extend a very special thanks to Dr.~Braxton Cuneo who is probably the smartest person I have every had the privileged of working with.
+He can chew down on problems like no one I have ever met.
+I would like to thank all members of my committee including Dr.~Sourabh Apte, Dr.~Madicken Munk, Dr.~Joshua Gess, and Dr.~Mike Bailey.
 All of you have supported me with not only your time and guidance through this multi-year long process but with welcoming kindness in the department and field.
 
-I extend a very special thanks to Dr.~Braxton Cuneo he is probably one of the smartest people I have worked with who can chew down on problems like no one I have ever met.
-
 I would like to thank my amazing colleagues in the Center for Exascale Monte Carlo Neutron Transport: Alex Mote, Dr.~Aaron Reynolds, Jordan Northrop, Caleb Shaw, Melek Derman, Ethan Lam\'e, and Vincent Novillino.
-I have learned so much from each of you and I have had the absolute pleasure to work with on some of the most challenging and interesting problems of our day.
-I am in awe of what we have been able to accomplish in our short time together.
 Dr.~Kayla Clements and Dr.~Sam Passman deserve specific mention as we have commiserated through the at-times Sisyphean process of grad school.
-I would also like to thank my colleagues in the Niemeyer Research Group: Malik Jordan, Dr.~Antony Walker, Diba Behnoudfar, Dr.~Jayani Jayasuriya and Jacob Adams. As well as the broader OSU community: Michelle Gee, Jessy Urban, Pula Coto, Lindsey Randell, Rachael Macafee, Marshall whatever his last name is, Mike Branco-Katcher, Sophie Windenbenner, Massimo Larsen, Sophie Brodish, Eric Hudec, and many many others.
-For all of you it has been a pleasure and honor to share \textit{our} victories and commiserate \textit{our} losses \textit{together}.
-Grad-school is a trial of attrition but you all have made the grinding a little more bearable.
+I have learned so much from each of you and I have had the absolute pleasure to work with on some of the most challenging and interesting problems of our day.
+Furthermore it has been a pleasure and an honor to share \textit{our} victories and commiserate \textit{our} losses \textit{together}.
 
-I would like to thank my co-authors and colleagues in the radiation transport community writ-large including: Dr.~Alex Long, Dr.~Kendra Long, Dr.~Travis Tehran, Dr.~Tim Burke, Dr.~Steven Hamilton, Dr.~Camille Palmer, Dr.~Dimity Anistrotov, Dr.~C.~T.~Kelley, and Dr.~Ryan McClarren.
+I would also like to thank my colleagues in the Niemeyer Research Group: Malik Jordan, Dr.~Anthony Walker, Diba Behnoudfar, Dr.~Jayani Jayasuriya, Ali Martz, and Jacob Adams.
+As well as the broader OSU community: Michelle Gee, Jessy Urban, Pula Coto, Lindsey Randell, Rachael Macafee, Marshall Andersen, Mike Branco-Katcher, Sophie Windenbenner, Massimo Larsen, Sophie Brodish, Eric Hudec, and many many others.
+Grad school is a trial of attrition but you all have made the grinding a little more bearable.
+
+To my co-authors and colleagues in the radiation transport community writ-large including: Dr.~Alex Long, Dr.~Kendra Long, Dr.~Travis Tehran, Dr.~Tim Burke, Dr.~Steven Hamilton, Dr.~Camille Palmer, Dr.~Dimity Anistrotov, Dr.~C.~T.~Kelley, and Dr.~Ryan McClarren.
+I would also like to thank colleagues from Advanced Micro Devices Dr.~Damon McDougall and Dr.~Dominic Charier.
 I hope I am lucky enough continue this difficult, fascinating, and valuable work with such a talented, tough, kind-hearted, and pleasant group of researchers.
 
-I would like to thank my funders in the Dept. of Energy and the National Nuclear Security Administration and fort the last time will get to say,
+I would like to thank the high performance computing staff at Lawrence Livermore National Laboratory where all numerical experiments in this dissertation where conducted.
+I thank my funders in the Dept. of Energy and the National Nuclear Security Administration and for the last time will get to say,
 \emph{This work was supported by the Center for Exascale Monte-Carlo Neutron Transport (CEMeNT) a PSAAP-III project funded by the Department of Energy, grant number: DE-NA003967.}
 I have gone to Oregon public schools my entire academic life: k thru 22\nd grade now.
 In fact I still get in-state tuition at OSU so I would like to thank the tax payer who entirely funded this work and almost the entirety of my education.
@@ -86,15 +97,9 @@ In fact I still get in-state tuition at OSU so I would like to thank the tax pay
 % Patti
 
 
-The highest honor of my life does not go to any academic or professional achievement or indeed anything I had a say in.
+The highest honor of my life does not go to any academic or professional achievement or anything I had a say in.
 That first, unrivaled honor is that I get to be a transgender woman.
-Surly a life of doom an pain would await me if I surrender on this ordinate my God has called me to.
-
-%This is not a political statement.
-%It is a statement of the quality of my soul that demands to be free upon the Earth.
-%While my work described herein has nothing to do with this fact; it is steeped in it, guided by it, and inseparable from it.
-%If this statement, precludes me from public service, or public life, or life itself let the chips fall where they may.
-%This world can be in-excusably and absurdly cruel to my people; but nothing steals my soul and empowers me to be the joyful, kind, and loving woman I am, more than the warm embrace and love of my transgender brothers, sisters, and cousins. I am in awe of you. Thank you.
+I will never surrender on this ordinate my God has called me to.
 
 To all those who I have the privileged of fighting with good humor, kindness, love, and grace for meaning in this world:
 we are not now that strength which in old days
@@ -115,7 +120,14 @@ To \textit{strive}, to \textit{seek}, to \textit{find}, and \textit{never} to yi
 
 
 \contributors{
-The d
+The research objectives of this dissertation are explored in five presented manuscripts.
+The following outlines the contributions to the included manuscripts of co-authors other than the major professor.
+
+Dr.~Ilham Variansyah and Dr.~Todd Palmer assisted with the mathematics and writing of Chapters \ref{chap:therefore_paper},  \ref{chap:smom_paper}, \ref{chap:joss_paper}, \ref{chap:cise_paper}, and \ref{chap:delta_tracking_paper}.
+Dr.~Ilham Variansyah also provided the models for the Kobayashi, Dragon, C5G7, and C5CE simulations implemented in Chapters \ref{chap:cise_paper} and \ref{chap:delta_tracking_paper}.
+Dr.~Braxton Cuneo assisted with writing as well as running simulations in Chapter \ref{chap:cise_paper}. 
+Dr.~Kayla Clements supported algorithms development and bug fixing in Chapter \ref{chap:delta_tracking_paper}.
+All MC/DC developers (especially Dr.~Ilham Variansyah and Dr.~Braxton Cuneo) developed the components of MC/DC used in chapters \ref{chap:joss_paper}, \ref{chap:cise_paper}, and \ref{chap:delta_tracking_paper}.
 }
 
 \dedication{To my grandfather Evan, my dog Rutabaga, \\and all the people who make life worth living.}
@@ -141,6 +153,16 @@ The d
 % lmr -- lmodern -- probs my 2nd fav so far <- what the template uses!
 % lmdh -- lmodern -- oh god thats terrible
 % put -- utopia / fourier -- too cambria math
+
+
+% It is faster to make a four-inch mirror, then a six-inch mirror, than to make a six-inch mirror. - Thomspons Rule's for First time Telescope Makers
+% It's like tockling the tail of the dragon. - Richard Feynman
+% True patriotism springs from a belief in the dignity of the individual, freedom and equality not only for Americans but for all people on earth. - Elenor Roosevelt
+% Freedom is nothing but a chance to be better. – Albert Camus
+% The life of the nation is secure only while the nation is honest, truthful and virtuous. – Frederick Douglass
+%  We are responsible for the world in which we find ourselves, if only because we are the only sentient force which can change it. - James Baldwin
+% A civilization is not destroyed by wicked people; it is not necessary that people be wicked but only that they be spineless.
+% I love America more than any other country in the world, and, exactly for this reason, I insist on the right to criticize her perpetually.
 
 
 % setting inital commands for the manuscript header pages

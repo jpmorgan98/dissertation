@@ -518,7 +518,7 @@
   \pagenumbering{roman}
   
   % Mandatory pages
-  \flyleaf           % A. Flyleaf
+  %\flyleaf           % A. Flyleaf
   \abspage           % B. Abstract
   \copyrightpage     % C. Copyright page
   \titlepage         % D. Title page
@@ -557,6 +557,7 @@
   \listofappendices       % K.
   \listofappendixfigures  % L.
   \listofappendixtables   % M.
+  \newpage
 
   % Optional pages
   \dedpage           % O. Dedication

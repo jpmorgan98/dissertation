@@ -5,7 +5,7 @@
 
 \epigraphhead[10]{\singlespacing
     \epigraph{
-        The stupidest person on God's green earth is the 2nd lieutenant in the US army cus that's the first rank you get out of officer training school. The only person who might rival that; would be an engineer right out of school---don't be so f***ing stupid.
+        The stupidest person on God's green earth is the 2nd lieutenant in the US army because that's the first rank you get out of officer training school. The only person who might rival that, would be an engineer right out of school---don't be such a f***ing idiot.
     }
     {Evan H Morgan (my grandfather)}
 }
@@ -15,60 +15,61 @@
 Before jumping into equations and math and schemes and algorithms---imagine the warmth of the sun on your face.
 Feel the golden rays that have danced across the faces of every person you have ever loved, hated, lost, cursed, and indeed every person who has ever lived.
 You may ask how did resplendent power of the gods come to interact with your lovely face?
-Before we answer that question we must make some simplifications form the physical truth, tell ourselves connivent lies so we can comprehend an \textit{approximation} of the truth.
-Take on faith that there are infinitesimally small packets of energy called photons which for our purposes behave much like a billiard ball would.
-Take on faith that these invisible billiard balls travel at a constant speed yet can still have differing energies from one another, which we call color.
-Take on faith that they move on straight line paths between events like bouncing off a material or being absorbed by your face.
+Before we answer that question we must make some simplifications from the physical truth, tell ourselves convenient lies so we can comprehend an \textit{approximation} of the truth.
+There are infinitesimally small packets of energy called photons which for our purposes behave much like a billiard ball would.
+These invisible billiard balls travel at a constant speed yet can still have differing energies from one another, which we call color.
+They move on straight line paths between events like bouncing off a material or being absorbed by your face.
 
-Now consider a single photon as at leaves the stealer atmosphere.
-It and its comrades are traveling in all directions outward, but our photon and a few of its friends are amid squarely at a pale blue dot in the distance.
+Now consider a single photon as it leaves the stellar atmosphere.
+It and its comrades are traveling in all directions outward, but our photon and a few of its friends are aimed at a pale blue dot in the distance.
 They travel on a straight line path, \textit{streaming} through the void region of space, not interacting with much of anything for about 5 minuets---all the while the pale blue dot is growing in size.
 Once most of the horizon is filled with a view of Earth, some of our photons begin to interact with the air in the atmosphere we breath.
 Not very often at first in the high altitudes where the atmosphere is thin, but then growing ever more common as our photons get closer and closer to the ground.
 These ``interactions" are actually some of our photon's friends smashing into the gas molecules making up the atmosphere itself.
 Most of that gas is nitrogen which really likes to interact with blue light.
-These photons are then \textit{scattered} like billiard balls off of one-another where only there direction is changed.
-This is why an Eastern Oregon sky (and occasionally a Willamette valley sky) appears so blue!
+These photons are then \textit{scattered} like billiard balls off of one-another where only their direction is changed.
+This is why an Eastern Oregon sky (and occasionally a Willamette Valley sky) appears so blue!
 That's blue light from the sun hitting the atmosphere tens of hundreds of miles away bouncing off an N$_2$ molecule and heading straight for you!
 
-Our photon however, interacts with nothing and keeps on that straight line patch from the stellar atmosphere to your face.
-As you turn towards the sun our single measly photon (and about a gigllion\footnote{in the \num{1e21} range} of it's closest friends per second) hits your face.
+Our photon, however, interacts with nothing and keeps on that straight line path from the stellar atmosphere to your face.
+As you turn towards the sun our single photon (and about a gigllion\footnote{in the \num{1e21} range} of its closest friends per second) hits your face.
 Some of these photons are reflected off in such a way that they will project a rendering of it into little receptors in the eyes of those who get to behold you.
 Others are \textit{absorbed}, each one imparting a tiny bit of energy into your skin you feel as heat.
 
-Just as we described this process with words we can describe it with math using a bunch of operations which represent \textit{streaming}, \textit{absorbing}, and \textit{scattering}---or more generally sources and sinks of particles of light.
+Just as we described this process with words, we can describe it with math using operations which represent \textit{streaming}, \textit{absorbing}, and \textit{scattering}---or more generally sources and sinks of particles of light.
 We do this because a rigorous mathematical definition has the added benefit of being more generally applicable to other problems.
-Photons move in three dimensional space in a specific direction of travel (imagine being at a specific location and pointing like figure where its going) meaning to describe a single particle of light we need at least 6 independent variables.
+Photons move in three-dimensional space in a specific direction of travel\footnote{
+Imagine the photon being at a specific location and and that is pointing in the direction it's traveling. We need to describe both where the particle is and where that pointer is pointing.},
+meaning to describe a single particle of light we need at least six independent variables.
 If you allow things to change with respect to time then there's an additional 7\ths independent variable.
 This is often referred to as the \textit{curse of dimensionality} and is one of the things that makes solving these equations so difficult.
-Not just photons behave like this, \textit{streaming}, \textit{absorbing}, and \textit{scattering} their through the universe.
-The movement of any neutral particle that doesn't interact with electric or magnetic fields can be described with similar equations.
+Not just photons behave like this, \textit{streaming}, \textit{absorbing}, and \textit{scattering} their through the universe---the movement of any neutral particle that doesn't interact with electric or magnetic fields can be described with similar equations.
 
 For example another problem we are interested in simulating is how neutral particles are moving in problems undergoing nuclear fission.
 Neutrons (unlike charged particles, and most of the time, photons) can interact with the nucleus of an atom because they are unaffected by the negatively charged orbital electrons and the positively charged core.
 Some isotopes\footnote{Specific arrangements of the subatomic core of a given atom.} readily absorb neutrons into the nucleus, which may make such atoms unstable.
-When an unstable atom \textit{fissions}\footnote{breaks apart}, it releases energy along with two daughter nuclei and subatomic particles, which may be more neutrons, depending on the parent atom.
+When an unstable atom \textit{fissions}\footnote{breaks apart}, it releases energy along with daughter and subatomic particles, which may be more neutrons, depending on the parent atom.
 If additional neutrons are released and encounter more material which can undergo this type of reaction, the release of subsequent neutrons can induce a \textit{chain} reaction.
-A nuclear reactor's job is to keep this chain reaction in balance, producing enough heat to boil water, spin turbine, and generate electricity---but not too much heat that the system can't safely operate.
+A nuclear reactor's job is to keep this chain reaction in balance, producing enough heat to boil water, spin turbines, and generate electricity---but not too much heat that the system can't safely operate.
 To ensure this process produces enough heat-generating reactions \textit{safely}, we need to understand where, how, and when neutrons are moving within the core of a reactor.
 We use more or less the same equation (with some extra terms) to describe how neutrons are born, die, move, and interact within a nuclear reactor as we would photons hitting your face from the sun.
 
 Other times we would want to solve these equations include during cancer radio therapy when we often target  neutral particles (like photons at x-ray energies) directly at cancerous cells while trying to avoid healthy tissue as much as possible.
-Or when we want to model the wall of a rocket nozzle to ensure that it will not melt due to heat transfer from the burning gasses.
-From the more pedestrian engineering applications all the way to accretion disks of block holes, supernova, cores of super-massive planets, and the core of our own sun (where our photon from earlier was born) can, in part, be modeled with equations that look similar to the ones I research in this dissertation.
+Or when we want to model the wall of a rocket nozzle to ensure that it will not melt due to heat transfer from the burning gases.
+From the more pedestrian engineering applications all the way to accretion disks of black holes, core-collapse supernovae, cores of super-massive planets, and the core of our own sun (where our photon from earlier was born) can, in part, be modeled with equations that look similar to the ones I research in this dissertation.
 
 
 \section{Motivation}
 
-Transport equations are ubiquitous in nature, describing a number of physical systems including fluid dynamics, chemical reactions, electromagnetism, energy, and heat transfer.
-Transport equations are, at their most fundamental, equations of continuity enforcing conservation of a given quantity across locations of phase space through time.
-The radiation transport equations describes the movement of neutral sub-atomic particles (photons, neutrons, phonons, and neutrinos) in seven independent variables (space, velocity, and time).
-Applications of the transport equation include nuclear reactor physics \cite{duderstadt_hamilton}, heat transfer \cite{radheattrans2003}, radiation health physics, and astrophysics \cite{chandrasekhar1960radiative}.
+Transport phenomena are ubiquitous in nature, in a number of physical systems including fluid dynamics, chemical reactions, electromagnetism, energy, and heat transfer.
+Transport phenomena are described with transport equations, which are, at their most fundamental, equations of continuity enforcing conservation of a given quantity across locations of phase space through time.
+The radiation transport equations describes the movement of neutral sub-atomic particles (photons, neutrons, phonons, and neutrinos) in seven independent variables (spatial position, velocity, and time).
+Applications of the radiation transport equation include nuclear reactor physics \cite{duderstadt_hamilton}, heat transfer \cite{radheattrans2003}, radiation health physics \cite{martelli_2010_light}, optics \cite{wang_2007_optics}, weather modeling \cite{liou_2002_atmospheric}, and astrophysics \cite{chandrasekhar1960radiative}.
 Studying the radiation transport equation does not seek to answer questions associated with the physical process by which events are occurring (e.g., the why and how a particle is undergoing a specific scattering event), only how known events impact the density of particles at a given point in space and time.
 The primary quantities of interest of various radiation transport equations may go by names like \emph{intensity} or \emph{angular flux} but all are number densities of particles at given points in phase space.
 
 My research contained herein focuses on \textit{neutron} radiation transport, but could easily be applied to other neutral particles, most relevantly photons.
-Assuming no neutrons are being produced by fission, the neutron radiation transport equation takes the form of a linear intergro-partial differential Boltzmann-type equation \cite{duderstadt_hamilton}.
+Assuming no neutrons are being produced by fission, the neutron radiation transport equation takes the form of a linear intergro-partial-differential Boltzmann-type equation \cite{duderstadt_hamilton}.
 As with any other continuity equation it is written as a set of sources (on the right) and sinks (on the left):
 \begin{multline}
     \label{eq:fullNTE}
@@ -77,120 +78,119 @@ As with any other continuity equation it is written as a set of sources (on the 
     \psi(\boldsymbol{r}, E', \boldsymbol{\hat{\Omega'}},t) dE' d\boldsymbol{\hat{\Omega}'} +
     s(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) \;,
 \end{multline}
-where $\psi$ is the angular flux, $v$ is the velocity of the particles, $\Sigma$ is the macroscopic total material cross section, $\Sigma_s$ is the macroscopic scattering cross section, $\boldsymbol{r}$ is the location of the particle in three-dimensional space, $\boldsymbol{\hat{\Omega}}$ is the direction of travel in three-dimensional space, $s$ is the isotropic material source of new particles being produced, $t$ is the time, and $E$ is the energy (of particles) of the particles; all for $\boldsymbol{r} \in V$, $\boldsymbol{\hat{\Omega}} \in 4\pi$, $0<E<\infty$, and $0<t$ \cite{duderstadt_hamilton}. We also prescribe the initial condition
+where $\psi$ is the angular flux and the primary quantity of interest, $v$ is the speed of the particles, $\Sigma$ is the macroscopic total material cross section, $\Sigma_s$ is the macroscopic scattering cross section, $\boldsymbol{r}$ is the location of the particle in three-dimensional space, $\boldsymbol{\hat{\Omega}}$ is the direction of travel in three-dimensional space, $s$ is the isotropic material source of new particles being produced, $t$ is the time, and $E$ is the energy (of particles) of the particles; all for $\boldsymbol{r} \in V$, $\boldsymbol{\hat{\Omega}} \in 4\pi$, $0<E<\infty$, and $0<t$ \cite{duderstadt_hamilton}. We also prescribe the initial condition
 \begin{equation}
-    \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},0) = \psi_{initial}(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}})
+    \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},0) = \psi_{\text{initial}}(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}})
 \end{equation}
 and the boundary condition
 \begin{equation}
-    \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) = \psi_{bound}(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) \text{ for } \boldsymbol{r} \in \partial V \text{ and } \boldsymbol{\hat{\Omega}} \cdot \boldsymbol{n} < 0 \;.
+    \psi(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) = \psi_{\text{bound}}(\boldsymbol{r}, E, \boldsymbol{\hat{\Omega}},t) \; \text{ for } \; \boldsymbol{r} \in \partial V \; \text{ and } \; \boldsymbol{\hat{\Omega}} \cdot \boldsymbol{n} < 0 \;.
 \end{equation}
 A number of additional implicit assumptions are needed for the validity of this equation \textit{and} my research including: particle--particle interactions are rare and can be neglected, neutrons are points in space with no volume, collision events occur instantaneously, and nuclear properties are known \cite{lewis_computational_1984, duderstadt_hamilton}.
 
-The transport equation is commonly solved using a deterministic or Monte Carlo (stochastic) \cite{lux_1998} numerical solution method or clever combinations of the two \cite{monke_phd, pasmann_phd} as analytic solutions are sparse.
-Finding solutions to the transport equation with any numerical method can be incredibly computationally expensive due to the high number of independent variables (often referred to as the \textit{curse of dimensionality}), the geometric complexity of the systems of interest (e.g., nuclear reactor cores, human people), and the complex behavior of neutrons (specifically) in energy.
+The transport equation is commonly solved using a deterministic \cite{till_2022_deterministic} or Monte Carlo (stochastic) \cite{lux_1998} numerical solution method or clever combinations of the two \cite{monke_phd, pasmann_phd, kendra_phd}, as analytic solutions are sparse.
+Finding solutions to the transport equation with any numerical method can be incredibly computationally expensive due to the high number of independent variables (often referred to as the \textit{curse of dimensionality}), the geometric complexity of the systems of interest (e.g., nuclear reactor cores, human bodies), and the complex behavior of neutrons (specifically) in energy \cite{burke_phd}.
+Diffusion approximations may be made in circumstances as the solving the diffusion equation is far more computationally cheap then the full transport equation (by any method) \cite{trahan_phd}.
+However, diffusion approximations are not generally accurate.
 
 % determnistic methods
-Deterministic methods rely on discretization or the assumption of functional shape on small pieces of phase space to form a solution in an entire simulated problem domain---in all independent variables---in single numerical method---in one simulation.
-The different components of the transport equation (Eq. \eqref{eq:fullNTE}) (e.g., angular scattering integral, energy up-, down-scattering, streaming through space, changing in time) require different numerical schemes to efficiently discretize each component for solution on digital computers.
+Deterministic methods rely on discretization or the assumption of functional shape on small pieces of phase space to form a solution often in an entire simulated problem domain---in all independent variables with a single numerical method---in one simulation \cite{till_2022_deterministic}.
+The different components of the transport equation (Eq. \eqref{eq:fullNTE}) (e.g., angular scattering integral, energy up- down-scattering, streaming through space, changing in time) require different numerical schemes to efficiently discretize each component for solution on computers \cite{duderstadt_hamilton}.
 The full numerical method for a single deterministic transport simulation is actually a nested set of cooperating numerical methods for each of the components of the transport equation.
-Due to the \textit{curse of dimensionality} direct numerical solution (e.g., LU-decomposition) to the discritization transport system is impossible for many problems due to the memory and computational burden.
-This is especially true for time dependent problems, so most deterministic transport applications use an iterative algorithm at their most fundamental level.
+Due to the \textit{curse of dimensionality} direct numerical solution (e.g., LU-decomposition) to the discretized transport system is impossible for many problems due to the memory and computational burden.
+This is especially true for time-dependent problems, so most deterministic transport applications use an iterative algorithm at their most fundamental level.
 How many times a given algorithm must iterate, how long each iteration takes, and where an algorithm allows for parallelism become the preeminent arbiters of time to solution.
 
 % general Monte Carlo introduction
-Monte Carlo (or direct simulation Monte Carlo) was invented in 1946-7 shortly after the conclusion of the Manhattan project by Stanisław Ulam and John von Neumann (amoung others) to model the behavior of neutrons (see chapter \ref{chap:mc_methods_intro} for more).
-The path of a particle and the specific set of events that occur within its ``history" are governed by pseudo-random numbers, known probabilities (for example, from material data), and known geometries.
+Monte Carlo (or direct simulation Monte Carlo) was invented in 1946-7 shortly after the conclusion of the Manhattan project by Stanisław Ulam and John von Neumann (among others) to model the behavior of neutrons (see chapter \ref{chap:mc_methods_intro} for more).
+The path of a particle and the specific set of events that occur within its ``history" are governed by pseudo-random numbers, known probabilities (for example, from material data), and known geometries \cite{lux_1998}.
 Data about how particles move and/or interact with the system are tallied to compute parameters of interest with an associated statistical error from the Monte Carlo process \cite{kayla_phd}.
 As we cannot model the multiple moles of physical particles at any given moment in systems of interest, each simulated \textit{pseudo-}particle actually represents a group of physical particles by using a statistical weight.
 Monte Carlo methods treat the \textit{curse of dimensionality} by only considering a single pseudo-particle at a time, contributing to a solution in parameter space only where that particle is simulated.
-The trade off is that Monte Carlo methods are incredibly slow to converge as compared to deterministic methods, and take significant computational resources to forum a well resolved solution.
-In fact for analog Monte Carlo there is no a-prioi grantee that a solution will occupy all locations of interest in phase space.
-This is especially true for time dependent problems (e.g., burst criticality, reactor accidents) where particle populations and weight can very significantly through simulated time depending on a given Monte Carlo algorithm.
-Solving high fidelity time-dependent problems using Monte Carlo methods requires massive computational resources.
-Novel numerical methods may also get a better statistical solution with fewer simulated pseudo-particles, or transport the same number of particle faster on huge computational resources thus allowing for more particles to be simulated in the same wall clock time increasing the quality of the solution.
+The trade-off is that Monte Carlo methods are incredibly slow to converge compared to deterministic methods, and take significant computational resources to form a well resolved solution.
+In fact, for analog Monte Carlo there is no a priori guarantee that a solution will occupy all locations of interest in phase space at a given particle count.
+This is especially true for time-dependent problems (e.g., burst criticality, reactor accidents) where particle populations and weight can vary significantly through simulated time depending on a given Monte Carlo algorithm.
+So to solve high fidelity time-dependent problems using Monte Carlo methods requires massive computational resources to get a calculation in resalable wall clock time.
+Novel numerical methods may also get a better statistical solution with fewer simulated pseudo-particles, or transport the same number of particles faster on huge computational resources thus allowing for more particles to be simulated in the same wall clock time, increasing the quality of the solution.
 
 In general Monte Carlo methods provide an inexact solution---with a statistical error---to an exact problem.
-Deterministic methods (which has also at times been described as the method of differential equations) provide an exact solution to an inexact problem---making assumptions for tractability.
-These two solution methods are different sides of the same coin molding the physical behavior of neutrons.
+Deterministic methods (which has also at times been described as the method of differential equations) provide an exact solution to an inexact problem, making assumptions for tractability.
+These two solution methods are different sides of the same coin modeling the physical behavior of neutrons in systems of interest.
 
 % computational difficulty and modern HPCs
-Modern high performance computers (HPCs) have a heterogeneous architecture, meaning they use both generic central processing units (CPUs) as well as specialized hardware accelerators to speed up a small subset of calculations called graphics processing units (GPUs).
-Modern HPCs with CPUs and GPUs are enabling high-fidelity modeling of fully time dependent radiation transport problems using both deterministic and Monte Carlo solution techniques.
+Modern high performance computing (HPC) clusters have a heterogeneous architecture, meaning they use both generic central processing units (CPUs) as well as specialized hardware accelerators to speed up a small subset of calculations called graphics processing units (GPUs) \cite{niemeyer_phd}.
+Modern HPCs with CPUs and GPUs are enabling high-fidelity modeling of fully time-dependent radiation transport problems using both deterministic and Monte Carlo solution techniques.
 GPUs use a single instruction-multiple thread (SIMT) parallelism paradigm \cite{cuda}, where threads are bound together in teams called warps, or thread-blocks, and are required to do the same operations in absolute unison. 
-If threads in the same warp need to take different paths in a program (e.g., different if/else branches or iterating loops a different number of times), each path must be executed serially, degrading performance.
-This parallelism paradigm may require new numerical methods to exploit efficiently and run highly time dependent radiation transport problems on modern HPCs.
-To rapidly prototype, develop, deploy and test new numerical methods at scale a new software engineering scheme which can be dynamically portably to CPUs and GPUs is also warranted.
+If threads in the same warp need to take different paths in a program (e.g., different if/else branches or iterating loops a different number of times), each path must be executed serially, degrading performance \cite{braxton_phd}.
+This parallelism paradigm may require new numerical methods to exploit efficiently and run highly time-dependent radiation transport problems on modern HPCs.
+To rapidly prototype, develop, deploy, and test new numerical methods at scale, a new software engineering scheme which can be dynamically portably to CPUs and GPUs is also warranted.
 
 Broadly this dissertation contributes solutions to:
 \begin{enumerate}
     \item Rapidly exploring new numerical methods on and for GPUs; and
-    \item Developing software engineering schemes to implement novel methods at scale;
+    \item Developing software engineering schemes to implement novel methods on modern HPC architectures;
 \end{enumerate}
 for both deterministic and Monte Carlo solution types.
-This combined set questions has been an issue in high performance computing before.
-Nicolas Metropolis, a father of the Monte Carlo method and of modern high performance computing among other significant contributions, proclaimed in 1987,
+This combined set issues has been a difficulty in high performance computing before.
+Nicolas Metropolis, a father of the Monte Carlo method and of modern high performance computing, proclaimed in 1987:
 %[⟨cite⟩][⟨punct⟩]
 \blockquote[\cite{metropolis_1987_history}][]{
-``Still the magnitude of the endeavor to compute on massively parallel devices must not be underestimated. Some of the tools and techniques needed are: A high-level language and new architecture able to deal with the demands of such a sophisticated language (to the relief of the user); Highly efficient operating systems and compilers...; and A fresh look at numerical analysis and the preparation of new algorithms..."
+``Still the magnitude of the endeavor to compute on massively parallel devices must not be underestimated. Some of the tools and techniques needed are: A high-level language and new architecture able to deal with the demands of such a sophisticated language (to the relief of the user);...and A fresh look at numerical analysis and the preparation of new algorithms..."
 }
-He was speaking at a time when the multi-cored CPU was born; a revolution for scientific computing.
-We sit now at another revolution---the end of Moor's law and the supremacy of the GPU.
-These same directions of research are as imperative now, as they where then and as they where almost a century ago at the birth of modern computing. 
-Only now: we are approaching the ability to model the full seven independent variable phase space of the transport equation, \emph{including in time}.
-
+He was speaking at a time when the multi-core CPU and massively parallel MPI type architectures were born: a revolution for scientific computing.
+We sit now at another revolution: the end of Moore's law\footnote{on single CPU cores} and the supremacy of the many-core devices, most preeminently, GPUs.
+These same directions of research are as imperative now as they where then. 
+Only this time we are approaching the ability to model the full seven independent variable phase space of the transport equation, \emph{including time}.
 In this dissertation I solve difficult time-dependent problems with new algorithms and new software engineering methods.
-I hope that the excitement and joy that I know I share with my mentors and colleagues during the development of these schemes is similar to that of our fore-bearers.
-Cheery dispositions in the face of incredibly daunting challenges.
+%I hope that the excitement and joy that I know I share with my mentors and colleagues during the development of these schemes is similar to that of our fore-bearers.
+%Cheery dispositions in the face of incredibly daunting challenges.
 
-More specifically for deterministic numerical methods I investigate a space parallel-iteration algorithm and apply it to time-dependent radiation transport for the first time and make comparisons to the standard iteration algorithm.
-I show how this impacts the convergence rate, time dependent numerical stability, and performance on a GPU.
-I use vendor supplied software libraries to do the bulk of the space-parallel algorithm's calculations, rather then manually writing GPU code which is done when implementing the standard iteration scheme.
-Finally I explore an efficient preconditioner to converge the space-parallel iteration method faster in the diffusive limit.
+More specifically for deterministic numerical methods I investigate a space-parallel iteration algorithm and apply it to time-dependent radiation transport and make comparisons to the standard iteration algorithm.
+I show how this impacts the convergence rate, time-dependent numerical stability, and performance on a GPU.
+I use vendor supplied software libraries to do the bulk of the space-parallel algorithm's calculations, rather then manually writing GPU code (which is usually done when implementing the standard iteration scheme).
+Finally, I explore an efficient preconditioner to converge the space-parallel iteration method faster in the diffusive limit.
 
-For Monte Carlo methods I investigate, analyze, and implement a new software engineering scheme that allows for the same Monte Carlo transport script to run on CPUs and GPUs and is used in the new open source software: Monte Carlo / Dynamic Code.
+For Monte Carlo methods I investigate, analyze, and implement a new software engineering scheme that allows for the same Monte Carlo transport program to run on CPUs and GPUs and is used in the new open source software: Monte Carlo / Dynamic Code.
 To demonstrate this claim I implement new Monte Carlo algorithms and conduct performance analysis on CPUs and GPUs by simulating a full four-phase reactor accident as well as a burst criticality experiment conducted during the Manhattan project, among other benchmarks.
 
 \section{Dissertation Objectives and Overview}
 \label{sec:research_qustions}
 
-This manuscript-style dissertation is divided into a general introduction (chapter \ref{chap:intro}), two chapters in a part on deterministic methods (part \ref{part:mc}), three chapters in a part on Monte Carlo methods (part \ref{part:determ}), and a general conclusion (chapter \ref{chap:conclusion}).
+This manuscript-style dissertation is divided into a general introduction (chapter \ref{chap:intro}), two chapters in a part on deterministic methods (part \ref{part:determ}), three chapters in a part on Monte Carlo methods (part \ref{part:mc}), and a general conclusion (chapter \ref{chap:conclusion}).
 Each of the two major parts begins with a chapter on more specific introductions for the relevant solution methods---chapters \ref{chap:determ_intro} and \ref{chap:mc_methods_intro} for deterministic and Monte Carlo respectively.
 %These introductions both begin with brief historical anecdotes I have found in my research
 %, they also have sections directed both at subject-area experts as well as members of the general public.
 %This work has been entirely paid for by the public, so they deserves to have comprehendible content produced from it.
 
-This dissertation contributes to my field by answering five research questions motivated by the previous section.
+This dissertation contributes to my field by answering five research questions motivated by the gaps and challenges discussed in the previous section:
 \begin{enumerate}
     \item Can relying on abstraction through using software libraries enable non-expert users to produce efficient-performing software for heterogeneous computing systems?
     \item Will a space-parallel deterministic iterative solution algorithm (that lags the incident information on the bounds of a cell from a previous iteration) outperform the standard angle-parallel iterative algorithm on modern heterogeneous architectures?
-    \item For deterministic algorithms, does accounting for transient effects alter convergence rates of iterative solution algorithms?
+    \item For deterministic algorithms, does accounting for transient effects improve convergence rates of iterative solution algorithms?
     \item Can information coming from a low-order problem be used to inform cell boundary information and increase convergence rates of a one-cell inversion iteration algorithm?
     \item How can alternative Monte Carlo tracking schemes (namely Woodcock or delta tracking) be used be used to converge the quantities of interest faster?
 \end{enumerate}
 
-This dissertation is comprised of five manuscript chapters each of which may indirectly or directly answer multiple research questions.
-Part introductions (in chapters \ref{chap:determ_intro} and \ref{chap:mc_methods_intro}) contain summaries of contributions of each manuscript chapter and directly relates them to these research questions.
-Chapter \ref{chap:conclusion} further summarizes these contributions and the answers to research questions and discusses possible directions for future research.
-
-
+The five manuscript chapters may each indirectly or directly answer multiple research questions.
+Part introductions (in chapters \ref{chap:determ_intro} and \ref{chap:mc_methods_intro}) contain summaries of contributions of each manuscript chapter and directly relate them to these research questions.
+Chapter \ref{chap:conclusion} further summarizes these contributions, answers to research questions, and discusses possible directions for future research.
 
 \section{List of publications}
 
 At the time of this writing, two manuscript chapters of this dissertation has been published and most of the remaining chapters have either been accepted for publication or are in prepration and near submission.
 \begin{itemize}
-    \item Chapter \ref{chap:therefore_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) One-Cell Inversion for Solving Higher-Order Time-Dependent Radiation Transport on GPUs. \emph{Accepted: Nuclear Science and Engineering}. AM DOI: \doi{10.48550/arXiv.2503.00264}.
+    \item Chapter \ref{chap:therefore_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) One-Cell Inversion for Solving Higher-Order Time-Dependent Radiation Transport on GPUs. \emph{Nuclear Science and Engineering} (in press). \doi{10.1080/00295639.2025.2510004}. \arxiv{2503.00264}.
 
-    \item Chapter \ref{chap:smom_paper}: \textsc{J. P. Morgan},  \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. Efficient Preconditioning for Space-Parallel One Cell Inversions in Slab Geometry using a Second Moment Method. \emph{in preparation}
+    \item Chapter \ref{chap:smom_paper}: \textsc{J. P. Morgan},  \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. Efficient Preconditioning for Space-Parallel One Cell Inversions in Slab Geometry using a Second Moment Method. In preparation for submission to \emph{Journal of Computational and Theoretical Transport}.
 
-    \item Chapter \ref{chap:joss_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{S. Pasmann}, \textsc{K. B. Clements}, et. al. (2024) Monte Carlo / Dynamic Code (MC/DC): An accelerated Python package for fully transient neutron transport and rapid methods development. \emph{Journal of Open Source Software}. 9(96), 6415. DOI: \doi{10.21105/joss.06415}.
+    \item Chapter \ref{chap:joss_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{S. Pasmann}, \textsc{K. B. Clements}, \textit{et al.} (2024) Monte Carlo / Dynamic Code (MC/DC): An accelerated Python package for fully transient neutron transport and rapid methods development. \emph{Journal of Open Source Software}. 9(96), 6415. \doi{10.21105/joss.06415}.
 
-    \item Chapter \ref{chap:cise_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{B. Cuneo}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) Performant and Portable Monte Carlo Neutron Transport via Numba. \emph{Computing in Science and Engineering (IEEE)}. AM DOI: \doi{10.48550/arXiv.2409.04668}. DOI: \doi{10.1109/MCSE.2025.3550863}.
+    \item Chapter \ref{chap:cise_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{B. Cuneo}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) Performant and Portable Monte Carlo Neutron Transport via Numba. \emph{Computing in Science and Engineering} (in press). \doi{10.1109/MCSE.2025.3550863}. \arxiv{2409.04668}.
 
-    \item Chapter \ref{chap:delta_tracking_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{K. B. Clements}, and \textsc{K. E. Niemeyer}. Hybrid Woodcock-delta Tracking Schemes Using a Track-Length Estimator. \emph{in preparation}
+    \item Chapter \ref{chap:delta_tracking_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{K. B. Clements}, and \textsc{K. E. Niemeyer}. Hybrid Woodcock-delta Tracking Schemes Using a Track-Length Estimator. In preparation for submission to \emph{Journal of Computational and Theoretical Transport}
     
 \end{itemize}
 
-During the duration of my PhD I have authored fourteen manuscripts of which: on eleven I have been first author, seven have been published in peer-reviewer conference transactions or proceedings, and four have been published in field relevant journals.
+During the duration of my PhD I have authored fourteen manuscripts, where: on eleven I have been first author, seven have been published in peer-reviewed conference transactions or proceedings, three are in preparation for submission to journals, and four have been published in field-relevant journals.
 A complete list of publications is in appendix \ref{chap:listopusb}.
-Two of my additional published manuscripts are attached in the appendices, describing relevant preceding and tangential work.
+Three of my additional published manuscripts are attached in the appendices, describing relevant preliminary and tangential work.

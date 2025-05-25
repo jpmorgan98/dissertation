@@ -5,16 +5,23 @@
   Colin J. Josey, 
   and Kyle E. Niemeyer}
   
-\renewcommand{\TheAddress}{
+\renewcommand{\TheAddress}{%
     \textit{Proceedings of International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (M\&C 2023)} \\
-    Vol 19 2023. \\
+    Vol. 19, 2023. \\
     \doi{10.48550/arXiv.2306.07847}
 }
 
 \chapter{\TheTitle}
 \label{chapter:mcatk_paper}
 
-\PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
+\vspace{1em}
+\TheAuthors
+\vspace{1em}
+\TheAddress
+\vspace{1em}
+
+
+%\PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
 
 
 \section*{Abstract}
@@ -212,9 +219,9 @@ We expect that this work will increase the overall performance of MCATK when del
 
 \section*{ACKNOWLEDGEMENTS}
 Research presented in this article was supported by the Laboratory Directed Research and Development program of Los Alamos National Laboratory under project number 20220084DR.
-
+%
 This work was supported by the Center for Exascale Monte-Carlo Neutron Transport (CEMeNT) a PSAAP-III project funded by the Department of Energy, grant number: DE-NA003967.
-
+%
 The authors would like to R. Arthur Forster for the discussions that inspired this work as well as Theresa Cutler, Travis Smith, and Robert Weldon Jr. for providing benchmark problem input files.
 
-LA-UR-23-24971
+%LA-UR-23-24971
