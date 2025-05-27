@@ -8,7 +8,8 @@
 \renewcommand{\TheAddress}{%
     \textit{Nuclear Science and Engineering} \\
     In press, Vol. 200, PAGES, 2025. \\
-    \doi{10.1080/00295639.2025.2510004}
+    \doi{10.1080/00295639.2025.2510004} \\
+    \arxiv{2503.00264}
 }
 
 \PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
@@ -327,11 +328,11 @@ where
 \end{subequations}
 One-cell inversion iterations continue until
 \begin{equation}
-    ||\Psi^{(l+1)}-\Psi^{(l)}||_{2} < \epsilon(1-\rho_e) \; ,
+    \left|\left|\Psi^{(l+1)}-\Psi^{(l)}\right|\right|_{2} < \epsilon(1-\rho_e) \; ,
 \end{equation}
 where $\epsilon$ is the convergence tolerance and
 \begin{equation}
-    \rho_e = \frac{||\Psi^{(l+1)}-\Psi^{(l)}||_{2}}{||\Psi^{(l)}-\Psi^{(l-1)}||_{2}} \; ,
+    \rho_e = \frac{\left|\left|\Psi^{(l+1)}-\Psi^{(l)}\right|\right|_{2}}{\left|\left|\Psi^{(l)}-\Psi^{(l-1)}\right|\right|_{2}} \; ,
 \end{equation}
 is an empirical estimation of the spectral radius computed at every iteration of a transport solve.
 After convergence, the time-step counter increments and the time-step process can be repeated.
@@ -344,6 +345,7 @@ Thus, a smaller time step will cause the system to become more diagonally domina
 We provide a similar description of simple corner balance and multiple balance time discretization for an unpreconditioned source iteration \cite{morgan2023oci}.
 
 \subsection{Fourier analysis: time-stepping scheme}
+\label{sec:ocifourierdev}
 
 To ensure that the combination of higher-order discretization schemes remains an unconditionally stable time-marching method, we perform Fourier analysis (also known as Von Neumann stability analysis)~\cite{leveque2007finite}.
 A time marching scheme
@@ -352,7 +354,7 @@ A time marching scheme
 \end{equation}
 where $\bm{K}$ is the time iteration matrix, is unconditionally stable when the Von Neumann stability condition is met:
 \begin{equation}
-    \sup(|\lambda_{K}|) \leq 1 \;,
+    \sup(\left|\lambda_{K}\right|) \leq 1 \;,
     \label{eq:unconstab}
 \end{equation}
 where $\lambda_{K}$ are all the eigenvalues of $\bm{K}$ \cite{golub_matrix_1983, isaacson_numerical_1966}.
@@ -494,7 +496,7 @@ Similar to the analysis in the previous section, we can assert that for an itera
 \end{equation}
 where $(l)$ is the iteration counter, convergence rate is
 \begin{equation}
-   \rho = \sup(|\bm{\lambda}_{\bm{T}}|)\;,
+   \rho = \sup(\left|\bm{\lambda}_{\bm{T}}\right|)\;,
 \end{equation}
  where $\lambda_{\bm{T}}$ contains the eigenvalues of $\bm{T}$ \cite{golub_matrix_1983, isaacson_numerical_1966}.
 An iterative method will converge if and only if $\rho<1$. 
@@ -727,15 +729,15 @@ Profiling shows that host functions (including host$\rightarrow$device and devic
 
         \State $\bm{\phi}^l =\sum_{n=1}^{N} w _n\Psi^{l}_{n}$ \Comment{Eq. \eqref{eq:app:si_sf}}
 
-        \State $e=||\bm{\phi}^l - \bm{\phi}^{l-1}||_2$
+        \State $e^{(l)}=\left|\left|\bm{\phi}^l - \bm{\phi}^{l-1}\right|\right|_2$
 
-        \State $\rho_e = e^l / e^{l-1}$
+        \State $\rho_e = e^{(l)} / e^{(l-1)}$
 
-        \If{$e < \epsilon(1-\rho_e)$}
+        \If{$e^{(l)} < \epsilon(1-\rho_e)$}
             converged = true
         \EndIf
 
-        \State $e^{l-1} = e^l$ 
+        \State $e^{(l-1)} = e^{(l)}$ 
 
         \State $l++$
         
@@ -780,17 +782,17 @@ We implemented the following algorithm to do that: everything under the \texttt{
             \State $\Psi$ = \texttt{GPU\_strided\_batched\_dgetrs}($A$,$b$) 
         \EndIf
 
-        \State $e=||\Psi^l - \Psi^{l-1}||_2$ \Comment{Done on GPU using rocBLAS dr2n}
+        \State $e^{(l)}=\left|\left|\Psi^{(l)} - \Psi^{(l-1)}\right|\right|_2$ \Comment{Done on GPU using rocBLAS dr2n}
 
-        \State $\rho_e = e^l / e^{l-1}$ \Comment{spectral radius estimation}
+        \State $\rho_e = e^{(l)} / e^{(l-1)}$ \Comment{spectral radius estimation}
 
-        \If{$e < \epsilon(1-\rho_e)$} \Comment{controlling for false convergence}
+        \If{$e^{(l)} < \epsilon(1-\rho_e)$} \Comment{controlling for false convergence}
             \State converged = true
         \EndIf
 
-        \State $e^{l-1} = e^l$
+        \State $e^{(l-1)} = e^{(l)}$
 
-        \State $b^{l-1} = b^l$
+        \State $b^{(l-1)} = b^{(l)}$
 
         \State $l++$
             

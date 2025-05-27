@@ -3,14 +3,14 @@
 \begin{table}
 \centering
 \begin{tabular}{llllll}
-\toprule
-Problem & Tracking Alg. & Estimator & Runtime [s] & $|\hat{\sigma}^2|_1$ & FOM \\ \midrule
+\hline
+Problem & Tracking Alg. & Estimator & Runtime [s] & $\left|\left|\hat{\sigma}^2\right|\right|_1$ & FOM \\ \hline
 \multirow{4}{*}{Kobyashi}
  & surface  & TLE & \num{1574} & \num{4.514e-3} & 0.1407 \\
  & surface  & CE & \num{1014} & \num{9.552e-2} & 0.0103 \\
  & delta  & TLE & \num{1298} & \num{4.539e-3} & 0.1697 \\ 
  & delta  & CE & \num{817.2} & \num{2.062e-1}  & 0.0059 \\
- \midrule
+ \hline
  
 
  
@@ -18,18 +18,18 @@ Problem & Tracking Alg. & Estimator & Runtime [s] & $|\hat{\sigma}^2|_1$ & FOM \
  & surface  & TLE & \num{7926} & \num{1.295e-4} & \num{0.9744} \\
  & surface  & CE & \num{3173} & \num{1.295e-4} & \num{2.4336} \\
  & delta  & TLE & \num{2870.} & \num{1.400e-4} & \num{2.4889} \\
- & delta  & CE & \num{1820} & \num{2.15e-4} & \num{2.5515} \\
- \midrule
+ & delta  & CE & \num{1820} & \num{2.152e-4} & \num{2.5515} \\
+ \hline
 
  
 \multirow{6}{*}{C5CE} 
  & surface  & TLE & \num{734.6} & \num{1.812e-3} & \num{0.7484}\\
- & surface  & CE & \num{587.8} & \num{1.812e-2} & \num{0.9391}\\
+ & surface  & CE & \num{587.8} & \num{1.812e-3} & \num{0.9391}\\
  & delta  & TLE & \num{496.8} & \num{4.906e-3} & \num{0.4103} \\
  & delta  & CE & \num{555.0} & \num{1.173e-2} &  \num{0.1536} \\
  & hybrid-energy & TLE & \num{226.25} & \num{1.164e-3} & \num{3.798} \\ 
  & hybrid-energy & CE & \num{220.5} & \num{1.144e-3} & \num{3.965} \\ 
- \midrule
+ \hline
 
  
 \multirow{4}{*}{Dragon} 
@@ -37,7 +37,7 @@ Problem & Tracking Alg. & Estimator & Runtime [s] & $|\hat{\sigma}^2|_1$ & FOM \
  & delta  & CE & DNF$^*$ & - & - \\
  & delta  & TLE & DNF$^*$ & - & - \\
  & hybrid-in-material & TLE & \num{15493} & \num{1.106e-6} & \num{58.40} \\
- \bottomrule
+ \hline
 \end{tabular}
 \caption{Results for benchmark problems on Dane (112$\times$ Intel Sapphire Rapids CPU cores). $^*$Did not finish in 8 hour time limit.}
 \label{tab:dane_results}
@@ -51,22 +51,21 @@ Problem & Tracking Alg. & Estimator & Runtime [s] & $|\hat{\sigma}^2|_1$ & FOM \
 \begin{table}
 \centering
 \begin{tabular}{llllll}
-\toprule
-Problem & Tracking Alg. & Estimator & Runtime [s] & $|\hat{\sigma}^2|_1$ & FOM \\ \midrule
+\hline
+Problem & Tracking Alg. & Estimator & Runtime [s] & $\left|\left|\hat{\sigma}^2\right|\right|_1$ & FOM \\ \hline
 \multirow{4}{*}{Kobyashi} 
  & surface  & TLE & \num{973.9} & \num{4.514e-3} & 0.2275 \\
  & surface  & CE & \num{840.6} & \num{9.952e-2} & 0.0125 \\
- & delta  & TLE & \num{831.8} & \num{4.539e-3} & 0.1697 \\ 
+ & delta  & TLE & \num{831.8} & \num{4.539e-3} & 0.2649 \\ 
  & delta  & CE & \num{620.7} & \num{2.062e-1}  & 0.0078 \\
- \midrule
+ \hline
  
 \multirow{4}{*}{C5G7} 
  & surface  & TLE & \num{4598} & \num{1.305e-4} & \num{1.666} \\
  & surface  & CE & \num{2403} & \num{1.305e-4} & \num{3.1878} \\
- & delta  & TLE & \num{161} & \num{1.400e-4} & \num{4.4205} \\ 
+ & delta  & TLE & \num{1615} & \num{1.400e-4} & \num{4.4205} \\ 
  & delta  & CE & \num{789.3} & \num{2.152e-4} & \num{5.8860} \\
-
- \midrule
+ \hline
  
 \multirow{6}{*}{C5CE} 
  & surface  & TLE & \num{550.9} & \num{2.452e-3} & \num{0.7402}\\
@@ -75,13 +74,13 @@ Problem & Tracking Alg. & Estimator & Runtime [s] & $|\hat{\sigma}^2|_1$ & FOM \
  & delta  & CE & \num{421.6} & \num{1.793e-2} &  \num{0.1323} \\
  & hybrid-energy & TLE & \num{291.7} & \num{1.557e-3} & \num{2.2023} \\ 
  & hybrid-energy & CE & \num{275.6} & \num{1.839e-3} & \num{1.9731} \\ 
- \midrule
+ \hline
  
 \multirow{4}{*}{Dragon} 
  & surface & TLE & \num{3993} & \num{1.163e-06} & \num{2153} \\
  & delta & CE & DNF$^*$ & - & - \\
  & delta & TLE & DNF$^*$ & - & - \\
- & hybrid-material & TLE & DNF$^*$ & - & - \\ \bottomrule
+ & hybrid-material & TLE & DNF$^*$ & - & - \\ \hline
 \end{tabular}
 \caption{Results for benchmark problems on Lassen (4$\times$ Nvidia Tesla V100). $^*$Did not finish in 8 hour time limit.}
 \label{tab:lassen_results}

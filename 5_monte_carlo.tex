@@ -17,12 +17,8 @@ MC/DC is purpose built to rapidly deploy new numerical methods for time dependen
 
 The birth of the modern Monte Carlo method has the traditional flair of mid-century atomic science.
 Legend has it Monte Carlo was born of a game of solitaire Stanisław Ulam was playing \cite{metropolis_1987_history}.
-Earlier that year, Ulam and John von Neumann
-\footnote{
-This is the second time contributions from John von Neumann have been used in basic background of this dissertation,.
-}
-had been observing the testing of the first general programmable computer: the ENIAC machine, where it was being built at the University of Pennsylvania in Maryland \cite{anderson_1986_maniac}.
-\footnote{Subrahmanyan Chandrasekhar who derived the method of discrete ordinance (discussed in chapter \ref{chap:determ_intro}) was also at the Aberdeen proving ground working on hydrodynamic calculations for ballistic projectiles at the same time as von Neumann and Ulam. I do not know if they ever met however the first published application of discrete ordinance to neutron transport was not until 1953 by Bregt Carlson \cite{carlson_1955_sn, carlson_1958_sn}.
+Earlier that year, Ulam and John von Neumann\footnote{This is the second time contributions from John von Neumann have been used in basic background of this dissertation.}
+had been observing the testing of the first general programmable computer: the ENIAC machine, where it was being built at the University of Pennsylvania in Maryland \cite{anderson_1986_maniac}\footnote{Subrahmanyan Chandrasekhar who derived the method of discrete ordinance (discussed in chapter \ref{chap:determ_intro}) was also at the Aberdeen proving ground working on hydrodynamic calculations for ballistic projectiles at the same time as von Neumann and Ulam. I do not know if they ever met however the first published application of discrete ordinance to neutron transport was not until 1953 by Bregt Carlson \cite{carlson_1955_sn, carlson_1958_sn}.
 }.
 The idea popped into his head: what if I could play hundreds of games of solitaire simultaneously using ENIAC to determine the best outcome.
 From there von Neumann and Ulam formalized the ideas of what would become known as Monte Carlo in their famous March 1947 letter to Robert Richtmeyer\footnote{
@@ -45,7 +41,7 @@ Like most profound numerical schemes, the method statistical sampling was probab
 But it was not until 1947 that nescient existence of computational power dovetailed with a game of solitaire to create the Monte Carlo method of today.
 The Monte Carlo method was born alongside the computer and seemingly major components of the computer were forged by the need for Monte Carlo calculations.
 
-Monte Carlo methods have expanded as a wholly significant subfield of numerical analysis next to the more classically derived deterministic methods---or as Metropolis called them ``the method of differential equations`` \cite{anderson_1986_maniac}.
+Monte Carlo methods have expanded as a wholly significant subfield of numerical analysis next to the more classically derived deterministic methods---or as Metropolis called them ``the method of differential equations"- \cite{anderson_1986_maniac}.
 Monte Carlo has been applied to countless types physics.
 Monte Carlo neutronics specifically has stayed at the bleeding edge of both the development of the numerical method as well as the computers to calculate solution.
 This dissertation humbly attempts to make a contribution to this rich and lively field.
@@ -107,7 +103,7 @@ An added complication when using the Woodcock-delta tracking method is restricti
 There are many so called estimators that can be used to indicate quantities of interest (often scalar flux) by tallying events that occur within a given region of phase space.
 The two common estimators are the collision estimator and the the track (or path) length estimator.
 
-Delta tracking algorithms are implemented in many production Monte Carlo neutron transport applications including Serpent \cite{leppanen_2010_burnup, leppanen_use_2017, leppanen_development_2013, leppanen_2015_serpent}, MONK/MCBEND \cite{richards_monk_2015}, IMPC \cite{fang_development_2022}, and GUARDYAN \cite{molnar_gpu_based_2019}.
+Delta tracking algorithms are implemented in many production Monte Carlo neutron transport applications including Serpent \cite{leppanen_2010_burnup, leppanen_use_2017, leppanen_development_2013}, MONK/MCBEND \cite{richards_monk_2015}, IMPC \cite{fang_development_2022}, and GUARDYAN \cite{molnar_gpu_based_2019}.
 Notably, the MONK Monte Carlo neutron transport code is the direct successor to the GEM code where Woodcock \textit{et al.} first implemented Woodcock-delta tracking \cite{woodcock_techniques_1965}.
 There are other weighted Woodcock-delta tracking algorithms; in this work we explore variants of the non-weighted version \cite{molnar_variance_2018, morgan_weighted-delta-tracking_2015}.
 
@@ -118,12 +114,12 @@ Two common estimators for evaluating quantities of interest are the collision es
 Often tallies are scored to bins on a structured mesh grid overlying the surfaces and material regions that a Monte Carlo simulation uses to conduct actual transport operations.
 The track-length estimator is
 \begin{equation}
-    \hat{\phi}_n = \sum_{i=1}^{I}p_i \; ,
+    \hat{\phi}_n = \sum_{i=1}^{I}p_{i,n} \; ,
 \end{equation}
 where $\hat{\phi}_n$ is the integrated scalar flux over given mesh cell $p_i$ is the track-length of particle $i$ passing through mesh cell $n$.
 The collision estimator is,
 \begin{equation}
-    \hat{\phi}_n = \sum_{i=i}^{I} \frac{1}{\Sigma_{t,n}(E)} \;.
+    \hat{\phi}_n = \sum_{i=1}^{I} \frac{1}{\Sigma_{t,n}(E)} \;.
 \end{equation}
 The collision estimator will often produce a more variant solution as compared to other estimators for tallies where $\Sigma_{t,m}$ is small (optically thin, less dense materials) and will never tally anything into a void region.
 On the other hand, the track-length estimator will always tally into every mesh bin as a particle moves.

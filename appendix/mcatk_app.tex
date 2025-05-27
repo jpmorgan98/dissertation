@@ -1,21 +1,21 @@
-\renewcommand{\TheTitle}{One-Cell Inversion for Solving Higher-Order Time-Dependent Radiation Transport on GPUs}
+\renewcommand{\TheTitle}{Hybrid-Delta Tracking on a Structured Mesh in MCATK}
 \renewcommand{\TheAuthors}{Joanna Piper Morgan,
   Travis J. Trahan,
   Timothy P. Burke,
   Colin J. Josey, 
-  and Kyle E. Niemeyer}
+  and Kyle E. Niemeyer\\ \\}
   
 \renewcommand{\TheAddress}{%
     \textit{Proceedings of International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (M\&C 2023)} \\
     Vol. 19, 2023. \\
-    \doi{10.48550/arXiv.2306.07847}
+    \arxiv{2306.07847}
 }
 
 \chapter{\TheTitle}
 \label{chapter:mcatk_paper}
 
 \vspace{1em}
-\TheAuthors
+\TheAuthors 
 \vspace{1em}
 \TheAddress
 \vspace{1em}
@@ -188,7 +188,7 @@ Table \ref{table:runtime_trans} shows less speed-up then for k-eigenvalue comput
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=.85\textwidth]{appendix/mcatk_figures/godiva_plot.png}
+  \includegraphics[width=.8\textwidth]{appendix/mcatk_figures/godiva_plot.png}
   \caption{Right: Spatial averaged scalar flux of Godiva IV (HEU-MET-FAST-086) from MCATK. Left: Relative error between solution from standard tracking algorithm and hybrid-delta tracking. Shown through time (every \SI{1e-8}{\s}).}
   \label{fig:godiva_results}
 \end{figure}

@@ -10,14 +10,14 @@
 }
 
 In this dissertation I have developed new numerical algorithms and investigated new ways of developing and deploying those algorithms on modern high performance computers with both CPUs and GPUs.
-In this concluding chapter I first draw conclusions to the research questions posed in chapter \ref{chap:intro}.
+In this concluding chapter I first draw conclusions to research questions posed in Chapter \ref{chap:intro}.
 These research questions form the through-line between the manuscripts of this dissertation.
-Then I itemize the novel contributions to the field made in this dissertation.
-Finally I discuss directions of possible future work.
+Then, I itemize the novel contributions in this dissertation.
+Finally I propose directions of possible future work.
 
 \section{Answers to Research Questions}
 
-I motivated the constitution parts of this dissertation using research questions defined in \ref{sec:research_qustions}.
+I motivated the constituent parts of this dissertation using research questions defined in Section\ref{sec:research_qustions}.
 In this section I discuss how the data collected in various chapters answer these questions.
 
 \subsection{Research Question One}
@@ -27,58 +27,59 @@ Research question one was posed as
 Can relying on abstraction through using software libraries enable non-expert users to produce efficient-performing software for heterogeneous computing systems?
 \end{displayquote}
 
-Chapter \ref{chap:therefore_paper} provides evidence that by using strided batched GPU solvers more efficient portable code can be developed (see \ref{sec:therefore_disscusion}).
-The space-parallel numerical methods was more amenable to be efficiently implemented using these off-the-shelf libraries.
+Chapter \ref{chap:therefore_paper} provides evidence that using strided-batched GPU solvers produces more efficient and portable code (see Section \ref{sec:therefore_disscusion}).
+Furthermore, it discusses that the space-parallel algorithm is more amenable to be efficiently implemented using these off-the-shelf libraries.
 By leveraging libraries from the GPU vendor themselves, efficient GPU code for a specific hardware target is just a function call, header import, and compilation command away.
-Furthermore the algorithm is fairly generic: lots of small $Ax=b$ problems to solve in each iteration.
+It's of added benefit that the space-parallel algorithm is fairly generic: many small $Ax=b$ problems to solve in each iteration.
 Many libraries exist to compute this problem efficiently, meaning for both differing architectures of today and whatever completely new architectures lie over the horizon, the efficient calculation of these types of problems may be granted.
 
-Chapters \ref{chap:joss_paper} and \ref{chap:cise_paper} as well as appendix \ref{chapter:mcdc_prof} describe in great detail the software engineering scheme developed in the new Monte Carlo neutron transport application MC/DC.
+Chapters \ref{chap:joss_paper} and \ref{chap:cise_paper} as well as Appendix \ref{chapter:mcdc_prof} describe in great detail the software engineering scheme developed in the new Monte Carlo neutron transport application MC/DC.
 MC/DC is specifically developed to explore novel numerical methods for time-dependent radiation transport.
-These chapters also provide performance analysis and show that MC/DC performs similarly on problems of interest to traditionally developed compiled codes including in weak scaling analysis upto 256 nodes of a modern super computer (see \ref{sec:cise:performance} and \ref{sec:mcdc_prof:results}).
-They also show that on GPUs (both Nvidia and AMD) MC/DC's performance is mostly in-line with what has previously been reported by other traditionally developed Monte Carlo neutron transport applications (see \ref{sec:mcdc_prof:results}).
+These chapters also provide performance analysis and show that MC/DC performs similarly on problems of interest to traditionally developed compiled codes including in weak scaling analysis up to 256 nodes of a modern CPU and GPU based super computers (see Sections \ref{sec:cise:performance} and \ref{sec:mcdc_prof:results}).
+They also show that on GPUs (both Nvidia and AMD) MC/DC's performance is mostly in-line with what has previously been reported by other traditionally developed Monte Carlo neutron transport applications (see Sections \ref{sec:mcdc_prof:results}).
 
-Furthermore Chapters \ref{chap:joss_paper} and \ref{chap:cise_paper} discuss other research implemented by other MC/DC developers most of whom are not subject area experts in the field of computer science and software engineering.
-They are however excellent researchers in their particular fields.
+Furthermore Chapters \ref{chap:joss_paper} and \ref{chap:cise_paper} discuss other research implemented by other MC/DC developers, most of whom are not subject-area experts in the field of computer science or software engineering.
+They are, however, \emph{excellent} researchers in their particular fields.
 The vast amount of novel research for time-dependent Monte Carlo cited in those chapters provides further evidence that the software engineering scheme in MC/DC does allow for developing numerical methods rapidly.
 
-Chapter \ref{chap:delta_tracking_paper} provides what I consider the most compelling evidence towards this conclusion.
+Chapter \ref{chap:delta_tracking_paper} provides what I consider the most compelling evidence towards these conclusions.
 It describes the process of converting MC/DC---a full continuous energy Monte Carlo neutron transport code---written with surface tracking, into a code that implements Woodcock delta tracking in \emph{in four weeks}.
 
-Previous hybrid-surface delta tracking algorithms have only been implemented in forums connivent for software engineering choices made by traditional compiled codes \cite{leppanen_development_2013conf}.
-In fact previous hybrid surface delta tracking algorithms where designed with the purpose of slotting into compiled codes as effortlessly as possible \cite{morgan2023delta}.
+Previous hybrid-surface delta tracking algorithms have only been implemented in forms convenient for software engineering choices made by traditional compiled codes \cite{leppanen_development_2013conf}.
+In fact, previous hybrid surface delta tracking algorithms were designed with the purpose of slotting into compiled codes as effortlessly as possible \cite{morgan2023delta}.
 That kind of consideration is not necessarily needed for developing numerical methods rapidly in MC/DC.
 
-Not only is traditional Woodcock delta tracking implemented, the software engineering structure of MC/DC allowed for experimenting with contentiously time-dependent features, novel tallying schemes (see \ref{sec:voxtallies}) and two hybrid surface-delta tracking algorithms one of which is novel (see \ref{sec:material_exc} and \ref{sec:cutoff}).
-All this work is implemented on CPUs and GPUs and tested at scale.
+The software engineering structure of MC/DC not only enables the rapid implementation of the traditional Woodcock delta tracking algorithm but also for experimenting with contentiously time-dependent features, novel tallying schemes (see \ref{sec:voxtallies}) and two hybrid surface-delta tracking algorithms one of which is novel (see \ref{sec:material_exc} and \ref{sec:cutoff}).
+All this work is implemented on CPUs and GPUs.
 
 \subsection{Research Questions Two, Three, and Four}
 
-Research questions two three and four probe the space-parallel deterministic transport iteration algorithm explored in this dissertation.
+Research questions two, three, and four probe the space-parallel deterministic transport iteration algorithm explored in this dissertation.
 Research question two asks
 \begin{displayquote}
 Will a space-parallel deterministic iterative solution algorithm (that lags the incident information on the bounds of a cell from a previous iteration) outperform the standard angle-parallel iterative algorithm on modern heterogeneous architectures?
 \end{displayquote}
-Work began to answer this question in publication \cite{morgan2023oci} for single energy groups and was expanded to consider multi-group in energy by chapter \ref{chap:therefore_paper}.
-Both publications showed that even when the space-parallel algorithm required more iterations to converge a problem those iterations would be done faster on a GPU then the traditional algorithm.
-Meaning the space-parallel algorithm was faster in wall clock runtime that except for problems in the thin and diffusive limits where convergence issues grew.
+I began work to answer this question in publication \cite{morgan2023oci} for single energy group, was expanded to consider multi-group in energy by chapter \ref{chap:therefore_paper}.
+Both publications showed that even when the space-parallel algorithm requires more iterations to converge a problem, those iterations were be done faster on a GPU than the traditional algorithm.
+Meaning the space-parallel algorithm was faster in wall clock runtime, except for problems in the thin and diffusive limits where convergence issues grew.
+Subsequent research equations where developed to ameliorate these convergence issues in these physical limits.
 
 Research question three asks
 \begin{displayquote}
-For deterministic algorithms, does accounting for transient effects alter convergence rates of iterative solution algorithms?
+For deterministic algorithms, does accounting for transient effects impact convergence rates of iterative solution algorithms?
 \end{displayquote}
-Chapter \ref{chap:therefore_paper} provided extensive analysis on this point including the derivation of Fourier analysis to analytically show how time dependence altered the convergence behavior of the space-parallel algorithm.
-Further results, when implementing a problem adapted from literature, showed that the space-parallel algorithm saw increased speedup when running at smaller time steps as compared to the traditional algorithm.
-In summary chapter \ref{chap:therefore_paper} demonstrates that as mean free time decreases so does the spectral radius and that the time absorption component can resynchronizes cells.
-For problems that demand high fidelity in time convergence issues in the thin limit may be abated.
+In Chapter \ref{chap:therefore_paper} I provide extensive analysis, including deriving Fourier analysis to analytically show how time dependence alter the convergence behavior of the space-parallel algorithm.
+Results, when implementing a problem adapted from literature, showed that the space-parallel algorithm running at smaller time steps increases speedup when compared to the traditional algorithm.
+In Chapter \ref{chap:therefore_paper} I demonstrate that, as mean free time decreases so does the spectral radius and that time absorption can resynchronizes cells.
+For problems that demand high fidelity in time, convergence issues in the thin limit may be abated.
 
 Research question four inquires
 \begin{displayquote}
 Can information coming from a low-order problem be used to inform cell boundary information and increase convergence rates of a one-cell inversion iteration algorithm?
 \end{displayquote}
-Chapter \ref{chap:smom_paper} derives a second moment method to converge the OCI inversion iteration in the diffusive limit.
-A method from a previously derived domain decomposition algorithm is used to update incident angular fluxes on the surface of each cell.
-While behaving mildly inconsistently for some problems considered this method converges OCI in the diffusive limit very well, showing immense improvement to spectral properties in the thick-diffusive limit.
+In Chapter \ref{chap:smom_paper} I derive a second-moment method to converge OCI in the diffusive limit.
+I used the Yavuz--Larsen method (a previously derived domain decomposition algorithm) to update incident angular fluxes on the surface of each cell.
+While behaving mildly inconsistently for some problems, this method converges OCI in the diffusive limit very well, showing immense improvement to spectral properties in the thick-diffusive limit.
 
 
 \subsection{Research Question Five}
@@ -86,11 +87,11 @@ While behaving mildly inconsistently for some problems considered this method co
 \begin{displayquote}
 How can alternative Monte Carlo tracking schemes (namely Woodcock or delta tracking) be used be used to converge the quantities of interest faster?
 \end{displayquote}
-Chapter \ref{chap:delta_tracking_paper} derives a new voxelized tally method to allow for an often superior track length estimator to be used while under going Woodcock-delta tracking.
-This method showed significant improvement in problems with void regions showing 2 orders of magnitude improvement over the traditional Woodcock-delta tracking algorithm.
-Chapter \ref{chap:delta_tracking_paper} explored a novel hybrid surface delta tracking algorithms which converged the solution to a continuous energy fully time-dependent four-phase reactor accident problem by about 4$\times$ on CPUs and 3$\times$ on GPUs.
-Chapter \ref{chap:delta_tracking_paper} also verified that Woodcock delta tracking can be used in conjunction with continuously moving surfaces for the first time.
-
+In Chapter \ref{chap:delta_tracking_paper} I derive a new voxelized tally method to allow for an (often) superior track length estimator to be used while undergoing Woodcock-delta tracking which normally precludes the use of this estimator.
+This method significantly improves problems with void regions, increasing the figure of merit by two orders of magnitude over the traditional Woodcock-delta tracking algorithm.
+In Chapter \ref{chap:delta_tracking_paper} I also explore a novel hybrid surface delta tracking algorithm using a continuous energy fully time-dependent four-phase reactor accident problem.
+The hybrid-in-energy method increased the figure of merit by about 4$\times$ on CPUs and 3$\times$ on GPUs.
+Chapter \ref{chap:delta_tracking_paper} also verified that Woodcock delta tracking can be used in conjunction with continuously moving surfaces.
 
 \section{Novelty}
 
@@ -101,8 +102,9 @@ The novel contributions contained in this dissertation include:
         \item Solving the time-dependent transport equation with a space-parallel algorithm;
         \item Proving the unconditional stability of the multiple balance in time simple, simple corner balance in space discretization scheme;
         \item Conducting Fourier analysis on the space-parallel iteration algorithm under time-dependent considerations to show that as mean free time decreases spectral radius also decreases; 
+        \item Implementing the space-parallel algorithm on modern general purpose GPUs;
         \item Computing on GPUs with vendor supplied library functions, alleviating HPC development issues (portability and difficulty) for a numerical methods developer; and
-        \item Deriving and implementing a second moment method which supports converging the space-parallel algorithm in the diffusive limit \emph{without} requiring transport sweeps.
+        \item Deriving and implementing a second-moment method which supports converging the space-parallel algorithm in the diffusive limit \emph{without} requiring transport sweeps.
     \end{itemize}
     \item For Monte Carlo methods:
     \begin{itemize}
@@ -114,20 +116,20 @@ The novel contributions contained in this dissertation include:
         \item Testing numerical methods on a continuous energy four-phase reactor accident problem on both GPUs and CPUs.
     \end{itemize}
 \end{itemize}
-All these contributions are contained in the constituent manuscripts which are published, accepted, or planned for submission to relevant journals.
+All these contributions are contained in the constituent manuscripts which are published, accepted for publication, or planned for submission to archival journals.
 
 \section{Future Work}
 
-For the space-parallel deterministic algorithm, work is ongoing to resolve the inconsistency described in Chapter \ref{chap:smom_paper} so that the solution provided by the second moment system matches transport.
+For the space-parallel deterministic algorithm, work is ongoing to resolve the inconsistency described in Chapter \ref{chap:smom_paper} so that the solution provided by the second-moment system matches transport.
 I also plan on investigating additional preconditioners to converge the steady-state thin limit.
 %Algebraic multi-grid was suggested an initial examination of the idea is compelling may prove fruitful.
 
-In order to demonstrate the space-parallel algorithms ability to solve real world engineering and scientific problems, deployment of this scheme on two spatial dimensions is imperative.
-Further investigations on unstructured grids and anisotropic distributions in angle may also prove to be fruitful directions of future research (see \ref{sec:therefore_disscusion}).
-Solving complex engineering problems is not included in this traunch of my dissertation as before this can be done finding the balance between parallelism, preconditioning, and implementation needed to be considered.
+To demonstrate the space-parallel algorithm's ability to solve real-world engineering and scientific problems, deploying this scheme in two spatial dimensions is imperative.
+Further investigations on unstructured grids and anisotropic distributions in angle may also prove to be fruitful directions of future research (see Section \ref{sec:therefore_disscusion}).
+Solving complex engineering problems is not included in this traunch of my dissertation; before this can be done finding the balance between parallelism, preconditioning, and implementation needed to be considered.
 
-For Monte Carlo methods work is on going to further verify the Woodcock delta algorithms on problems of interest.
-The hybrid in energy method in particular may be leveraged when running a fully small modular reactor challenge problem.
+For Monte Carlo methods, work is ongoing to further profile the Woodcock-delta algorithms on problems of interest.
+The hybrid-in-energy method in particular may be leveraged when running a full small modular reactor challenge problem.
 On the software engineering side work is ongoing to allow MC/DC to use shared memory between MPI threads on a single node, which will dramatically decrease the memory footprint of MC/DC when running on HPCs.
-Also work into using OpenMP type shared memory parallelism on a given processor.
-MC/DC will continue to not only develop new numerical methods but foster an ever growing community of numerical methods developers looking to deploy their methods at scale.
+Work is also ongoing into using OpenMP-type shared-memory parallelism on a given processor.
+MC/DC will continue to not only develop new numerical methods but foster an ever-growing community of numerical methods developers looking to deploy their time-dependent radiation transport methods at scale.

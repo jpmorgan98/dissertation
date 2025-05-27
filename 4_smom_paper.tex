@@ -90,7 +90,7 @@ Source iterations (SI) are widely used to solve the \sn neutron transport equati
 The source iteration is a specific type of operator splitting of the linear neutron transport equation where the scattering term---which couples all \sn ordinates together---is lagged to information from a previous iteration \cite{lewis_computational_1984}.
 SI is embarrassingly parallel over angle space, which can prove inefficient for large computers as there are usually fewer degrees of freedom in angle than in space.
 The SI method requires a transport ``sweep" to spatially move through the problem in a specific non-parallelizable order in 1D.
-While memory-efficient parallel 2D and 3D SI schemes exist (namely Koch--Baker--Alcouff (KBA) or full parallel sweeps (FPS) \cite{baker_computational_2017, baker_kba_2017, alcouffe_time-dependent_1998} algorithm), they are difficult to implement and may not be efficient on GPUs.
+While memory-efficient parallel 2D and 3D SI schemes ezetast (namely Koch--Baker--Alcouff (KBA) or full parallel sweeps (FPS) \cite{baker_computational_2017, baker_kba_2017, alcouffe_time-dependent_1998} algorithm), they are difficult to implement and may not be efficient on GPUs.
 Available performance results for full parallel sweeps on GPUs show that even optimized applications under-perform relative to the theoretical hardware resources available \cite{Thomas_2024_profiling, wolfe2022roofline, kunen_kripke_2015, zerr_partisn_2019}.
 Finding a rapidly convergent space-parallel iteration scheme could prove beneficial to performance on modern many-core compute architectures (i.e., GPUs).
 
@@ -288,7 +288,7 @@ then insert into equations into Eqs. \eqref{eq:first}:
     J_{j,R} = - \frac{1}{3 \Sigma_{t,j} \Delta x_j} \left[ \phi_{j,R} - \phi_{j,L} \right] -\frac{4}{3 \Sigma_{t,j} \Delta x_j} \left[ \Gamma_{j+1/2} - \frac{\Gamma_{j,L} + \Gamma_{j,R}}{2} \right].
 \end{equation}
 \end{subequations}
-We expand the cell edge currents from Eqs. \ref{eq:edgecurrent} using the P$_1$ approximation
+We expand the cell edge currents from Eqs. \ref{eq:edgecurrent} using the P$_1$ approzetamation
 \begin{subequations}
 \begin{equation}
     J_{j+1/2} = \sum\limits_{\mu_{m}>0} \mu_m w_m   \left(\frac{1}{2} \phi_{j,R} + \frac{3\mu_m}{2} J_{j,R} \right)+\sum\limits_{\mu_{m}<0} \mu_m w_m \left(\frac{1}{2} \phi_{j+1,L} + \frac{3\mu_m}{2} J_{j+1,L} \right)
@@ -302,11 +302,11 @@ which simplify to
 \begin{subequations}
 \label{eq:edgecur}
 \begin{equation}
-    J_{j+1/2} = \gamma \left( \phi_{j,R} - \phi_{j+1,L} \right) + \xi \left( J_{j,R} + J_{j+1,L} \right) \; ,
+    J_{j+1/2} = \gamma \left( \phi_{j,R} - \phi_{j+1,L} \right) + \zeta \left( J_{j,R} + J_{j+1,L} \right) \; ,
 \end{equation}
 and
 \begin{equation}
-    J_{j-1/2} = \gamma \left( \phi_{j,R-1} - \phi_{j,L} \right) + \xi \left( J_{j-1,R} + J_{j,L} \right) \; ,
+    J_{j-1/2} = \gamma \left( \phi_{j,R-1} - \phi_{j,L} \right) + \zeta \left( J_{j-1,R} + J_{j,L} \right) \; ,
 \end{equation}
 where
 \begin{equation}
@@ -314,28 +314,28 @@ where
 \end{equation}
 and
 \begin{equation}
-    \xi = \frac{3}{2} \sum\limits_{\mu_{m}>0} \mu_m^2 w_m \approx \frac{1}{2} \; .
+    \zeta = \frac{3}{2} \sum\limits_{\mu_{m}>0} \mu_m^2 w_m \approx \frac{1}{2} \; .
 \end{equation}
 \end{subequations}
-For both constants $\xi$ and $\gamma$ this is true in the limit of the number of quadrature points taken to infinity.
+For both constants $\zeta$ and $\gamma$ this is true in the limit of the number of quadrature points taken to infinity.
 
 {Fourth:} combine Eqs. \eqref{eq:zeroth}, \eqref{eq:current} and \eqref{eq:edgecur} to form a system of equations
 \begin{subequations}
 \label{eq:full_secondmomemnt}
 \begin{multline}
-    -\left(1-\xi \right) D_j \frac{\left( \phi_{j,R} - \phi_{j,L} \right)}{\xi x_j} -\gamma \left( \phi_{j-1,R} - \phi_{j,L} \right) + \xi D_{j-1} \frac{\left( \phi_{j-1,R} - \phi_{j-1,L} \right)}{\Delta x_{j-1}}
+    -\left(1-\zeta \right) D_j \frac{\left( \phi_{j,R} - \phi_{j,L} \right)}{\zeta x_j} -\gamma \left( \phi_{j-1,R} - \phi_{j,L} \right) + \zeta D_{j-1} \frac{\left( \phi_{j-1,R} - \phi_{j-1,L} \right)}{\Delta x_{j-1}}
     \\
-    + \Sigma_{a,j} \frac{\Delta x_j}{2} \phi_{j,L} = \frac{\Delta x_j}{2} \frac{Q_{j,L}}{2} +\frac{2 \xi D_j}{\Delta x_j} \left(\Gamma_{j+1/2} - \Gamma_{j-1/2} \right)
+    + \Sigma_{a,j} \frac{\Delta x_j}{2} \phi_{j,L} = \frac{\Delta x_j}{2} \frac{Q_{j,L}}{2} +\frac{2 \zeta D_j}{\Delta x_j} \left(\Gamma_{j+1/2} - \Gamma_{j-1/2} \right)
     \\
-     - \xi \left[ \frac{4 D_j}{\Delta x_j} \left( \frac{\Gamma_{j,L} + \Gamma_{j,R}}{2} - \Gamma_{j-1/2} \right) + \frac{4 D_{j-1}}{\Delta x_{j-1}} \left(\Gamma_{j-1/2} -  \frac{\Gamma_{j-1,L} + \Gamma_{j-1,R}}{2} \right) \right] \; ,
+     - \zeta \left[ \frac{4 D_j}{\Delta x_j} \left( \frac{\Gamma_{j,L} + \Gamma_{j,R}}{2} - \Gamma_{j-1/2} \right) + \frac{4 D_{j-1}}{\Delta x_{j-1}} \left(\Gamma_{j-1/2} -  \frac{\Gamma_{j-1,L} + \Gamma_{j-1,R}}{2} \right) \right] \; ,
 \end{multline}
 and
 \begin{multline}
-    \left(1-\xi \right) D_j \frac{\left( \phi_{j,R} - \phi_{j,L} \right)}{\Delta x_j} +\gamma \left( \phi_{j,R} - \phi_{j+1,L} \right) - \xi D_{j+1} \frac{\left( \phi_{j+1,R} - \phi_{j+1,L} \right)}{\Delta x_{j+1}}
+    \left(1-\zeta \right) D_j \frac{\left( \phi_{j,R} - \phi_{j,L} \right)}{\Delta x_j} +\gamma \left( \phi_{j,R} - \phi_{j+1,L} \right) - \zeta D_{j+1} \frac{\left( \phi_{j+1,R} - \phi_{j+1,L} \right)}{\Delta x_{j+1}}
     \\
-    + \Sigma_{a,j} \frac{\Delta x_j}{2} \phi_{j,R} = \frac{\Delta x_j}{2} \frac{Q_{j,R}}{2} -\frac{2 \xi D_j}{\Delta x_j} \left(\Gamma_{j+1/2} - \Gamma_{j-1/2} \right)
+    + \Sigma_{a,j} \frac{\Delta x_j}{2} \phi_{j,R} = \frac{\Delta x_j}{2} \frac{Q_{j,R}}{2} -\frac{2 \zeta D_j}{\Delta x_j} \left(\Gamma_{j+1/2} - \Gamma_{j-1/2} \right)
     \\
-    + \xi \left[ \frac{4 D_j}{\Delta x_j} \left( \Gamma_{j+1/2} - \frac{\Gamma_{j,L} + \Gamma_{j,R}}{2}  \right) + \frac{4 D_{j+1}}{\Delta x_{j+1}} \left( \frac{\Gamma_{j+1,L} + \Gamma_{j+1,R}}{2} - \Gamma_{j+1/2} \right)  \right] \;.
+    + \zeta \left[ \frac{4 D_j}{\Delta x_j} \left( \Gamma_{j+1/2} - \frac{\Gamma_{j,L} + \Gamma_{j,R}}{2}  \right) + \frac{4 D_{j+1}}{\Delta x_{j+1}} \left( \frac{\Gamma_{j+1,L} + \Gamma_{j+1,R}}{2} - \Gamma_{j+1/2} \right)  \right] \;.
 \end{multline}
 \end{subequations}
 
@@ -364,19 +364,19 @@ This simplifies Eqs. \eqref{eq:full_secondmomemnt} to be a left side
 \begin{subequations}
 \label{eq:simple_smom}
 \begin{multline}
--\left(1-\xi \right) D_j \frac{\left( \phi_{j,R}^{(l+1)} - \phi_{j,L}^{(l+1)} \right)}{\Delta x_j} -\gamma \left( \phi_{j-1,R}^{(l+1)} - \phi_{j,L}^{(l+1)} \right) + 
+-\left(1-\zeta \right) D_j \frac{\left( \phi_{j,R}^{(l+1)} - \phi_{j,L}^{(l+1)} \right)}{\Delta x_j} -\gamma \left( \phi_{j-1,R}^{(l+1)} - \phi_{j,L}^{(l+1)} \right) + 
 \\ 
-\xi D_{j-1} \frac{\left( \phi_{j-1,R}^{(l+1)} - \phi_{j-1,L}^{(l+1)} \right)}{\Delta x_{j-1}} 
+\zeta D_{j-1} \frac{\left( \phi_{j-1,R}^{(l+1)} - \phi_{j-1,L}^{(l+1)} \right)}{\Delta x_{j-1}} 
 + \Sigma_{a,j} \frac{\Delta x_j}{2} \phi_{j,L}^{(l+1)} = \frac{\Delta x_j}{2} \frac{Q_{j,L}}{2} 
 \\
-+\frac{2D_j( 1- \xi) }{\Delta x_j} \left(\Gamma_{j,R}^{(l+1/2)} - \Gamma_{j,L}^{(l+1/2)} \right) 
-- \frac{2 \xi D_{j-1}}{\Delta x_{j-1}} \left( \Gamma_{j-1,R}^{(l+1/2)} - \Gamma_{j-1,L}^{(l+1/2)} \right) \; ,
++\frac{2D_j( 1- \zeta) }{\Delta x_j} \left(\Gamma_{j,R}^{(l+1/2)} - \Gamma_{j,L}^{(l+1/2)} \right) 
+- \frac{2 \zeta D_{j-1}}{\Delta x_{j-1}} \left( \Gamma_{j-1,R}^{(l+1/2)} - \Gamma_{j-1,L}^{(l+1/2)} \right) \; ,
 \end{multline}
 and right side
 \begin{multline}
-\left(1-\xi \right) D_j \frac{\left( \phi_{j,R}^{(l+1)} - \phi_{j,L}^{(l+1)}  \right)}{\Delta x_j} +\gamma \left( \phi_{j,R}^{(l+1)}  - \phi_{j+1,L}^{(l+1)}  \right) - \xi D_{j+1} \frac{\left( \phi_{j+1,R}^{(l+1)}  - \phi_{j+1,L}^{(l+1)}  \right)}{\Delta x_{j+1}} \\
+\left(1-\zeta \right) D_j \frac{\left( \phi_{j,R}^{(l+1)} - \phi_{j,L}^{(l+1)}  \right)}{\Delta x_j} +\gamma \left( \phi_{j,R}^{(l+1)}  - \phi_{j+1,L}^{(l+1)}  \right) - \zeta D_{j+1} \frac{\left( \phi_{j+1,R}^{(l+1)}  - \phi_{j+1,L}^{(l+1)}  \right)}{\Delta x_{j+1}} \\
 + \Sigma_{a,j} \frac{\Delta x_j}{2} \phi_{j,R}^{(l+1)}  = \frac{\Delta x_j}{2} \frac{Q_{j,R}}{2} \\
--\frac{2 D_j(\xi-1)}{\Delta x_j} \left(\Gamma_{j,R}^{(l+1/2)} - \Gamma_{j,L}^{(l+1/2)} \right) + \frac{2 \xi D_{j+1}}{\Delta x_{j+1}} \left(\Gamma_{j+1,R}^{(l+1/2)} - \Gamma_{j+1,L}^{(l+1/2)}\right)  \; ,
+-\frac{2 D_j(\zeta-1)}{\Delta x_j} \left(\Gamma_{j,R}^{(l+1/2)} - \Gamma_{j,L}^{(l+1/2)} \right) + \frac{2 \zeta D_{j+1}}{\Delta x_{j+1}} \left(\Gamma_{j+1,R}^{(l+1/2)} - \Gamma_{j+1,L}^{(l+1/2)}\right)  \; ,
 \end{multline}
 \end{subequations}
 balance which are written for a mid-step update to scalar flux and use only information coming from within a cell from the high-order transport solution.
@@ -397,21 +397,21 @@ Eq. \eqref{eq:zeroth_left} in the first cell ($j=1$) is
 \end{equation}
 On the left edge, the current ($J_{1/2}$) is a combination of the incident partial current, which is computed from the known incoming angular flux, and the outgoing partial current, which is computed using the P$_1$ expansion of the angular flux $\psi_{m,1,L}$:
 \begin{equation}
-    J_{1/2}= J^{-}_{\text{left}} - \left(\gamma \phi_{1,L} - \xi J_{1,L}\right) \; ,
+    J_{1/2}= J^{-}_{\text{left}} - \left(\gamma \phi_{1,L} - \zeta J_{1,L}\right) \; ,
 \end{equation}
 where $J^{-}_{\text{left}}$ is the physical boundary condition imposed at the left boundary $j=1/2$.
 Using the definition of $J_{1,L}$ from Eq. \eqref{eq:simp_current}, we find the first equation in the second-moment system is
 \begin{subequations}
 \label{eq:bc_inc}
 \begin{multline}
-    -\left(1-\xi \right) D_1 \frac{\left( \phi_{1,R} - \phi_{1,L} \right)}{\Delta x_1} +\gamma  \phi_{1,L}  + \Sigma_{a,1} \frac{\Delta x_1}{2} \phi_{1,L} 
+    -\left(1-\zeta \right) D_1 \frac{\left( \phi_{1,R} - \phi_{1,L} \right)}{\Delta x_1} +\gamma  \phi_{1,L}  + \Sigma_{a,1} \frac{\Delta x_1}{2} \phi_{1,L} 
     \\ = 
     \frac{\Delta x_1}{2} \frac{Q_{1,L}}{2} +J^{-}_{\text{left}}+ 
     \frac{2D}{\Delta x}(\Gamma_{1,R}-\Gamma_{1,L}) \; .
 \end{multline}
 Likewise an incident angular flux boundary condition on the for the right ($j=I$) is
 \begin{multline}
-    \left(1-\xi \right) D_I \frac{\left( \phi_{I,R} - \phi_{I,L} \right)}{\Delta x_I} +\gamma \left( \phi_{I,R}   \right)
+    \left(1-\zeta \right) D_I \frac{\left( \phi_{I,R} - \phi_{I,L} \right)}{\Delta x_I} +\gamma \left( \phi_{I,R}   \right)
     + \Sigma_{a,I} \frac{\Delta x_I}{2} \phi_{I,R}\\ = 
     \frac{\Delta x_I}{2}\frac{Q_I}{2} + J_{\text{right}}^+ - \frac{2 D_I}{\Delta x} \left( \Gamma_{I,R} - \Gamma_{I,L}\right) \; ,
 \end{multline}
@@ -441,7 +441,7 @@ With reflecting boundary conditions the right hand side of cell $(j=I)$ is
 The preceding sections have described a system updating scalar flux and current.
 Unlike SI which iterates on the scalar flux, OCI iterates exclusively on the angular flux.
 Implementations of OCI algorithms may never form the scalar flux while iterating.
-This is one of the challenges to finding a low-order transport approximation to aid in converging a higher-order OCI solve.
+This is one of the challenges to finding a low-order transport approzetamation to aid in converging a higher-order OCI solve.
 Normal acceleration methods only provide updates for \textit{moments} of angular flux in the sourcing side of the equation for the next iteration.
 
 We use the update from the Yavuz-Larsen domain decomposition method to update all incident angular fluxes on the surfaces of all cells by
@@ -489,7 +489,7 @@ is an empirical estimation of the spectral radius computed at every iteration of
 
         \State $\rho_e = e\lph / e\la$ \Comment{Eq. \eqref{eq:spec_rad_est}}
 
-        \If{$e < \epsilon(1-\rho_e)$} \Comment{Eq. \eqref{eq:convergence_crit}}
+        \If{$e^{(l)} < \epsilon(1-\rho_e)$} \Comment{Eq. \eqref{eq:convergence_crit}}
             \State converged = true
         \Else 
 
@@ -540,9 +540,9 @@ To verify that our full second-moment equations produces the correct transport s
 We started with canonical transport problems including the infinite-homogeneous medium problem (using both reflecting and incident angular flux prescriptions) and the source-free pure absorber.
 Both iterative methods converge to the expected analytical solutions for these problems.
 
-Next, we consider three slab problems with increasing complexity.
+Next, we consider three slab problems with increasing complezetaty.
 First we use a \SI{4}{\centi\meter} wide source-free homogeneous slab where $\Sigma=$ \SI{1.0}{\per\centi\meter}, $\Sigma_s=$ \SI{0.5}{\per\centi\meter}, with an incident angular flux on the left of $\psi_{left}^-=$ \SI{5}{\per\centi\meter\cubed\per\s} and vacuum on the right.
-In all work in this paper we use a convergence criterion of $\epsilon = $ \num{1e-5} and maximum iteration count of \num{2e4}.
+In all work in this paper we use a convergence criterion of $\epsilon = $ \num{1e-5} and mazetamum iteration count of \num{2e4}.
 We compare the solution from OCI and the second-moment method to one generated from a SI solver using a lumped-linear discontinuous finite element method.
 In 1D, lumped-linear discontinuous is equivalent to the simple corner balance method we implement in this work \cite{adams_subcell_1997}.
 Figure \ref{fig:regression_slab} compares the solution in both S$_2$ and S$_4$ showing a slight deviation between the two transport results and the second moment solution.
@@ -574,7 +574,7 @@ Notably this solution was archived in the same number of iterations for either m
     \centering
     \includegraphics[width=.75\linewidth]{figures/smm_paper/slab_abs_sf.pdf}
     \includegraphics[width=.75\linewidth]{figures/smm_paper/slab_abs_af.pdf}
-    \caption{Solution to the three-region purely absorbing slab problem with an anaclitic reference solution for $\phi$ (left) and $\psi$ (right) in S$_{16}$ with $\Delta x =$\SI{0.05}{\centi\meter}}
+    \caption{Solution to the three-region purely absorbing slab problem with an anaclitic reference solution for $\phi$ (top) and $\psi$ (bottom) in S$_{16}$ with $\Delta x =$\SI{0.05}{\centi\meter}}
     \label{fig:absorbium}
 \end{figure}
 
@@ -612,7 +612,7 @@ One thing to note is that OCI converges this problem in \num{3209} iterations wh
     \centering
     \includegraphics[width=.75\linewidth]{figures/smm_paper/yavuz_normalized_fluxes.pdf}
     \includegraphics[width=.75\linewidth]{figures/smm_paper/yavuz_af.pdf}
-    \caption{Normalized solutions to the Yavuz and Larsen problem via OCI, second-moment method, and Monte Carlo results for scalar flux (left) and angular flux (right) in S$_{32}$ with $\Delta x =$ \SI{0.01}{\centi\meter}. Solutions normalized to compare to Monte Carlo results.}
+    \caption{Normalized solutions to the Yavuz and Larsen problem via OCI, second-moment method, and Monte Carlo results for scalar flux (top) and angular flux (bottom) in S$_{32}$ with $\Delta x =$ \SI{0.01}{\centi\meter}. Solutions normalized to compare to Monte Carlo results.}
     \label{fig:yavuz}
 \end{figure}
 
@@ -636,7 +636,7 @@ Spectral radius is then empirically measured with Equation \eqref{eq:spec_rad_es
 
 Figure \ref{fig:spec_rad} shows empirical measurements of spectral radius for the second-moment method (left) and OCI (middle) as functions of mean free path ($\delta$) and scattering ratio ($c$).
 The measured spectral radius for OCI is the same as the solution provided via Fourier analysis in Figure \ref{fig:ss_spec_rads}.
-The maximum spectral radius measured for OCI is \num{1.0} (OCI did not converge in the maximum iteration count) where the second moment is only \num{0.89}, potentially representing a difference of thousands of iterations. The second-moment method effectively eliminates convergence issues in the diffusive limit, making $\rho$ entirely a function of cellular optical thickness ($\delta$).
+The mazetamum spectral radius measured for OCI is \num{1.0} (OCI did not converge in the mazetamum iteration count) where the second moment is only \num{0.89}, potentially representing a difference of thousands of iterations. The second-moment method effectively eliminates convergence issues in the diffusive limit, making $\rho$ entirely a function of cellular optical thickness ($\delta$).
 As expected it does not aid convergence in the thin limit. Figure \ref{fig:spec_rad} at right shows the ratio of
 \begin{equation}
     \frac{\rho_{OCI}}{\rho_{SMM}} \; ,
@@ -644,7 +644,7 @@ As expected it does not aid convergence in the thin limit. Figure \ref{fig:spec_
 where $\rho_{OCI}$ and $\rho_{SMM}$ are the empirically measured spectral radii OCI and the second-moment method, respectively.
 This clearly indicates the region where the second-moment method benefits convergence rate.
 Everything to the left and above the line is where the ratio is $ > 1$, indicating the second-moment method is provides an improvement to spectral properties.
-The most significant improvement is in the thick diffusive limit (upper right hand corner) which sees a maximum of 248$\times$ improvement in the parameter range we considered.
+The most significant improvement is in the thick diffusive limit (upper right hand corner) which sees a mazetamum of 248$\times$ improvement in the parameter range we considered.
 Marginal improvement is shown in most other regions---ratios between $1.0\times$ and $2.0\times$.
 Decreased convergence rate is shown in the thick-streaming limit (lower right hand corner) where unpreconditioned OCI has exceptional convergence behavior.
 

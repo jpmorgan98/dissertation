@@ -108,7 +108,7 @@ Data about how particles move and/or interact with the system are tallied to com
 As we cannot model the multiple moles of physical particles at any given moment in systems of interest, each simulated \textit{pseudo-}particle actually represents a group of physical particles by using a statistical weight.
 Monte Carlo methods treat the \textit{curse of dimensionality} by only considering a single pseudo-particle at a time, contributing to a solution in parameter space only where that particle is simulated.
 The trade-off is that Monte Carlo methods are incredibly slow to converge compared to deterministic methods, and take significant computational resources to form a well resolved solution.
-In fact, for analog Monte Carlo there is no a priori guarantee that a solution will occupy all locations of interest in phase space at a given particle count.
+In fact, for analog Monte Carlo there is no guarantee that a solution will occupy all locations of interest in phase space (i.e., mesh tally cells) at a given particle count and mesh resolution.
 This is especially true for time-dependent problems (e.g., burst criticality, reactor accidents) where particle populations and weight can vary significantly through simulated time depending on a given Monte Carlo algorithm.
 So to solve high fidelity time-dependent problems using Monte Carlo methods requires massive computational resources to get a calculation in resalable wall clock time.
 Novel numerical methods may also get a better statistical solution with fewer simulated pseudo-particles, or transport the same number of particles faster on huge computational resources thus allowing for more particles to be simulated in the same wall clock time, increasing the quality of the solution.
@@ -179,13 +179,13 @@ Chapter \ref{chap:conclusion} further summarizes these contributions, answers to
 
 At the time of this writing, two manuscript chapters of this dissertation has been published and most of the remaining chapters have either been accepted for publication or are in prepration and near submission.
 \begin{itemize}
-    \item Chapter \ref{chap:therefore_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) One-Cell Inversion for Solving Higher-Order Time-Dependent Radiation Transport on GPUs. \emph{Nuclear Science and Engineering} (in press). \doi{10.1080/00295639.2025.2510004}. \arxiv{2503.00264}.
+    \item Chapter \ref{chap:therefore_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) One-Cell Inversion for Solving Higher-Order Time-Dependent Radiation Transport on GPUs. In press. \emph{Nuclear Science and Engineering}. \doi{10.1080/00295639.2025.2510004}. \arxiv{2503.00264}.
 
     \item Chapter \ref{chap:smom_paper}: \textsc{J. P. Morgan},  \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. Efficient Preconditioning for Space-Parallel One Cell Inversions in Slab Geometry using a Second Moment Method. In preparation for submission to \emph{Journal of Computational and Theoretical Transport}.
 
     \item Chapter \ref{chap:joss_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{S. Pasmann}, \textsc{K. B. Clements}, \textit{et al.} (2024) Monte Carlo / Dynamic Code (MC/DC): An accelerated Python package for fully transient neutron transport and rapid methods development. \emph{Journal of Open Source Software}. 9(96), 6415. \doi{10.21105/joss.06415}.
 
-    \item Chapter \ref{chap:cise_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{B. Cuneo}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) Performant and Portable Monte Carlo Neutron Transport via Numba. \emph{Computing in Science and Engineering} (in press). \doi{10.1109/MCSE.2025.3550863}. \arxiv{2409.04668}.
+    \item Chapter \ref{chap:cise_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{B. Cuneo}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) Performant and Portable Monte Carlo Neutron Transport via Numba. In press. \emph{Computing in Science and Engineering}. \doi{10.1109/MCSE.2025.3550863}. \arxiv{2409.04668}.
 
     \item Chapter \ref{chap:delta_tracking_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{K. B. Clements}, and \textsc{K. E. Niemeyer}. Hybrid Woodcock-delta Tracking Schemes Using a Track-Length Estimator. In preparation for submission to \emph{Journal of Computational and Theoretical Transport}
     

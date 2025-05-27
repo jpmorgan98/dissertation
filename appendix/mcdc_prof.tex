@@ -9,7 +9,8 @@
 \renewcommand{\TheAddress}{%
     \textit{Proceedings of International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (M\&C 2025)} \\
     Vol 19, 2025. \\
-    \doi{10.13182/MC25-47142}
+    \doi{10.13182/MC25-47142}\\
+    \arxiv{2501.05440}
 }
 
 \chapter{\TheTitle}
@@ -17,7 +18,6 @@
 
 \vspace{1em}
 \TheAuthors
-\\
 \vspace{1em}
 \TheAddress
 \vspace{1em}
@@ -141,7 +141,7 @@ Note that for the operability of these examples, extra functions are required in
 To compile to Nvidia GPU hardware-targets at runtime, we rely entirely on the Nvidia C-Compiler (\texttt{nvcc}).
 Current versions of Numba come with CUDA operability natively, but this is set to be deprecated in future releases in favor of a more modular approach where the Numba-CUDA package will be an optional separate feature.
 
-\begin{figure}[]
+\begin{figure}
   \centering
   \includegraphics[width=\textwidth]{appendix/mcdc_prof_figs/flownvcc.pdf}
   \caption{Simple proxy example describing how to compile device functions in Numba-Python with external C++ code for targeting Nvidia GPUs. In this simplified proxy, the Python function corresponds to MC/DC, and the C++ code corresponds to Harmonize.}
@@ -185,7 +185,7 @@ Every GPU program is technically a bound set of two complementary applications: 
 To link external device code together for AMD hardware-targets, we have to unbundle these two programs, link the extra device functions (coming from Python) to the device side, then re-bundle the device and host functions back together.
 This process is done in LLVM-IR.
 
-\begin{figure}[]
+\begin{figure}
   \centering
   \includegraphics[width=\textwidth]{appendix/mcdc_prof_figs/flowclang.pdf}
   \caption{Simple proxy example describing how to compile device functions in Numba-HIP with external C++ code to AMD GPU targets. In this simplified proxy, the Python function corresponds to MC/DC, and the C++ code corresponds to Harmonize}
@@ -245,7 +245,7 @@ repository \cite{transport_cement_mcdc_2024}.
 To conduct performance analysis, we use 10$^7$ particle histories run in time-dependent fixed-source mode.
 
 
-\begin{figure}[]
+\begin{figure}
   \centering
   \includegraphics[width=.6\textwidth]{appendix/mcdc_prof_figs/inf_pin_ce.pdf}
   \caption{Left: Infinite pin cell with reflecting boundaries on all sides, Red is 2.4\% enriched UO$_2$, and blue is a homogeneous Boron/Water moderator. Right: Neutron population density of infinite pin cell benchmark problem through time from MC/DC and OpenMC at \num{1e7} particle histories and a reference from OpenMC at \num{1e9}}

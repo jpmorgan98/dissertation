@@ -143,19 +143,20 @@ For high fidelity problems these systems are still massive, and require their so
 Eigenvalues are useful to measure the behavior of numerical and physical systems as they evolve with respect to some independent variable.
 In its most pure form, an eigen-system (with eigenvalues and vectors) describes how a repeated process impacts the elements of a matrix ($T$) and takes the form
 \begin{equation}
-    {T}v = \lambda v \;,
+    {T}v = v\lambda \;,
 \end{equation}
 where $v$ are the eigenvector and $\lambda$ is an eigenvalue \cite{isaacson_numerical_1966, golub_matrix_1983}.
 For systems of differential equations eigenvalue analysis can be used to identify scales on which quantities of interest are varying in order classify \emph{stiffness} \cite{niemeyer_phd, walker_phd}.
 Eigen-systems can be used to classify and analyze oscillatory behavior including mechanical vibrations \cite{liang_vibrations}, sound \cite{howle_2001_eigenvalues}, and quantum mechanical processes \cite{maggie_phd, krane_2019_modern}.
-In nuclear systems (or any generic population model) eigenvalues can describe the growth or decay of the total neutron population and thus the \emph{criticality} of the system \cite{duderstadt_hamilton, trahan_phd}.
-Eigenvalue systems are often used when animalizing numerical methods to understand how error propagates as systems are iterated on.
+In nuclear systems (or any population model) eigenvalues can describe the growth or decay of the total neutron population and thus the \emph{criticality} of the system \cite{duderstadt_hamilton, trahan_phd}.
+Eigenvalue systems are often used when analyzing numerical methods to understand how error propagates as numerical schemes iterate.
 
-In this work I use eigenvalues to describe how error of a dependent quantity of interest is propagated through either time stepping \cite{ilham_phd} or through iterating \cite{southworth_phd}.
+In this work I use eigenvalues to describe how error of a dependent quantity of interest is propagated by either time stepping \cite{ilham_phd} or by iterative solution method like one described in the previous section \cite{southworth_phd}.
 For the former eigenvalues can measure stability, and prove that a given space-time discretization scheme is {unconditionally stable} \cite{Lax_1956_stability}.
 If all eigenvalues are below a certain threshold the compounding effect of error incurred at every time step will remain bounded.
-For the latter the eigen-spectrum of the iteration system formed by operator splitting and preconditioners can evaluate convergence rates.
-For example consider Eq. \eqref{eq:introopsplit} reformed to describe how the error changes iteration to iteration
+For the latter the eigen-spectrum of the iteration system formed by operator splitting and preconditioners can measure convergence rates.
+
+As an example of error propagating through an iterative method consider Eq. \eqref{eq:introopsplit} reformed to describe how the error changes iteration to iteration
 \begin{equation}
     f^{(l+1)} = {T}f^{(l)} \; ,
 \end{equation}
@@ -176,15 +177,15 @@ The concept is the same for time stepping as each time step is the reapplication
 %So analysis is limited to model problems, for radiation transport often the infinite homogeneous pure absorber.
 
 Deriving $T$ is often done with von Neumann stability analysis, also known as Fourier stability analysis on a model problem\footnote{For radiation transport the simple model problem is often the infinite homogeneous medium problem.} \cite{leveque2007finite}.
-The error on the discretization stencil is expanded in a series of temporal or spatial Fourier modes, where each mode has a coefficient, an amplitude ($\lambda$), and a shape function (commonly $e^{i\omega x}=\cos{\omega x} + i\sin{\omega x}$).
+The error on a given discretization stencil is expanded in a series of temporal or spatial Fourier modes, where each mode has a coefficient, an amplitude ($\lambda$), and a shape function (commonly $e^{i\omega x}=\cos{\omega x} + i\sin{\omega x}$).
 The amplitude is the eigenvalue at a given frequency $\omega$.
 As this is a sinusoidal system all the eigenvalues can be considered bounded $\omega \in [0, 2\pi]$.
 Once $T$ is constructed, a solver from a linear algebra library can be used to compute it's eigenvalues ($\lambda_T$)\footnote{e.g., From LAPACK's GEEV algorithm \cite{laug}}.
 Using these eigenvalues we can define the domination eigen value as
 \begin{equation}
-    \rho \equiv \sup_{\omega\in[0,2\pi]}|\lambda_T| \; ,
+    \rho \equiv \sup_{\omega\in[0,2\pi]}\left|\lambda_T\right| \; ,
 \end{equation}
-the spectral raidus.
+the spectral radius.
 
 John Crank and Phyllis Nicolson briefly described this method of analysis in 1947 while investigating the stability of numerical methods for solving the heat equation \cite{nicolson_phd}.
 Their work would later become the Crank--Nicolson method \cite{Crank_Nicolson_1947}.
@@ -194,7 +195,7 @@ To ensure a time stepping scheme is unconditionally stable
 \begin{equation}
     \rho \leq 1.0 \; ,
 \end{equation}
-which is the {von Neumann stability criterion} and is corollary to the {Lax-Richtmeyer} equivalence theorem.
+which is the {von Neumann stability criterion} which in turn is related to the {Lax-Richtmeyer} equivalence theorem.
 %This equation is for the maximum of the absolute values (eigenvalues can be complex and/or negative) of the eigenvalues to be less then or equal to one.
 The eigenvalues measure how much error is increasing through time, so if the biggest or dominant one is less than one in magnitude, the error is bounded.
 If it is greater than one, then the error will grow exponentially time step to time step.
@@ -204,19 +205,19 @@ For an iterative method to be stable
 \begin{equation}
     \rho < 1.0 \; .
 \end{equation}
-Again the The spectral radius measuring how error changes through a repeated process, only here it's iteration to iteration.
-In this case $T$ will have information about scattering, total absorption, and spatial discretization so the spectral radius can be evaluated over a parameter space.
-For an iterative scheme to be convergent it must be wholly less than unity.
+For an iterative scheme to be convergent it must be wholly less than unity---error must be decreasing iteration to iteration.
 Furthermore, as $\rho$ gets smaller between $[0,1)$, the iteration converges faster.
-Effectively $\rho$ is the slope on a log-log plot of the residual which is computed to test convergence.
+Again the The spectral radius measuring how a value changes through a repeated process, only here it's iteration to iteration.
+In this case $T$ will have information about scattering, total absorption, and spatial discretization so the spectral radius can be evaluated over a parameter space (see Chapter \ref{chap:therefore_paper} and Appendix \ref{chap:spec_rads}).
 The spectral radius can be empirically measured by any transport solver by computing
 \begin{equation}
     \rho_e = \frac{\left|\left|x^{(l+1)} - x^{(l)}\right|\right|_{2}}{\left|\left|x^{(l)} - x^{(l-1)}\right|\right|_{2}} = \frac{\text{error}^{(l+1)}}{\text{error}^{(l)}} \; .
 \end{equation}
-This could be done to control false convergence, trigger in-situ algorithm adaptions, or verify the implementation of a transport solver against anaclitic Fourier analysis, as they should match when running the same problem.
+Effectively $\rho$ is the ratio of subsequent residuals.
+This could be done to control false convergence, trigger in-situ algorithmic adaptions, or verify the implementation of a transport solver against anaclitic Fourier analysis, as they should match when running the same problem.
 
 One thing to note is that the spectral radius is defined as the absolute value.
-However, the eigenvalues which actually govern convergence behavior may be complex.
+However, the dominant eigenvalues which actually govern convergence behavior may be complex.
 In this work I found that the dominant eigenvalues may have significant complex components from both choices of time stepping scheme \cite{ilham_phd, ilham} and as a consequence of an iterative method.
 This impacts convergence rate leading to oscillations in the residual and empirical measurements of spectral radius (see section \ref{sec:results-faoci} for more).
 
