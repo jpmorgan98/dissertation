@@ -171,7 +171,7 @@ This dissertation contributes to my field by answering five research questions m
     \item How can alternative Monte Carlo tracking schemes (namely Woodcock or delta tracking) be used be used to converge the quantities of interest faster?
 \end{enumerate}
 
-The five manuscript chapters may each indirectly or directly answer multiple research questions.
+The six manuscript chapters may each indirectly or directly answer multiple research questions.
 Part introductions (in chapters \ref{chap:determ_intro} and \ref{chap:mc_methods_intro}) contain summaries of contributions of each manuscript chapter and directly relate them to these research questions.
 Chapter \ref{chap:conclusion} further summarizes these contributions, answers to research questions, and discusses possible directions for future research.
 
@@ -183,14 +183,33 @@ At the time of this writing, two manuscript chapters of this dissertation has be
 
     \item Chapter \ref{chap:smom_paper}: \textsc{J. P. Morgan},  \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. Efficient Preconditioning for Space-Parallel One Cell Inversions in Slab Geometry using a Second Moment Method. In preparation for submission to \emph{Journal of Computational and Theoretical Transport}.
 
-    \item Chapter \ref{chap:joss_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{S. Pasmann}, \textsc{K. B. Clements}, \textit{et al.} (2024) Monte Carlo / Dynamic Code (MC/DC): An accelerated Python package for fully transient neutron transport and rapid methods development. \emph{Journal of Open Source Software}. 9(96), 6415. \doi{10.21105/joss.06415}.
+    \item Chapter \ref{chap:joss_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{S. Pasmann}, \textsc{K. B. Clements}, \textit{et al.} (2024) Monte Carlo / Dynamic Code (MC/DC): An accelerated Python package for fully transient neutron transport and rapid methods development. \emph{Journal of Open Source Software}. \bf{9}(96), 6415. \doi{10.21105/joss.06415}.
 
-    \item Chapter \ref{chap:cise_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{B. Cuneo}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2025) Performant and Portable Monte Carlo Neutron Transport via Numba. In press. \emph{Computing in Science and Engineering}. \doi{10.1109/MCSE.2025.3550863}. \arxiv{2409.04668}.
+    \item Chapter \ref{chap:ans_trans}: \textsc{J. P. Morgan}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2022). Automatic Hardware Code Generation for Neutron Transport Applications. \emph{Transactions of the American Nuclear Society}, v126, p.~318--320. American Nuclear Society, Anaheim, CA. \doi{10.13182/T126-38137}. \zenodo{6646813}.
+
+    \item Chapter \ref{chap:cise_paper}: \textsc{J.~P.~Morgan}, \textsc{I.~Variansyah}, \textsc{B.~Cuneo}, \textsc{T.~S.~Palmer}, and \textsc{K.~E.~Niemeyer}. (2025) Performant and Portable Monte Carlo Neutron Transport via Numba. \bf{27}(1), 57--65. \emph{Computing in Science and Engineering}. \doi{10.1109/MCSE.2025.3550863}. \arxiv{2409.04668}.
 
     \item Chapter \ref{chap:delta_tracking_paper}: \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{K. B. Clements}, and \textsc{K. E. Niemeyer}. Hybrid Woodcock-delta Tracking Schemes Using a Track-Length Estimator. In preparation for submission to \emph{Journal of Computational and Theoretical Transport}
     
 \end{itemize}
 
 During the duration of my PhD I have authored fourteen manuscripts, where: on eleven I have been first author, seven have been published in peer-reviewed conference transactions or proceedings, three are in preparation for submission to journals, and four have been published in field-relevant journals.
-A complete list of publications is in appendix \ref{chap:listopusb}.
-Three of my additional published manuscripts are attached in the appendices, describing relevant preliminary and tangential work.
+\begin{itemize}
+    \item \textsc{J. P. Morgan}, \textsc{A. Mote}, \textsc{S. Pasmann}, \textsc{ G. Ridley}, \textsc{T. S. Palmer}, \textsc{K. E. Niemeyer}, \textsc{R. G. McClarren}. The Monte Carlo Computational Summit -- October 25 \& 26, 2023 -- Notre Dame, Indiana, USA. \emph{Journal of Computational and Theoretical Transport}.\\
+    \doi{10.1080/23324309.2024.2354401}.
+    \arxiv{2402.08161}. 
+
+    \item \textsc{J. P. Morgan}, \textsc{B. Cuneo}, \textsc{I. Variansyah}, \textsc{K. E. Niemeyer}. Enabling GPU portability into the Numba-JITed Monte Carlo particle transport code MC/DC. (2025). \emph{Proceeding of the International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (ANS M\&C 2025)}. Denver, CO, USA. \doi{10.13182/MC25-47142}. \arxiv{2501.05440}.
+
+    \item \textsc{B. Cuneo}, \textsc{J. P. Morgan}, \textsc{I. Variansyah}, \textsc{K. E. Niemeyer}. Comparing the Performance of MC/DC's on-GPU Event-based Processing Methods in Multigroup and Continuous-energy Problems. \emph{Proceeding of the International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (ANS M\&C 2025)}. Denver, CO, USA. DOI: \doi{10.13182/MC25-47142}.
+
+    \item \textsc{J. P. Morgan}, \textsc{T. S. Palmer}, \textsc{T. S. Palmer}, and \textsc{K. E. Niemeyer}. (2023). Exploring One-Cell Inversion Method for Transient Transport on GPU. \emph{Proceeding of the International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (ANS M\&C 2023)}. Niagara Falls, Ontario, Canada. \arxiv{2305.13555}.
+
+    \item Appendix \ref{chapter:mcatk_paper}: \textsc{J. P. Morgan}, \textsc{T. J. Trahan}, \textsc{T. P. Burke}, {C. J. Josey}, and \textsc{K. E. Niemeyer}. (2023). Hybrid-Delta Tracking on a Structured Mesh in MCATK. \emph{Proceeding of the International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (ANS M\&C 2023)}. Niagara Falls, Ontario, Canada. \arxiv{2306.07847}.
+
+    \item \textsc{I. Variansyah}, \textsc{J. P. Morgan}, {J. Northrop}, \textsc{K. E. Niemeyer}, and \textsc{R. G. McClarren}. (2023). Development of MC/DC: a performant, scalable, and portable Python-based Monte Carlo neutron transport code. \emph{Proceeding of the International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (ANS M\&C 2023)}. Niagara Falls, Ontario, Canada. \arxiv{2305.07636}.
+
+    \item Appendix \ref{chapter:trt_paper}: \textsc{J. P. Morgan}, \textsc{A. Long}, \textsc{K. Long}, and \textsc{K. E. Niemeyer}. (2022). Novel MC TRT Method: Vectorizable Variance Reduction for Energy Spectra. \emph{Transactions of the American Nuclear Society}, v126, p. 276--278. American Nuclear Society, Anaheim, CA. \doi{10.13182/T126-38066}. \zenodo{6643659}.
+
+    \item \textsc{M. Derman}, \textsc{J. P. Morgan}, \textsc{K. E. Niemeyer}, \textsc{T. S. Palmer}. Unnamed paper on iterative mode decomposition. In preparation.
+\end{itemize}

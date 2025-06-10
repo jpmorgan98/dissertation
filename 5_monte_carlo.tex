@@ -18,19 +18,19 @@ MC/DC is purpose built to rapidly deploy new numerical methods for time dependen
 The birth of the modern Monte Carlo method has the traditional flair of mid-century atomic science.
 Legend has it Monte Carlo was born of a game of solitaire Stanisław Ulam was playing \cite{metropolis_1987_history}.
 Earlier that year, Ulam and John von Neumann\footnote{This is the second time contributions from John von Neumann have been used in basic background of this dissertation.}
-had been observing the testing of the first general programmable computer: the ENIAC machine, where it was being built at the University of Pennsylvania in Maryland \cite{anderson_1986_maniac}\footnote{Subrahmanyan Chandrasekhar who derived the method of discrete ordinance (discussed in chapter \ref{chap:determ_intro}) was also at the Aberdeen proving ground working on hydrodynamic calculations for ballistic projectiles at the same time as von Neumann and Ulam. I do not know if they ever met however the first published application of discrete ordinance to neutron transport was not until 1953 by Bregt Carlson \cite{carlson_1955_sn, carlson_1958_sn}.
+were observing the testing of the first general programmable computer: the ENIAC machine at the University of Pennsylvania in Maryland \cite{anderson_1986_maniac}\footnote{Subrahmanyan Chandrasekhar who derived the method of discrete ordinance (discussed in chapter \ref{chap:determ_intro}) was also at the Aberdeen proving ground working on hydrodynamic calculations for ballistic projectiles at the same time as von Neumann and Ulam. I do not know if they ever met; however, the first published application of discrete ordinance method to neutron transport was not until 1953 by Bregt Carlson \cite{carlson_1955_sn, carlson_1958_sn}.
 }.
 The idea popped into his head: what if I could play hundreds of games of solitaire simultaneously using ENIAC to determine the best outcome.
 From there von Neumann and Ulam formalized the ideas of what would become known as Monte Carlo in their famous March 1947 letter to Robert Richtmeyer\footnote{
 Robert Richtmeyer of the Lax–Richtmyer equivalence theorem \cite{Lax_1956_stability}.
 }.
 Nicolas Metropolis was shortly brought on board and suggested the codename ``Monte Carlo" for the method of method statistical sampling.
-The legend continuous that Ulam appreciated this connection to the European casinos as his paternal uncle, Michał Ulam, was a notorious gambler who frequented the city-state of Monaco and its jurisdiction---Monte Carlo \cite{anderson_1986_maniac}.
+The legend continuous that Ulam appreciated this connection to the European casinos as his paternal uncle, Michał Ulam, was a notorious gambler who frequented the city-state of Monaco and its gambling district---Monte Carlo \cite{anderson_1986_maniac}.
 
 While ENIAC was being moved from where it was built at the University of Pennsylvania in Philadelphia to the Aberdeen Proving Grounds in Maryland (a process which took two years), Enrico Fermi developed a tool to aid in the analog computation of Monte Carlo solutions:
 Monte Carlo trolleys or \textit{Fermiacs} would physically trace a neutron's random walk on a paper where a phase space was actually drawn out \cite{metropolis_1987_history}.
 From there tallies could manually accumulated and quantities of interest determined.
-When ENIAC was finally turned on again in 1950. Monte Carlo was the first stress test of the machine and performed calculations for the super or hydrogen bomb \cite{metropolis_1987_history}.
+When ENIAC was finally turned on again in 1950, Monte Carlo was the first stress test of the machine which performed calculations for the ``super" or hydrogen bomb \cite{metropolis_1987_history}.
 
 In 1948 while ENIAC was still in Philadelphia, Metropolis along with Klára Dán von Neumann\footnote{
 Klára Dán von Neumann was not only the wife of John von Neumann and a mother of modern programming, but she was also a Hungarian national champion in figure skating \cite{dyson_2012_digital}.}
@@ -189,6 +189,9 @@ After these initial investigations a Numba+mpi4py software engineering scheme wa
 Chapter \ref{chap:joss_paper} briefly descries the software engineering layout in MC/DC. MC/DC avoids the need for a compiled or domain-specific language by using the Numba compiler for Python to accelerate and abstract our compute kernels to near compiled-code speeds.
 Chapter \ref{chap:joss_paper} describes novel algorithms in MC/DC.
 This chapter provides more data on \emph{RQ1}.
+
+Chapter \ref{chap:ans_trans} describes the initial investigations into hardware acceleration and abstraction frameworks that would eventually go on to be implemented in MC/DC.
+It introduces three methods of combining a Python-as-glue structure with generation of hardware kernels using Python script.
 
 Chapter \ref{chap:cise_paper} explains MC/DC's software engineering approach in greater depth and discusses how it allows for portability, rapid development, and open collaboration for high-performance computing on GPUs and CPUs. 
 It discusses a portability scheme using the Numba compiler for Python in Monte Carlo / Dynamic Code (MC/DC), a new neutron transport application for rapidly developing Monte Carlo. 

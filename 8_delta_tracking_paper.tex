@@ -7,8 +7,7 @@
   Kyle E. Niemeyer}
 
 \renewcommand{\TheAddress}{%
-In preparation for submission to\\
-\textit{Journal of Computational and Theoretical Transport}
+In preparation for submission
 }
 
 \PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
@@ -687,22 +686,22 @@ This work was supported by the Center for Exascale Monte-Carlo Neutron Transport
 \subsection*{Continuous Energy Macroscopic Majorant}
 \label{app:majorant}
 
-To compute a unified energy grid per material we combine the energy grids from all nuclide in a given material. 
-Then we call \texttt{numpy.unique()} which returns a sorted array (form smallest to largest) with no repeating elements \cite{van_der_walt_numpy_2011}.
+To compute a unified energy grid per material we combine the energy grids from all nuclides in a given material. 
+Then, we call \texttt{numpy.unique()} which returns a sorted array (form smallest to largest) with no repeating elements \cite{van_der_walt_numpy_2011}.
 To compute a unified energy grid for the whole problem we do the same but with all the nuclides in the entire problem.
 
 Computing a macroscopic majorant for nuclides that are not on a unified energy grid requires two levels of interpolation to put a given macroscopic total cross section on a unified energy grid.
-First interpolation from each nuclides microscopic cross section onto a materials unified energy grid to compute a macroscopic total cross section.
-Then a second interpolation from the material to the majorant's unified energy grid.
+First, interpolate from each nuclide's microscopic cross section onto a materials unified energy grid to compute a macroscopic total cross section.
+Then, interpolate again from the material to the majorant's unified energy grid.
 We use \texttt{scipy.interpolate.interp1d()} to interpolate from one energy grid to the next \cite{2020SciPy-NMeth:a}. 
 
-The following code shows exactly how this is done in MC/DC:
+The following code shows how this is done in MC/DC:
 
 \input{figures/delta_figs/majorant_alg}
 
-This process results in a large majorant cross section that is quite unwieldy.
-Other more efficient algorithms exist to produce a just as accurate majorant with fewer points.
-Delta tracking codes like Serpent2, GARDYUN, and IMPC avoid the need for energy grid unification by having all nuclides on a unified energy grid in their data library \cite{leppanen_2010_burnup, molnar_gpu_based_2019, fang_development_2022}.
+This process results in a quite unwieldy majorant cross section.
+More efficient algorithms exist to produce an accurate majorant with fewer points.
+Delta tracking codes like Serpent2, GARDYUN, and IMPC avoid the need for energy grid unification by having all nuclides on a unified energy grid in their data libraries \cite{leppanen_2010_burnup, molnar_gpu_based_2019, fang_development_2022}.
 
 
 \newpage

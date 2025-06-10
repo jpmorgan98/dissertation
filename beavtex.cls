@@ -719,6 +719,11 @@
 % #3 : short name (to appear as the heading on the top of the left column)
 % #4 : command name (to be used to make the listing)
 \newcommand{\definelisting}[4]{
+  %
+  % JPM ALTERATION: Debolding parts in toc, grad school thing
+  %
+  \let\bfseries\mdseries
+  
   % Page style for the first page. If twoside is set, the page is an
   % oddpage. Otherwise, \evenhead is not used anyway.
   \expandafter\newcommand\csname ps@#1a\endcsname{%

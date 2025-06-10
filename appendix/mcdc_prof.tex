@@ -4,11 +4,12 @@
   Joanna Piper Morgan,
   Braxton Cuneo,
   Ilham Variansyah, 
-  and Kyle E.~Niemeyer}
+  and Kyle E.~Niemeyer%
+  }
   
 \renewcommand{\TheAddress}{%
-    \textit{Proceedings of International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (M\&C 2025)} \\
-    Vol 19, 2025. \\
+    \textit{Proceedings of International Conference on Mathematics and Computational Methods Applied to Nuclear Science and Engineering (M\&C 2025)}\\
+    Vol 19, 2025.\\
     \doi{10.13182/MC25-47142}\\
     \arxiv{2501.05440}
 }
@@ -17,10 +18,9 @@
 \label{chapter:mcdc_prof}
 
 \vspace{1em}
-\TheAuthors
-\vspace{1em}
+\TheAuthors\\
 \TheAddress
-\vspace{1em}
+%\vspace{1em}
 
 
 %\PaperHeader{\TheTitle}{\TheAuthors}{\TheAddress}
@@ -150,18 +150,18 @@ Current versions of Numba come with CUDA operability natively, but this is set t
 
 We begin by
 \begin{enumerate}
-    \item Compiling Python device code to Nvidia PTX by \texttt{numba.cuda.compile\_ptx\_for\_current\\\_device} (which requires typed function signatures), then place that output into \texttt{add\_one.ptx} file; next
+    \item Compiling Python device code to Nvidia PTX by \longttt{numba.cuda.compile\_ptx\_for\_current\_device}(which requires typed function signatures), then place that output into \longttt{add\_one.ptx} file; next
     
-    \item Compiling PTX to relocatable device code using \texttt{nvcc -rdc=true -dc -arch=<arch> --cudart shared --compiler-options -fPIC add.ptx -o add.o} where \texttt{-dc} asks the compiler for device code, \texttt{-rdc} asks to make that device code relocatable, \texttt{--cudart shared} asks for shared CUDA runtime libraries and \texttt{-fPIC} generates position-independent code;
+    \item Compiling PTX to relocatable device code using \longttt{nvcc -rdc=true -dc -arch=<arch> --cudart shared --compiler-options -fPIC add.ptx -o add.o} where \longttt{-dc} asks the compiler for device code, \longttt{-rdc} asks to make that device code relocatable, \longttt{--cudart shared} asks for shared CUDA runtime libraries and \longttt{-fPIC} generates position-independent code;
     
-    \item Compiling that relocatable byte code into a library of executable device functions is done with \texttt{nvcc -dlink add.o -arch=<arch> --cudart shared -o device.o \\--compiler-options -fPIC} where \texttt{-dlink} asks the compiler for relocatable device code; and finally
+    \item Compiling that relocatable byte code into a library of executable device functions is done with \longttt{nvcc -dlink add.o -arch=<arch> --cudart shared -o device.o --compiler-options -fPIC} where \texttt{-dlink} asks the compiler for relocatable device code; and finally
     
-    \item Compiling the C-CUDA file containing the global function and linking with the library of device functions originating from Python with \texttt{nvcc -shared add.o device.o -arch=<arch> --cudart shared}.
+    \item Compiling the C-CUDA file containing the global function and linking with the library of device functions originating from Python with \longttt{nvcc -shared add.o device.o -arch=<arch> --cudart shared}.
     
 \end{enumerate}
 
 While the complexity of the functions both from MC/DC (Python) and Harmonize (C++) increases dramatically when moving toward implementation in MC/DC, this compilation strategy remains mostly the same.
-The exact compilation commands Harmonize calls when compiling MC/DC functions can be viewed by setting \texttt{VERBOSE=True} in \texttt{harmonize/python/config.py}.
+The exact compilation commands Harmonize calls when compiling MC/DC functions can be viewed by setting \texttt{VERBOSE=True} in \longttt{harmonize/python/config.py}.
 This compilation strategy also allows for the extension of functions defined in the CUDA API but not in Numba-CUDA as they can come from the C-CUDA source in \texttt{dep.cpp}.
 
 \subsection{AMD Targets}
@@ -170,12 +170,12 @@ Significant adaptations from the process of Nvidia compilation are required to t
 PTX is a proprietary Nvidia standard, so when targeting AMD GPUs, we rely on intermediate compiler representation (IR) from LLVM for an AMD GPU hardware-target (also called an LLVM target triple).
 AMD's compiler toolchain is based in the LLVM-Clang ecosystem, so we will be calling LLVM-Clang-based tools (e.g., \texttt{hipcc} is a wrapper function for \texttt{clang}).
 Note that while the LLVM-Clang commands are generic, AMD variations of compilers, linkers, etc. must be invoked.
-For example, to invoke the correct Clang compiler point to the ROCm installed variation (often on LinuxOS at \texttt{opt/rocm/llvm/bin/clang}).
+For example, to invoke the correct Clang compiler point to the ROCm installed variation (often on LinuxOS at \longttt{opt/rocm/llvm/bin/clang}).
 
 To generate AMD target LLVM-IR from Python script, a patch to Numba is provided by AMD\footnote{https://github.com/ROCm/numba-hip}.
 This patch can also execute produced functions from the Python interpreter, much like Numba-CUDA.
 As this patch is a port of AMD's Heterogeneous-computing Interface for Portability (HIP) API, it attempts to be a one-to-one implementation of operations implemented in Numba-CUDA.%, going as far as to alias CUDA specific operations to their HIP counterparts.
-The Numba-HIP development team has gone as far as to provide a \texttt{numba.hip.pose\_as\_cuda()} function, which, after being called in Python script, will alias all supported Numba-CUDA functions to Numba-HIP ones and compile/run automatically.
+The Numba-HIP development team has gone as far as to provide a \longttt{numba.hip.pose\_as\_cuda()} function, which, after being called in Python script, will alias all supported Numba-CUDA functions to Numba-HIP ones and compile/run automatically.
 % We where able to port a version of MC/DC-BIT (a mini-app which we originally used as a proof of concept of CUDA operability which in early versions did not use Harmonize) by calling that single command at the beginning of the Python script.
 
 When moving to compile and execute full MC/DC+Harmonize, we must again enable the compilation of device functions from Numba-HIP and device, global, and host functions from C++.
@@ -195,23 +195,23 @@ This process is done in LLVM-IR.
 Figure \ref{fig:codeclang} shows the compilation structure.
 We begin compilation by
 \begin{enumerate}
-    \item Compiling C++ source in \texttt{dep.cpp} to LLVM-IR with host and device code bundled together with \texttt{hipcc -c -fgpu-rdc -S -emit-llvm -o dep.ll -x hip dep.cpp -g} where \texttt{-fgpu-rdc} \\ asks the compiler for relocatable device code \texttt{-emit-llvm} requests the LLVM-IR, \texttt{-c} only runs preprocess, compile, and assemble steps, and \texttt{-x hip} specifies that \texttt{dep.cpp} is HIP code;
+    \item Compiling C++ source in \longttt{dep.cpp} to LLVM-IR with host and device code bundled together with \longttt{hipcc -c -fgpu-rdc -S -emit-llvm -o dep.ll -x hip dep.cpp -g} where \longttt{-fgpu-rdc} asks the compiler for relocatable device code \longttt{-emit-llvm} requests the LLVM-IR, \texttt{-c} only runs preprocess, compile, and assemble steps, and \texttt{-x hip} specifies that \longttt{dep.cpp} is HIP code;
     
     \item Unbundling the LLVM-IR:
     
     \begin{enumerate}
-        \item first the device half \texttt{clang-offload-bundler --type=ll --unbundle \\--input=dep.ll --output=dep\_gpu.ll --targets=hip-amdgcn-amd-amdhsa--gfx90a} \\ where \texttt{amdgcn-amd-amdhsa} is the LLVM target-tipple and \texttt{gfx90a} is compiler designation for an MI250X;
+        \item first the device half \longttt{clang-offload-bundler --type=ll --unbundle --input=dep.ll --output=dep\_gpu.ll --targets=hip-amdgcn-amd-amdhsa--gfx90a} where \longttt{amdgcn-amd-amdhsa} is the LLVM target-tipple and \texttt{gfx90a} is compiler designation for an MI250X;
         
-        \item then the host half \texttt{clang-offload-bundler --type=ll --unbundle \\--input=dep.ll --output=dep\_cpu.ll --targets=host-x86\_64-unknown-linux-gnu}; then
+        \item then the host half \longttt{clang-offload-bundler --type=ll --unbundle --input=dep.ll --output=dep\_cpu.ll --targets=host-x86\_64-unknown-linux-gnu}; then
     \end{enumerate}
     
-    \item Compiling device functions from Python source with \texttt{numba.hip.generate\_llvmir()} and place into \texttt{add\_one.ll};
+    \item Compiling device functions from Python source with \longttt{numba.hip.generate\_llvmir()} and place into \texttt{add\_one.ll};
     
-    \item Linking the now unbundled device code in \texttt{dep\_gpu.ll} and the device code from Python in \texttt{add\_one.ll} together with \texttt{llvm-link dep\_gpu.ll add\_one.ll \\-S -o dep\_gpu\_linked.ll};
+    \item Linking the now unbundled device code in \longttt{dep\_gpu.ll} and the device code from Python in \longttt{add\_one.ll} together with \longttt{llvm-link dep\_gpu.ll add\_one.ll -S -o dep\_gpu\_linked.ll};
     
-    \item Rebundling the now combined Python/C++ device LLVM-IR back to the host LLVM-IR with \texttt{clang-offload-bundler --type=ll \\--input=dep\_gpu\_linked.ll --input=dep\_cpu.ll \\--output=dep\_bundled.ll --targets=hip-amdgcn-amd-amdhsa--gfx90a,\\host-x86\_64-unknown-linux-gnu}; and finally
+    \item Rebundling the now combined Python/C++ device LLVM-IR back to the host LLVM-IR with \longttt{clang-offload-bundler --type=ll --input=dep\_gpu\_linked.ll --input=dep\_cpu.ll --output=dep\_bundled.ll --targets=hip-amdgcn-amd-amdhsa--gfx90a, host-x86\_64-unknown-linux-gnu}; and finally
     
-    \item Compiling to an executable with \texttt{hipcc -v -fgpu-rdc --hip-link dep\_bundled.ll\\-o program} where \texttt{--hip-link} links clang-offload-bundles for HIP
+    \item Compiling to an executable with \longttt{hipcc -v -fgpu-rdc --hip-link dep\_bundled.ll -o program} where \texttt{--hip-link} links clang-offload-bundles for HIP
     
 \end{enumerate}
 
@@ -247,7 +247,7 @@ To conduct performance analysis, we use 10$^7$ particle histories run in time-de
 
 \begin{figure}
   \centering
-  \includegraphics[width=.6\textwidth]{appendix/mcdc_prof_figs/inf_pin_ce.pdf}
+  \includegraphics[width=\textwidth]{appendix/mcdc_prof_figs/inf_pin_ce.pdf}
   \caption{Left: Infinite pin cell with reflecting boundaries on all sides, Red is 2.4\% enriched UO$_2$, and blue is a homogeneous Boron/Water moderator. Right: Neutron population density of infinite pin cell benchmark problem through time from MC/DC and OpenMC at \num{1e7} particle histories and a reference from OpenMC at \num{1e9}}
   \label{fig:inf_pin}
 \end{figure}
@@ -275,7 +275,7 @@ We use double precision for all floating point operations.
 \begin{table}[ht]
     \centering
     \caption{Run time and CPU core equivalent for C5G7 (multi-group) and infinite pin-cell (continuous-energy) benchmark problems from various hardware types.}
-    \begin{tabular}{@{}c c c c c@{}}
+    \resizebox{\textwidth}{!}{\begin{tabular}{@{}c c c c c@{}}
         \hline
         (\#) Hardware & C5G7 & & Infinite Pin-cell & \\
         & Runtime [s] & Core Equivalency & Runtime [s] & Core Equivalency \\
@@ -285,7 +285,7 @@ We use double precision for all floating point operations.
         (4) AMD MI250X & 7020. & 20 & 181.2 & 79 \\
         (4) AMD MI300A & 436.8 & 326 & 116.4 & 123 \\
         \hline
-    \end{tabular}
+    \end{tabular}}
     \label{tab:runtime}
 \end{table}
 
@@ -327,6 +327,6 @@ Furthermore, we will continue to engage in novel method developments for transie
 
 
 \section*{ACKNOWLEDGEMENTS}
-The authors would like to thank Dr. Damon McDougal and Dr. Dominic Etienne Charrier from AMD for support with Numba-HIP and ROCm compilers.
+The authors would like to thank Dr. Damon McDougall and Dr. Dominic Etienne Charrier from AMD for support with Numba-HIP and ROCm compilers.
 The authors would also like to thank the Livermore computing staff for continued support using the Dane, Tioga, and Lassen machines and Dr. Steven Hamilton from Oak Ridge National Laboratory for supplying alternate versions of C5G7 cross-section data and geometries.
 This work was supported by the Center for Exascale Monte-Carlo Neutron Transport (CEMeNT) a PSAAP-III project funded by the Department of Energy, grant number: DE-NA003967.

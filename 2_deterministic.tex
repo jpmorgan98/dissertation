@@ -14,9 +14,9 @@ I also summarize manuscript Chapters \ref{chap:therefore_paper} and \ref{chap:sm
 
 \section{S$_N$ approximation in angle}
 
-There are two major methods of treating the double integral over all angles in Eq. \ref{eq:fullNTE}.
+There are two major methods of treating the double integral over all angles in Eq.~\eqref{eq:fullNTE}.
 The method of spherical harmonics or P$_{N}$ method takes angular moments of the transport equation then makes a closure assumption at the N\ths  order.
-This work focuses on the S$_N$ or discrete ordinance approximation, which turns Eq. \ref{eq:fullNTE} into a coupled (simultaneous) set of linear partial differential equations in each angular direction using quadrature integration.
+This work focuses on the S$_N$ or discrete ordinance approximation, which turns Eq.~\eqref{eq:fullNTE} into a coupled (simultaneous) set of linear partial differential equations in each angular direction using quadrature integration.
 It was first formulated by Chandrasekhar in the 1930s to describe radiative heat transfer in stellar media \cite{chandrasekhar1960radiative}.
 The S$_N$ approximation was soon applied to neutron transport by Carlson \cite{precise1971carlson}, Lee \cite{discrete1961lee}, and Lathrop \cite{discrete1966lathnrop} with its earliest published description in 1953 \cite{carlson_1955_sn}.
 The method of discrete ordinance was also adapted to general radiative heat transfer by Fiveland \cite{three1988fiveland} and Truelove \cite{discrete1987truelove}.
@@ -71,7 +71,7 @@ Simple corner balance is equivalent to the lumped-linear discontinuous finite el
 To treat the continuous operators in time, implicit time marching schemes are often used as they have desirable stability properties.
 Specifically, implicit (backward) Euler ($\mathcal{O}(1)$) or Crank--Nicolson ($\mathcal{O}(2)$) \cite{nicolson_phd, Crank_Nicolson_1947} are the most often employed.
 %These schemes are advantageous as they often act like a wrapper around a steady state deterministic transport solver with few changes needed to implement.
-While Crank-Nicolson is second order accurate it is not robust and can produce negative solutions and spurious oscillation.
+While Crank--Nicolson is second-order accurate, it is not robust and can produce negative solutions and spurious oscillation.
 Time-dependent version of the multiple balance approach was derived by Variansyah, Larsen, and Martin~\cite{variansyah_robust_2021, ilham_phd} to be a robust, higher ($\mathcal{O}(2)$) order time discretization scheme.
 The multiple-balance method was originally developed as a space discretization scheme.
 The full space-time-energy-angle discretization scheme is derived in chapter \ref{chap:therefore_paper}. % and is explicitly shown in Equations \eqref{eq:scatter_mg} and \eqref{eq:fullOCI_mg}.
@@ -101,7 +101,7 @@ These are a broad class of iterative methods where \emph{old} information (from 
 A fixed point iteration requires the system to allow for the dependent variable to exist on either side of the equality.
 This is done with \emph{operator splitting}, specifically matrix splitting.
 
-For example consider a splitting of Eq. \eqref{eq:introaxb}, where $A = C+B$. $x$ acts on \emph{both} $C$ and $B$, so $x$ can be distributed such that the new system is
+For example consider a splitting of Eq.~\eqref{eq:introaxb}, where $A = C+B$. $x$ acts on \emph{both} $C$ and $B$, so $x$ can be distributed such that the new system is
 \begin{equation}
     Cx + Bx = b \; .
 \end{equation}
@@ -112,7 +112,7 @@ Moving this known vector quantity to the right hand side gives
     Cx = b - Bx^{(0)} \; ,
 \end{equation}
 where the right hand side is now a known vector.
-This equation is in the same form as Eq. \ref{eq:introaxb} and can be solved in the same way for a \emph{new} version of $x$!
+This equation is in the same form as Eq.~\eqref{eq:introaxb} and can be solved in the same way for a \emph{new} version of $x$!
 This new value can then be reinserted back into the right hand side and used to recompute a new-new version of $x$.
 Writing this for any generic iteration gives
 \begin{equation}
@@ -156,7 +156,7 @@ For the former eigenvalues can measure stability, and prove that a given space-t
 If all eigenvalues are below a certain threshold the compounding effect of error incurred at every time step will remain bounded.
 For the latter the eigen-spectrum of the iteration system formed by operator splitting and preconditioners can measure convergence rates.
 
-As an example of error propagating through an iterative method consider Eq. \eqref{eq:introopsplit} reformed to describe how the error changes iteration to iteration
+As an example of error propagating through an iterative method consider Eq.~\eqref{eq:introopsplit} reformed to describe how the error changes iteration to iteration
 \begin{equation}
     f^{(l+1)} = {T}f^{(l)} \; ,
 \end{equation}

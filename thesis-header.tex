@@ -32,6 +32,13 @@
 \usepackage{baskervald} % -- fav so far
 \usepackage[baskerville,vvarbb]{newtxmath}
 
+%
+%
+%
+%\usepackage{titlesec}
+%\titleformat{\part}
+%  {\normalfont\normalsize}{\thesection.}{1em}{}
+
 % some useful commands
 \newcommand{ \nd }{$^{\text{nd}}$ }
 \newcommand{ \ths }{$^{\text{th}}$ }
@@ -47,6 +54,16 @@
 \usepackage[breaklinks=true, linkcolor=blue, citecolor=blue, colorlinks=true]{hyperref}
 \newcommand*{\doi}[1]{\href{https://doi.org/#1}{#1}}
 \newcommand*{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand*{\zenodo}[1]{\href{https://zenodo.org/records/#1}{zenodo:#1}}
+
+\makeatletter
+\newcommand*\wrapletters[1]{\wr@pletters#1\@nil}
+\def\wr@pletters#1#2\@nil{#1\allowbreak\if&#2&\else\wr@pletters#2\@nil\fi}
+\makeatother
+
+\newcommand{\longttt}[1]{\wrapletters{\texttt{#1}}}
+
+
 
 %
 % Stuff for bibliography
